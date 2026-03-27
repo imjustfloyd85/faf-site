@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Seven United — Building Champions On & Off The Field</title>
+  <meta name="description" content="Legacy Seven United — youth flag football and athlete development in Brambleton, Virginia. A Fathers and Football program. Building champions on and off the field.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:   #c8923c;
+      --gold-lt:#e0b06a;
+      --dark:   #0a0a0a;
+      --dark-2: #111111;
+      --dark-3: #181818;
+      --warm:   #f5f0eb;
+      --muted:  #7d7a77;
+      --border: rgba(200,146,60,0.2);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--warm); -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+      color: var(--muted); font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back svg { width: 14px; flex-shrink: 0; }
+    nav ul { display: flex; gap: 28px; list-style: none; }
+    nav ul a {
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--gold); }
+    .nav-cta {
+      padding: 9px 22px; border: 1px solid var(--gold); color: var(--gold);
+      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 120px 24px 80px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,146,60,0.07) 0%, transparent 65%);
+    }
+    /* Large "7" watermark */
+    .hero-watermark {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -54%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(400px, 60vw, 700px); font-weight: 900;
+      color: var(--gold); opacity: 0.03; line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .hero-badge {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 16px; border: 1px solid var(--border);
+      border-radius: 100px; font-size: 10px; font-weight: 700;
+      letter-spacing: 3px; color: var(--gold); text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    .hero-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+    .hero-logo { position: relative; margin-bottom: 36px; }
+    .hero-logo svg { width: min(200px, 55vw); height: auto; }
+    .hero h1 {
+      position: relative;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(56px, 12vw, 120px); font-weight: 900;
+      line-height: 0.9; color: var(--warm); letter-spacing: -1px;
+      margin-bottom: 8px; text-transform: uppercase;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-tagline {
+      position: relative;
+      font-size: 13px; font-weight: 600; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 48px;
+    }
+    .hero-actions { position: relative; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      padding: 14px 36px; background: var(--gold); color: var(--dark);
+      font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px; transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-1px); }
+    .btn-ghost {
+      padding: 14px 36px; border: 1px solid rgba(200,146,60,0.35); color: var(--warm);
+      font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* SECTIONS */
+    section { padding: 96px 24px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 6vw, 60px); font-weight: 800;
+      line-height: 1; color: var(--warm); margin-bottom: 20px;
+      text-transform: uppercase; letter-spacing: -0.5px;
+    }
+    .section-title em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--gold); text-transform: none; }
+    .section-body { font-size: 17px; line-height: 1.75; color: var(--muted); max-width: 580px; }
+    .divider { width: 48px; height: 1px; background: var(--gold); opacity: 0.4; margin: 0 auto 56px; }
+
+    /* TICKER */
+    .ticker {
+      background: var(--gold); overflow: hidden; padding: 14px 0;
+      border-top: none; border-bottom: none;
+    }
+    .ticker-inner {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: ticker 30s linear infinite;
+    }
+    .ticker-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 800; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--dark);
+      padding: 0 40px;
+    }
+    .ticker-item::after { content: '·'; margin-left: 40px; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* MISSION */
+    .mission { background: var(--dark-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .mission-quote {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(20px, 3vw, 28px); line-height: 1.5; color: var(--warm);
+      border-left: 2px solid var(--gold); padding-left: 28px; margin: 28px 0;
+    }
+    .mission-stat {
+      display: flex; flex-direction: column; gap: 2px;
+      padding: 24px; border: 1px solid var(--border);
+      margin-top: 24px;
+    }
+    .mission-stat span:first-child { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+    .mission-stat span:last-child { font-size: 15px; color: var(--muted); }
+    .mission-details { display: flex; flex-direction: column; gap: 12px; }
+
+    /* BIG QUOTE */
+    .big-quote {
+      text-align: center; padding: 80px 24px;
+      background: var(--dark);
+    }
+    .big-quote blockquote {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 6vw, 64px); font-weight: 800;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--warm); line-height: 1.1;
+      max-width: 900px; margin: 0 auto;
+    }
+    .big-quote blockquote span { color: var(--gold); }
+    .big-quote cite {
+      display: block; margin-top: 20px;
+      font-style: normal; font-size: 11px; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* THE SEVEN */
+    .seven { background: var(--dark-2); border-top: 1px solid var(--border); }
+    .seven-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 2px; margin-top: 56px;
+    }
+    .seven-card {
+      background: var(--dark-3); border: 1px solid var(--border);
+      padding: 32px 20px; text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: default;
+    }
+    .seven-card:hover { border-color: var(--gold); background: #1f1f1f; }
+    .seven-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 56px; font-weight: 900; color: var(--gold);
+      opacity: 0.15; line-height: 1; margin-bottom: 12px;
+    }
+    .seven-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--warm); margin-bottom: 8px;
+    }
+    .seven-card p { font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+    /* PHILOSOPHY */
+    .philosophy { background: var(--dark); }
+    .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 56px; }
+    .phil-card {
+      background: var(--dark-2); border: 1px solid var(--border);
+      padding: 48px 40px; transition: border-color 0.3s;
+    }
+    .phil-card:hover { border-color: var(--gold); }
+    .phil-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--warm); margin-bottom: 16px;
+    }
+    .phil-card p { font-size: 16px; line-height: 1.75; color: var(--muted); }
+
+    /* REGISTER */
+    .register { background: var(--dark-2); border-top: 1px solid var(--border); }
+    .register-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; }
+    .step {
+      background: var(--dark-3); border: 1px solid var(--border);
+      padding: 40px 32px; position: relative; transition: border-color 0.3s;
+    }
+    .step:hover { border-color: var(--gold); }
+    .step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 80px; font-weight: 900; color: var(--gold);
+      opacity: 0.12; line-height: 1; position: absolute; top: 16px; right: 24px;
+    }
+    .step h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--warm); margin-bottom: 12px;
+    }
+    .step p { font-size: 14px; line-height: 1.7; color: var(--muted); }
+
+    /* FORM */
+    .form-section { background: var(--dark); border-top: 1px solid var(--border); }
+    .form-wrap { max-width: 680px; margin: 0 auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .field input, .field select, .field textarea {
+      background: var(--dark-2); border: 1px solid var(--border);
+      color: var(--warm); padding: 12px 16px; font-size: 14px;
+      font-family: 'Inter', sans-serif; border-radius: 2px;
+      transition: border-color 0.2s; outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+    .field select option { background: var(--dark-2); }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .form-submit { margin-top: 24px; width: 100%; }
+    .form-note { font-size: 12px; color: var(--muted); margin-top: 14px; text-align: center; line-height: 1.6; }
+    .form-success {
+      display: none;
+      background: rgba(200,146,60,0.08);
+      border: 1px solid var(--gold);
+      padding: 28px 32px; text-align: center; border-radius: 2px;
+      margin-top: 40px;
+    }
+    .form-success h3 { font-size: 18px; font-weight: 700; color: var(--warm); margin-bottom: 8px; }
+    .form-success p { font-size: 14px; color: var(--muted); }
+
+    /* FOOTER */
+    footer { background: #050505; border-top: 1px solid var(--border); padding: 48px 24px 32px; text-align: center; }
+    .footer-parent { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .footer-parent a { color: var(--gold); text-decoration: none; }
+    .footer-social { display: flex; gap: 20px; justify-content: center; margin: 16px 0; }
+    .footer-social a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-social a:hover { color: var(--gold); }
+    .footer-copy { font-size: 11px; color: rgba(125,122,119,0.4); margin-top: 14px; }
+
+    /* ── MOBILE NAV ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--warm); border-radius: 2px;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 65px; left: 0; right: 0; z-index: 99;
+      background: rgba(10,10,10,0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 13px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      nav ul { display: none; }
+      .nav-hamburger { display: flex; }
+      .seven-grid { grid-template-columns: repeat(4, 1fr); }
+      .mission-grid, .philosophy-grid { grid-template-columns: 1fr; gap: 40px; }
+      .register-steps { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .seven-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      Fathers &amp; Football
+    </a>
+    <ul>
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#the-seven">The Seven</a></li>
+      <li><a href="#register">Join</a></li>
+    </ul>
+    <a href="#register" class="nav-cta">Earn Your Spot</a>
+    <button class="nav-hamburger" aria-label="Menu" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#mission" onclick="this.closest('#mobileMenu').classList.remove('open')">Mission</a>
+    <a href="#the-seven" onclick="this.closest('#mobileMenu').classList.remove('open')">The Seven</a>
+    <a href="#register" onclick="this.closest('#mobileMenu').classList.remove('open')">Join</a>
+    <a href="#register" onclick="this.closest('#mobileMenu').classList.remove('open')" style="color:var(--gold)">Earn Your Spot</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-watermark">7</div>
+    <div class="hero-badge">Fathers and Football — Brambleton, Virginia</div>
+    <div class="hero-logo">
+      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 L185 55 L185 150 L100 210 L15 150 L15 55 Z" fill="none" stroke="#c8923c" stroke-width="2.5" stroke-linejoin="miter"/>
+        <path d="M100 28 L172 65 L172 142 L100 195 L28 142 L28 65 Z" fill="none" stroke="#c8923c" stroke-width="1" opacity="0.25"/>
+        <text x="72" y="132" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="72" fill="#f5f0eb">L</text>
+        <line x1="65" y1="105" x2="140" y2="105" stroke="#c8923c" stroke-width="1.5" opacity="0.5"/>
+        <text x="110" y="132" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="72" fill="#c8923c">7</text>
+        <text x="100" y="168" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="10" fill="#7d7a77" letter-spacing="6">LEGACY</text>
+      </svg>
+    </div>
+    <h1>Legacy <span>Seven</span><br>United</h1>
+    <p class="hero-tagline">Building Champions On &amp; Off The Field</p>
+    <div class="hero-actions">
+      <a href="#register" class="btn-primary">Earn Your Spot</a>
+      <a href="#the-seven" class="btn-ghost">The Seven Values</a>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">Effort</span>
+      <span class="ticker-item">Discipline</span>
+      <span class="ticker-item">Integrity</span>
+      <span class="ticker-item">Brotherhood</span>
+      <span class="ticker-item">Confidence</span>
+      <span class="ticker-item">Toughness</span>
+      <span class="ticker-item">Legacy</span>
+      <span class="ticker-item">Effort</span>
+      <span class="ticker-item">Discipline</span>
+      <span class="ticker-item">Integrity</span>
+      <span class="ticker-item">Brotherhood</span>
+      <span class="ticker-item">Confidence</span>
+      <span class="ticker-item">Toughness</span>
+      <span class="ticker-item">Legacy</span>
+    </div>
+  </div>
+
+  <!-- MISSION -->
+  <section class="mission" id="mission">
+    <div class="container">
+      <div class="mission-grid">
+        <div>
+          <p class="section-label">Our Mission</p>
+          <h2 class="section-title">Develop athletes.<br><em>Build men.</em></h2>
+          <blockquote class="mission-quote">
+            "The goal was always legacy."
+          </blockquote>
+          <p class="section-body">
+            Legacy Seven United develops disciplined, confident, and accountable young athletes who compete with intensity and lead with character — on the field and off it.
+          </p>
+        </div>
+        <div class="mission-details">
+          <div class="mission-stat">
+            <span>Location</span>
+            <span>Brambleton, Virginia — Northern Virginia / DC Metro Area</span>
+          </div>
+          <div class="mission-stat">
+            <span>League</span>
+            <span>Loudoun NFL Flag Football</span>
+          </div>
+          <div class="mission-stat">
+            <span>Age Groups</span>
+            <span>10U — Spring 2026 Active</span>
+          </div>
+          <div class="mission-stat">
+            <span>Head Coach & Founder</span>
+            <span>Justin Floyd</span>
+          </div>
+          <div class="mission-stat">
+            <span>Status</span>
+            <span>Evaluations Open — Roster Being Built</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG QUOTE -->
+  <div class="big-quote">
+    <blockquote>
+      "<span>Father First.</span><br>Then Coach."
+    </blockquote>
+    <cite>— Legacy Seven United Coaching Philosophy</cite>
+  </div>
+
+  <!-- THE SEVEN -->
+  <section class="seven" id="the-seven">
+    <div class="container">
+      <div style="text-align:center">
+        <p class="section-label">Core Values</p>
+        <h2 class="section-title">The <em>Seven</em></h2>
+        <p class="section-body" style="margin:0 auto;">Seven values. Every rep. Every practice. Every season. These aren't rules — they're the standard.</p>
+      </div>
+      <div class="seven-grid">
+        <div class="seven-card">
+          <div class="seven-num">1</div>
+          <h3>Effort</h3>
+          <p>Give full commitment every rep</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">2</div>
+          <h3>Discipline</h3>
+          <p>Master small details consistently</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">3</div>
+          <h3>Integrity</h3>
+          <p>Act with honesty and accountability</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">4</div>
+          <h3>Brotherhood</h3>
+          <p>Lift teammates up, build trust</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">5</div>
+          <h3>Confidence</h3>
+          <p>Know your preparation and abilities</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">6</div>
+          <h3>Toughness</h3>
+          <p>Develop mental and physical resilience</p>
+        </div>
+        <div class="seven-card">
+          <div class="seven-num">7</div>
+          <h3>Legacy</h3>
+          <p>Leave places better than you found them</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div class="container">
+      <p class="section-label">How We Operate</p>
+      <h2 class="section-title">The Philosophy</h2>
+      <div class="philosophy-grid">
+        <div class="phil-card">
+          <h3>Father First. Then Coach.</h3>
+          <p>Parents handle development work outside of practice. Coaches focus on team dynamics during practice. This protects the athlete's joy in the game — and keeps the father-child relationship where it belongs: at home, not on a clipboard.</p>
+        </div>
+        <div class="phil-card">
+          <h3>Coalition, Not Just a Team</h3>
+          <p>Legacy Seven United operates as a coalition. The programs in Virginia and Texas function independently — different coaches, different cities, different leagues — but share the same seven values, the same coaching philosophy, and the same expectation placed on every athlete.</p>
+        </div>
+        <div class="phil-card">
+          <h3>Mothers Welcome</h3>
+          <p>Anyone willing to show up for a child belongs here. Single mothers, grandparents, guardians — presence is what matters. This program is built around commitment, not biology.</p>
+        </div>
+        <div class="phil-card">
+          <h3>Remove Every Barrier</h3>
+          <p>Through the Fathers and Football foundation, the program works to cover league fees, equipment, travel, and facility costs so that no athlete misses out because of money.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="register" id="register">
+    <div class="container">
+      <div style="text-align:center">
+        <p class="section-label">Spring 2026 — Evaluations Open</p>
+        <h2 class="section-title">Earn Your <em>Spot</em></h2>
+        <p class="section-body" style="margin:0 auto;">The roster is being built. Submitting this form does not guarantee placement — all athletes will be evaluated before a final offer is extended.</p>
+      </div>
+      <div class="register-steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Submit Interest</h3>
+          <p>Complete the form below. The coaching staff will contact you within 48 hours to schedule an evaluation.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Evaluation</h3>
+          <p>Athletes are assessed on route running, catching, flag pulling, and fundamentals. Evaluations run during the recreational league season.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>Roster Offer</h3>
+          <p>Selected athletes receive a formal roster offer. Then come the gear, the number, and the standard that goes with it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEREST FORM -->
+  <section class="form-section">
+    <div class="container">
+      <div class="form-wrap">
+        <div style="text-align:center; margin-bottom:8px;">
+          <p class="section-label">Interest Form</p>
+          <h2 class="section-title" style="font-size:clamp(28px,4vw,40px);">Ready to compete?</h2>
+        </div>
+        <form id="interestForm">
+          <div class="form-grid">
+            <div class="field">
+              <label>Player Full Name</label>
+              <input type="text" name="player_name" placeholder="First Last" required>
+            </div>
+            <div class="field">
+              <label>Age / Grade</label>
+              <input type="text" name="age_grade" placeholder="e.g. 9 / 4th Grade" required>
+            </div>
+            <div class="field">
+              <label>Parent / Guardian Name</label>
+              <input type="text" name="parent_name" placeholder="First Last" required>
+            </div>
+            <div class="field">
+              <label>Email Address</label>
+              <input type="email" name="email" placeholder="you@email.com" required>
+            </div>
+            <div class="field">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="(555) 000-0000">
+            </div>
+            <div class="field">
+              <label>Experience Level</label>
+              <select name="experience">
+                <option value="">Select one</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Preferred Position</label>
+              <select name="position">
+                <option value="">Select one</option>
+                <option>Quarterback</option>
+                <option>Wide Receiver</option>
+                <option>Running Back</option>
+                <option>Center</option>
+                <option>Safety</option>
+                <option>Cornerback</option>
+                <option>Linebacker</option>
+                <option>Flexible / Any</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>How did you hear about us?</label>
+              <input type="text" name="referral" placeholder="Instagram, friend, etc.">
+            </div>
+            <div class="field full">
+              <label>Anything else you want us to know?</label>
+              <textarea name="notes" placeholder="Optional"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary form-submit" id="submitBtn">Submit Interest Form</button>
+          <p class="form-note">Submitting this form does not guarantee roster placement. All athletes will be evaluated before a final offer is extended. Expect a response within 48 hours.</p>
+        </form>
+        <div class="form-success">
+          <h3>You're in the system.</h3>
+          <p>We'll be in touch within 48 hours to talk next steps. Stay sharp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('interestForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const f = this;
+      const payload = {
+        formType:        'interest',
+        playerName:      f.player_name.value.trim(),
+        playerAge:       f.age_grade.value.trim(),
+        parentName:      f.parent_name.value.trim(),
+        parentEmail:     f.email.value.trim(),
+        parentPhone:     f.phone.value.trim(),
+        experienceLevel: f.experience.value,
+        position:        f.position.value,
+        referral:        f.referral.value.trim(),
+        message:         f.notes.value.trim(),
+      };
+
+      try {
+        const res = await fetch('https://api.fathersandfootball.org/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          f.style.display = 'none';
+          document.querySelector('.form-success').style.display = 'block';
+          document.querySelector('.form-success').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          btn.textContent = 'Submit Interest Form';
+          btn.disabled = false;
+          alert(data.error || 'Something went wrong. Email us at coach@legacy7u.org.');
+        }
+      } catch (err) {
+        btn.textContent = 'Submit Interest Form';
+        btn.disabled = false;
+        alert('Could not send. Please email coach@legacy7u.org directly.');
+      }
+    });
+  </script>
+
+  <footer>
+    <div style="margin-bottom:20px;">
+      <svg viewBox="0 0 200 220" width="60" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 L185 55 L185 150 L100 210 L15 150 L15 55 Z" fill="none" stroke="#c8923c" stroke-width="2.5" stroke-linejoin="miter"/>
+        <path d="M100 28 L172 65 L172 142 L100 195 L28 142 L28 65 Z" fill="none" stroke="#c8923c" stroke-width="1" opacity="0.25"/>
+        <text x="72" y="132" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="72" fill="#f5f0eb">L</text>
+        <line x1="65" y1="105" x2="140" y2="105" stroke="#c8923c" stroke-width="1.5" opacity="0.5"/>
+        <text x="110" y="132" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="72" fill="#c8923c">7</text>
+      </svg>
+    </div>
+    <p class="footer-parent">A <a href="index.html">Fathers and Football</a> Program</p>
+    <div class="footer-social">
+      <a href="https://instagram.com/legacy7united" target="_blank">Instagram</a>
+      <a href="https://tiktok.com/@legacy7united" target="_blank">TikTok</a>
+      <a href="https://legacy7u.org" target="_blank">legacy7u.org</a>
+    </div>
+    <p style="font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--muted);">Building Champions On &amp; Off The Field</p>
+    <p class="footer-copy">&copy; 2026 Legacy Seven United / Fathers and Football. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
