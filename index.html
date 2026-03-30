@@ -496,6 +496,7 @@
       <li><a href="#mission">Mission</a></li>
       <li><a href="#programs">Programs</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="#involved" class="nav-cta">Get Involved</a></li>
     </ul>
     <button class="nav-hamburger" aria-label="Menu" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
@@ -508,6 +509,7 @@
     <a href="#mission" onclick="this.closest('#mobileMenu').classList.remove('open')">Mission</a>
     <a href="#programs" onclick="this.closest('#mobileMenu').classList.remove('open')">Programs</a>
     <a href="#about" onclick="this.closest('#mobileMenu').classList.remove('open')">About</a>
+    <a href="blog.html" onclick="this.closest('#mobileMenu').classList.remove('open')">Blog</a>
     <a href="#involved" onclick="this.closest('#mobileMenu').classList.remove('open')" style="color:var(--gold)">Get Involved</a>
   </div>
 
@@ -569,13 +571,13 @@
           </p>
         </div>
         <div class="mission-visual">
-          <!-- Large FAF Shield -->
-          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 10 L185 55 L185 150 L100 210 L15 150 L15 55 Z" fill="none" stroke="#c8923c" stroke-width="2.5" stroke-linejoin="miter"/>
-            <path d="M100 28 L172 65 L172 142 L100 195 L28 142 L28 65 Z" fill="none" stroke="#c8923c" stroke-width="1" opacity="0.3"/>
-            <line x1="50" y1="100" x2="150" y2="100" stroke="#c8923c" stroke-width="1" opacity="0.4"/>
-            <text x="100" y="125" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="48" fill="#c8923c" letter-spacing="6">FAF</text>
-          </svg>
+          <div style="border-radius:2px; overflow:hidden; border:1px solid var(--border); max-width:400px; width:100%;">
+            <img src="img/headshot.jpg" alt="Justin Floyd — Founder, Fathers and Football" style="width:100%; height:auto; display:block;">
+            <div style="background:var(--dark-3); padding:16px 20px; border-top:1px solid var(--border);">
+              <p style="font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--warm); margin-bottom:2px;">Justin Floyd</p>
+              <p style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold);">Founder &amp; Head Coach</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -752,6 +754,127 @@
     </ul>
     <p class="footer-copy">&copy; 2026 Fathers and Football. All rights reserved. &nbsp;|&nbsp; 501(c)(3) Pending</p>
   </footer>
+
+
+<!-- ── FAF CHAT WIDGET ── -->
+<style>
+  #faf-chat { position:fixed; bottom:28px; right:28px; z-index:1000; font-family:"Inter",sans-serif; }
+  #chat-btn {
+    width:56px; height:56px; border-radius:50%;
+    background:#c8923c; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 20px rgba(200,146,60,0.5);
+    transition:transform 0.2s, background 0.2s;
+  }
+  #chat-btn:hover { background:#e0b06a; transform:scale(1.06); }
+  #chat-btn svg { width:24px; height:24px; color:#0a0a0a; }
+  #chat-panel {
+    position:absolute; bottom:70px; right:0;
+    width:340px; max-height:500px;
+    background:#111111; border:1px solid rgba(200,146,60,0.25);
+    border-radius:4px; display:none; flex-direction:column;
+    box-shadow:0 16px 48px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  #chat-panel.open { display:flex; }
+  #chat-header { background:#0a0a0a; padding:16px 20px; border-bottom:1px solid rgba(200,146,60,0.15); display:flex; align-items:center; justify-content:space-between; }
+  #chat-header-info { display:flex; align-items:center; gap:12px; }
+  #chat-avatar { width:36px; height:36px; border-radius:50%; background:#c8923c; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#0a0a0a; letter-spacing:0.5px; flex-shrink:0; }
+  #chat-name { font-size:13px; font-weight:700; color:#f5f0eb; }
+  #chat-status { font-size:11px; color:#7d7a77; letter-spacing:1px; }
+  #chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; min-height:200px; max-height:320px; }
+  .chat-msg { display:flex; }
+  .chat-msg.user { justify-content:flex-end; }
+  .chat-msg.assistant { justify-content:flex-start; }
+  .bubble {
+    max-width:80%; padding:10px 14px; border-radius:4px;
+    font-size:14px; line-height:1.6;
+  }
+  .chat-msg.user .bubble { background:#c8923c; color:#0a0a0a; font-weight:500; }
+  .chat-msg.assistant .bubble { background:#1a1a1a; color:#f5f0eb; border:1px solid rgba(200,146,60,0.15); }
+  .typing .bubble { color:#7d7a77; }
+  #chat-input-row { display:flex; border-top:1px solid rgba(200,146,60,0.15); }
+  #chat-input {
+    flex:1; background:#0a0a0a; border:none; padding:14px 16px;
+    color:#f5f0eb; font-size:14px; font-family:"Inter",sans-serif; outline:none;
+  }
+  #chat-input::placeholder { color:#7d7a77; }
+  #chat-input-row button { background:none; border:none; padding:0 16px; cursor:pointer; }
+  #chat-input-row button svg { width:18px; height:18px; color:#c8923c; }
+  #chat-input-row button:hover svg { color:#e0b06a; }
+  @media(max-width:400px){ #chat-panel{ width:calc(100vw - 32px); right:-8px; } }
+</style>
+
+<div id="faf-chat">
+  <button id="chat-btn" onclick="toggleChat()" aria-label="Chat with us">
+    <svg id="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <svg id="chat-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div id="chat-panel">
+    <div id="chat-header">
+      <div id="chat-header-info">
+        <div id="chat-avatar">FAF</div>
+        <div>
+          <div id="chat-name">Fathers &amp; Football</div>
+          <div id="chat-status">Ask us anything</div>
+        </div>
+      </div>
+    </div>
+    <div id="chat-messages">
+      <div class="chat-msg assistant"><div class="bubble">Hey! I can answer questions about Fathers and Football, our programs in Virginia and Texas, or how to get involved. What can I help with?</div></div>
+    </div>
+    <div id="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button onclick="sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var chatHistory = [];
+  function toggleChat() {
+    var p = document.getElementById("chat-panel");
+    var i = document.getElementById("chat-icon");
+    var c = document.getElementById("chat-close");
+    p.classList.toggle("open");
+    i.style.display = p.classList.contains("open") ? "none" : "block";
+    c.style.display = p.classList.contains("open") ? "block" : "none";
+    if (p.classList.contains("open")) document.getElementById("chat-input").focus();
+  }
+  function addMsg(role, text) {
+    var msgs = document.getElementById("chat-messages");
+    var d = document.createElement("div");
+    d.className = "chat-msg " + role;
+    d.innerHTML = "<div class=\"bubble\">" + text + "</div>";
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  async function sendMsg() {
+    var inp = document.getElementById("chat-input");
+    var text = inp.value.trim();
+    if (!text) return;
+    inp.value = "";
+    addMsg("user", text);
+    chatHistory.push({ role: "user", content: text });
+    var typing = addMsg("assistant typing", "...");
+    try {
+      var res = await fetch("https://chat.legacy7u.org/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: chatHistory.slice(-10) })
+      });
+      var data = await res.json();
+      var reply = (data.content && data.content[0] && data.content[0].text) || "Sorry, something went wrong. Email info@fathersandfootball.org.";
+      typing.remove();
+      addMsg("assistant", reply);
+      chatHistory.push({ role: "assistant", content: reply });
+    } catch(e) {
+      typing.remove();
+      addMsg("assistant", "Having trouble connecting. Email info@fathersandfootball.org.");
+    }
+  }
+</script>
 
 </body>
 </html>

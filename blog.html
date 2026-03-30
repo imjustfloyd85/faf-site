@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Fathers and Football</title>
+  <meta name="description" content="Stories, coaching philosophy, and updates from Fathers and Football — a nonprofit connecting fathers to their kids through the game.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:    #c8923c;
+      --gold-lt: #e0b06a;
+      --dark:    #0a0a0a;
+      --dark-2:  #111111;
+      --dark-3:  #1a1a1a;
+      --warm:    #f5f0eb;
+      --muted:   #7d7a77;
+      --border:  rgba(200,146,60,0.2);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--warm); -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+      color: var(--muted); font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-back svg { width: 14px; flex-shrink: 0; }
+    .nav-wordmark { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--warm); text-transform: uppercase; }
+    .nav-wordmark span { color: var(--gold); }
+
+    /* MOBILE NAV */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--warm); border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 65px; left: 0; right: 0; z-index: 99;
+      background: rgba(10,10,10,0.97); border-bottom: 1px solid var(--border);
+      padding: 24px; flex-direction: column;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; padding: 16px 0;
+      border-bottom: 1px solid var(--border); transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* HERO */
+    .page-hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(200,146,60,0.05) 0%, transparent 70%);
+    }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .page-hero h1 {
+      font-size: clamp(36px, 6vw, 64px); font-weight: 800; line-height: 1.1;
+      color: var(--warm); margin-bottom: 20px;
+    }
+    .page-hero h1 em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--gold); }
+    .page-hero p { font-size: 17px; line-height: 1.7; color: var(--muted); max-width: 520px; margin: 0 auto; }
+
+    /* GRID */
+    .blog-section { padding: 80px 24px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+
+    .featured-post {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; border: 1px solid var(--border);
+      margin-bottom: 48px; transition: border-color 0.3s;
+      text-decoration: none; color: inherit;
+    }
+    .featured-post:hover { border-color: var(--gold); }
+    .featured-img {
+      overflow: hidden;
+    }
+    .featured-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .featured-post:hover .featured-img img { transform: scale(1.03); }
+    .featured-content { padding: 48px 40px; display: flex; flex-direction: column; justify-content: center; background: var(--dark-2); }
+    .post-tag {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 2px; margin-bottom: 20px; align-self: flex-start;
+    }
+    .featured-content h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 800; line-height: 1.2; color: var(--warm); margin-bottom: 16px; }
+    .featured-content h2 em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--gold); }
+    .featured-content p { font-size: 16px; line-height: 1.75; color: var(--muted); margin-bottom: 28px; }
+    .post-meta { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .post-meta span { color: var(--gold); }
+    .read-more { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 24px; }
+
+    .posts-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .post-card {
+      background: var(--dark-2); border: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      transition: border-color 0.3s, background 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .post-card:hover { border-color: var(--gold); background: var(--dark-3); }
+    .post-card-img {
+      overflow: hidden; aspect-ratio: 16/9;
+    }
+    .post-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .post-card:hover .post-card-img img { transform: scale(1.04); }
+    .post-card-body { padding: 28px 24px; flex: 1; display: flex; flex-direction: column; }
+    .post-card-body .post-tag { margin-bottom: 14px; }
+    .post-card-body h3 { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--warm); margin-bottom: 12px; }
+    .post-card-body p { font-size: 14px; line-height: 1.7; color: var(--muted); flex: 1; }
+    .post-card-footer { padding: 16px 24px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+    /* NEWSLETTER */
+    .newsletter { background: var(--dark-2); border-top: 1px solid var(--border); padding: 80px 24px; text-align: center; }
+    .newsletter h2 { font-size: clamp(24px,4vw,40px); font-weight: 800; color: var(--warm); margin-bottom: 12px; }
+    .newsletter h2 em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--gold); }
+    .newsletter p { font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 480px; margin: 0 auto 32px; }
+    .nl-form { display: flex; gap: 0; max-width: 440px; margin: 0 auto; }
+    .nl-form input {
+      flex: 1; background: var(--dark); border: 1px solid var(--border);
+      border-right: none; color: var(--warm); padding: 14px 18px;
+      font-size: 14px; font-family: 'Inter', sans-serif; border-radius: 2px 0 0 2px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .nl-form input:focus { border-color: var(--gold); }
+    .nl-form button {
+      padding: 14px 24px; background: var(--gold); color: var(--dark);
+      font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      border: none; cursor: pointer; border-radius: 0 2px 2px 0; transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .nl-form button:hover { background: var(--gold-lt); }
+
+    /* FOOTER */
+    footer { background: #050505; border-top: 1px solid var(--border); padding: 48px 24px 32px; text-align: center; }
+    .footer-links { display: flex; gap: 32px; justify-content: center; list-style: none; margin-bottom: 24px; }
+    .footer-links a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 11px; color: rgba(125,122,119,0.4); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-hamburger { display: flex; }
+      .featured-post { grid-template-columns: 1fr; }
+      .featured-img { aspect-ratio: 16/9; }
+      .posts-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .posts-grid { grid-template-columns: 1fr; }
+      .nl-form { flex-direction: column; }
+      .nl-form input { border-right: 1px solid var(--border); border-bottom: none; border-radius: 2px 2px 0 0; }
+      .nl-form button { border-radius: 0 0 2px 2px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      Fathers &amp; Football
+    </a>
+    <div class="nav-wordmark">The <span>Field Notes</span></div>
+    <button class="nav-hamburger" aria-label="Menu" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#mission" onclick="this.closest('#mobileMenu').classList.remove('open')">Mission</a>
+    <a href="index.html#programs" onclick="this.closest('#mobileMenu').classList.remove('open')">Programs</a>
+    <a href="index.html#involved" onclick="this.closest('#mobileMenu').classList.remove('open')" style="color:var(--gold)">Get Involved</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <p class="section-label">Field Notes</p>
+    <h1>Stories from the <em>sideline</em></h1>
+    <p>Coaching philosophy, program updates, and the stories that don't fit in a score.</p>
+  </div>
+
+  <!-- POSTS -->
+  <section class="blog-section">
+    <div class="container">
+
+      <!-- FEATURED POST -->
+      <a href="#" class="featured-post">
+        <div class="featured-img">
+          <img src="img/champs-team.jpg" alt="Frisco Elite 2025 Dallas Cowboys Regional Champions">
+        </div>
+        <div class="featured-content">
+          <span class="post-tag">Championship</span>
+          <h2>Rings, Fathers, and the <em>Moment After</em> the Win</h2>
+          <p>When Frisco Elite won the 2025 Dallas Cowboys Regional, the celebration wasn't about the score. It was about every father who showed up — every practice, every early morning, every car ride home.</p>
+          <p class="post-meta">March 2026 &nbsp;·&nbsp; <span>Justin Floyd</span></p>
+          <p class="read-more">Read More &rarr;</p>
+        </div>
+      </a>
+
+      <!-- POST GRID -->
+      <div class="posts-grid">
+
+        <a href="#" class="post-card">
+          <div class="post-card-img">
+            <img src="img/champ-virginia.jpg" alt="Legacy Seven United Virginia Championship">
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Program</span>
+            <h3>Virginia Is Building Something</h3>
+            <p>The Brambleton program is in its first season with evaluations open. Here's what we're building — and what we're looking for in an athlete.</p>
+          </div>
+          <div class="post-card-footer">February 2026 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="post-card-img">
+            <img src="img/champ-texas.jpg" alt="Frisco Elite Texas">
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Coaching</span>
+            <h3>Father First. Then Coach.</h3>
+            <p>Why we separate the parent role from the coaching role — and why that separation is the most important thing we do for our athletes.</p>
+          </div>
+          <div class="post-card-footer">January 2026 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="post-card-img" style="background:var(--dark-3); display:flex; align-items:center; justify-content:center; min-height:160px;">
+            <img src="img/l7-logo.png" alt="Legacy Seven United" style="width:60%; padding:20px; object-fit:contain;">
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Foundation</span>
+            <h3>Why We Named It Legacy Seven</h3>
+            <p>Seven values. Seven reasons. The story behind the name and what each number means to the program — and to the fathers who built it.</p>
+          </div>
+          <div class="post-card-footer">December 2025 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="post-card-img" style="background:var(--dark-3); min-height:160px; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 80 80" style="width:64px; opacity:0.15"><path d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z" fill="none" stroke="#c8923c" stroke-width="2"/><text x="40" y="47" text-anchor="middle" font-family="Helvetica" font-weight="700" font-size="18" fill="#c8923c" letter-spacing="2">FAF</text></svg>
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Nonprofit</span>
+            <h3>Starting a Nonprofit Is Harder Than Winning a Championship</h3>
+            <p>501(c)(3) paperwork, fundraising, building something from nothing. What I didn't know when I started Fathers and Football.</p>
+          </div>
+          <div class="post-card-footer">November 2025 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="post-card-img" style="background:var(--dark-3); min-height:160px; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 80 80" style="width:64px; opacity:0.15"><path d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z" fill="none" stroke="#c8923c" stroke-width="2"/><text x="40" y="47" text-anchor="middle" font-family="Helvetica" font-weight="700" font-size="18" fill="#c8923c" letter-spacing="2">FAF</text></svg>
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Presence</span>
+            <h3>The Play That Changed How I Coach</h3>
+            <p>16 years in, one moment on the sideline reminded me why none of the wins matter without the relationship.</p>
+          </div>
+          <div class="post-card-footer">October 2025 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="post-card-img" style="background:var(--dark-3); min-height:160px; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 80 80" style="width:64px; opacity:0.15"><path d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z" fill="none" stroke="#c8923c" stroke-width="2"/><text x="40" y="47" text-anchor="middle" font-family="Helvetica" font-weight="700" font-size="18" fill="#c8923c" letter-spacing="2">FAF</text></svg>
+          </div>
+          <div class="post-card-body">
+            <span class="post-tag">Coalition</span>
+            <h3>Two States. One Standard.</h3>
+            <p>Texas and Virginia operating under the same seven values, the same philosophy, and the same expectation — what a coalition looks like in practice.</p>
+          </div>
+          <div class="post-card-footer">September 2025 &nbsp;·&nbsp; Justin Floyd</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <p class="section-label">Stay Connected</p>
+    <h2>Get updates from <em>the field</em></h2>
+    <p>New posts, program news, and stories from the sideline — straight to your inbox.</p>
+    <form class="nl-form" id="nlForm" onsubmit="handleNL(event)">
+      <input type="email" placeholder="your@email.com" required id="nlEmail">
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <footer>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="legacy7.html">Legacy 7</a></li>
+      <li><a href="frisco-elite.html">Frisco Elite</a></li>
+      <li><a href="index.html#involved">Get Involved</a></li>
+      <li><a href="mailto:info@fathersandfootball.org">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 Fathers and Football. All rights reserved. &nbsp;|&nbsp; 501(c)(3) Pending</p>
+  </footer>
+
+  <script>
+    function handleNL(e) {
+      e.preventDefault();
+      const email = document.getElementById('nlEmail').value.trim();
+      fetch('https://api.fathersandfootball.org/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'newsletter', email, name: email }),
+      }).then(r => r.json()).then(d => {
+        if (d.ok) {
+          document.querySelector('.nl-form').outerHTML = '<p style="color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:600;">You\'re on the list.</p>';
+        }
+      }).catch(() => {});
+    }
+  </script>
+
+
+<!-- ── FAF CHAT WIDGET ── -->
+<style>
+  #faf-chat { position:fixed; bottom:28px; right:28px; z-index:1000; font-family:"Inter",sans-serif; }
+  #chat-btn {
+    width:56px; height:56px; border-radius:50%;
+    background:#c8923c; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 20px rgba(200,146,60,0.5);
+    transition:transform 0.2s, background 0.2s;
+  }
+  #chat-btn:hover { background:#e0b06a; transform:scale(1.06); }
+  #chat-btn svg { width:24px; height:24px; color:#0a0a0a; }
+  #chat-panel {
+    position:absolute; bottom:70px; right:0;
+    width:340px; max-height:500px;
+    background:#111111; border:1px solid rgba(200,146,60,0.25);
+    border-radius:4px; display:none; flex-direction:column;
+    box-shadow:0 16px 48px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  #chat-panel.open { display:flex; }
+  #chat-header { background:#0a0a0a; padding:16px 20px; border-bottom:1px solid rgba(200,146,60,0.15); display:flex; align-items:center; justify-content:space-between; }
+  #chat-header-info { display:flex; align-items:center; gap:12px; }
+  #chat-avatar { width:36px; height:36px; border-radius:50%; background:#c8923c; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#0a0a0a; letter-spacing:0.5px; flex-shrink:0; }
+  #chat-name { font-size:13px; font-weight:700; color:#f5f0eb; }
+  #chat-status { font-size:11px; color:#7d7a77; letter-spacing:1px; }
+  #chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; min-height:200px; max-height:320px; }
+  .chat-msg { display:flex; }
+  .chat-msg.user { justify-content:flex-end; }
+  .chat-msg.assistant { justify-content:flex-start; }
+  .bubble {
+    max-width:80%; padding:10px 14px; border-radius:4px;
+    font-size:14px; line-height:1.6;
+  }
+  .chat-msg.user .bubble { background:#c8923c; color:#0a0a0a; font-weight:500; }
+  .chat-msg.assistant .bubble { background:#1a1a1a; color:#f5f0eb; border:1px solid rgba(200,146,60,0.15); }
+  .typing .bubble { color:#7d7a77; }
+  #chat-input-row { display:flex; border-top:1px solid rgba(200,146,60,0.15); }
+  #chat-input {
+    flex:1; background:#0a0a0a; border:none; padding:14px 16px;
+    color:#f5f0eb; font-size:14px; font-family:"Inter",sans-serif; outline:none;
+  }
+  #chat-input::placeholder { color:#7d7a77; }
+  #chat-input-row button { background:none; border:none; padding:0 16px; cursor:pointer; }
+  #chat-input-row button svg { width:18px; height:18px; color:#c8923c; }
+  #chat-input-row button:hover svg { color:#e0b06a; }
+  @media(max-width:400px){ #chat-panel{ width:calc(100vw - 32px); right:-8px; } }
+</style>
+
+<div id="faf-chat">
+  <button id="chat-btn" onclick="toggleChat()" aria-label="Chat with us">
+    <svg id="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <svg id="chat-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div id="chat-panel">
+    <div id="chat-header">
+      <div id="chat-header-info">
+        <div id="chat-avatar">FAF</div>
+        <div>
+          <div id="chat-name">Fathers &amp; Football</div>
+          <div id="chat-status">Ask us anything</div>
+        </div>
+      </div>
+    </div>
+    <div id="chat-messages">
+      <div class="chat-msg assistant"><div class="bubble">Hey! I can answer questions about Fathers and Football, our programs in Virginia and Texas, or how to get involved. What can I help with?</div></div>
+    </div>
+    <div id="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button onclick="sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var chatHistory = [];
+  function toggleChat() {
+    var p = document.getElementById("chat-panel");
+    var i = document.getElementById("chat-icon");
+    var c = document.getElementById("chat-close");
+    p.classList.toggle("open");
+    i.style.display = p.classList.contains("open") ? "none" : "block";
+    c.style.display = p.classList.contains("open") ? "block" : "none";
+    if (p.classList.contains("open")) document.getElementById("chat-input").focus();
+  }
+  function addMsg(role, text) {
+    var msgs = document.getElementById("chat-messages");
+    var d = document.createElement("div");
+    d.className = "chat-msg " + role;
+    d.innerHTML = "<div class=\"bubble\">" + text + "</div>";
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  async function sendMsg() {
+    var inp = document.getElementById("chat-input");
+    var text = inp.value.trim();
+    if (!text) return;
+    inp.value = "";
+    addMsg("user", text);
+    chatHistory.push({ role: "user", content: text });
+    var typing = addMsg("assistant typing", "...");
+    try {
+      var res = await fetch("https://chat.legacy7u.org/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: chatHistory.slice(-10) })
+      });
+      var data = await res.json();
+      var reply = (data.content && data.content[0] && data.content[0].text) || "Sorry, something went wrong. Email info@fathersandfootball.org.";
+      typing.remove();
+      addMsg("assistant", reply);
+      chatHistory.push({ role: "assistant", content: reply });
+    } catch(e) {
+      typing.remove();
+      addMsg("assistant", "Having trouble connecting. Email info@fathersandfootball.org.");
+    }
+  }
+</script>
+
+</body>
+</html>
