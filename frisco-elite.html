@@ -56,6 +56,14 @@
       padding: 120px 24px 80px; position: relative; overflow: hidden;
       background: var(--navy);
     }
+    .hero-watermark {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -54%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(300px, 50vw, 600px); font-weight: 900;
+      color: var(--gold); opacity: 0.03; line-height: 1;
+      pointer-events: none; user-select: none; letter-spacing: 10px;
+    }
     .hero::before {
       content: ''; position: absolute; inset: 0;
       background:
@@ -280,6 +288,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-watermark">FE</div>
     <div class="hero-badge">Fathers and Football — DFW Program</div>
     <div class="hero-logo">
       <img src="img/frisco-elite-logo.png" alt="Frisco Elite" style="width:100%; height:auto; filter: drop-shadow(0 0 32px rgba(200,146,60,0.4));">
