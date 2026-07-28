@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Become a Sponsor — Fathers and Football</title>
+    <meta
+      name="description"
+      content="Partner with Fathers and Football. Sponsor youth football programs that connect fathers to their children through the game."
+    />
+    <meta
+      property="og:title"
+      content="Become a Sponsor — Fathers and Football"
+    />
+    <meta
+      property="og:description"
+      content="Sponsor youth football programs that connect fathers to their children through the game."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #1a1a1a;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .nav-logo svg {
+        width: 36px;
+        height: 40px;
+      }
+
+      .nav-wordmark {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--warm);
+        text-transform: uppercase;
+        line-height: 1.3;
+      }
+
+      .nav-wordmark span {
+        color: var(--gold);
+      }
+
+      nav ul {
+        display: flex;
+        gap: 36px;
+        list-style: none;
+      }
+
+      nav ul a {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      nav ul a:hover {
+        color: var(--gold);
+      }
+
+      .nav-cta {
+        padding: 10px 24px;
+        border: 1px solid var(--gold);
+        color: var(--gold) !important;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s !important;
+      }
+
+      .nav-cta:hover {
+        background: var(--gold) !important;
+        color: var(--dark) !important;
+      }
+
+      /* ── HERO ── */
+      .page-hero {
+        padding: 160px 24px 80px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          rgba(200, 146, 60, 0.06) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .page-hero .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 16px;
+      }
+
+      .page-hero h1 {
+        font-size: clamp(28px, 5vw, 48px);
+        font-weight: 800;
+        line-height: 1.1;
+        color: var(--warm);
+        margin-bottom: 20px;
+      }
+
+      .page-hero h1 em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+      }
+
+      .page-hero p {
+        font-size: 17px;
+        line-height: 1.75;
+        color: var(--muted);
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      /* ── SECTION BASE ── */
+      section {
+        padding: 80px 24px;
+      }
+      .container {
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: clamp(24px, 4vw, 36px);
+        font-weight: 800;
+        line-height: 1.2;
+        color: var(--warm);
+        margin-bottom: 20px;
+      }
+
+      .section-title em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+      }
+
+      /* ── TIERS ── */
+      .tiers {
+        background: var(--dark-2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tiers-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 48px;
+      }
+
+      .tier-card {
+        padding: 40px 32px;
+        border: 1px solid var(--border);
+        text-align: center;
+        transition: border-color 0.3s;
+      }
+
+      .tier-card:hover {
+        border-color: var(--gold);
+      }
+
+      .tier-card.featured {
+        border-color: var(--gold);
+        position: relative;
+      }
+
+      .tier-card.featured::before {
+        content: "MOST POPULAR";
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--dark);
+        background: var(--gold);
+        padding: 4px 16px;
+        border-radius: 2px;
+      }
+
+      .tier-name {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 16px;
+      }
+
+      .tier-amount {
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 900;
+        color: var(--warm);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .tier-period {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+
+      .tier-divider {
+        width: 48px;
+        height: 1px;
+        background: var(--gold);
+        opacity: 0.3;
+        margin: 0 auto 24px;
+      }
+
+      .tier-benefits {
+        list-style: none;
+        text-align: left;
+      }
+
+      .tier-benefits li {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--muted);
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+      }
+
+      .tier-benefits li:last-child {
+        border-bottom: none;
+      }
+
+      .tier-benefits li::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: var(--gold);
+        border-radius: 50%;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+
+      /* ── IMPACT ── */
+      .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        margin-top: 48px;
+      }
+
+      .impact-stat {
+        background: var(--dark-2);
+        padding: 40px 24px;
+        text-align: center;
+        border: 1px solid var(--border);
+      }
+
+      .impact-num {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 900;
+        color: var(--gold);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .impact-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      /* ── FORM ── */
+      .intake-section {
+        background: var(--dark-2);
+        border-top: 1px solid var(--border);
+      }
+
+      .form-wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        margin-top: 48px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .form-row.full {
+        grid-template-columns: 1fr;
+      }
+
+      .form-field {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-field label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      .form-field input,
+      .form-field select,
+      .form-field textarea {
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        padding: 12px 16px;
+        transition: border-color 0.2s;
+        outline: none;
+      }
+
+      .form-field input:focus,
+      .form-field select:focus,
+      .form-field textarea:focus {
+        border-color: var(--gold);
+      }
+
+      .form-field input::placeholder,
+      .form-field textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+      }
+
+      .form-field select option {
+        background: var(--dark);
+        color: var(--warm);
+      }
+
+      .form-field textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .form-note {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-top: 16px;
+        margin-bottom: 24px;
+      }
+
+      .btn-primary {
+        display: inline-block;
+        padding: 14px 36px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+        width: 100%;
+      }
+
+      .btn-primary:hover {
+        background: var(--gold-lt);
+        transform: translateY(-1px);
+      }
+
+      .form-success {
+        display: none;
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .form-success h3 {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+
+      .form-success p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 64px 24px 40px;
+        text-align: center;
+      }
+
+      .footer-logo {
+        margin-bottom: 24px;
+      }
+      .footer-logo svg {
+        width: 60px;
+        height: auto;
+      }
+
+      .footer-tagline {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 32px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        list-style: none;
+        margin-bottom: 40px;
+      }
+
+      .footer-links a {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.5);
+      }
+
+      /* ── MOBILE ── */
+      .nav-hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--warm);
+        border-radius: 2px;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(10, 10, 10, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        flex-direction: column;
+        gap: 0;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .mobile-menu a:last-child {
+        border-bottom: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--gold);
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 24px;
+        }
+        nav ul {
+          display: none;
+        }
+        .nav-hamburger {
+          display: flex;
+        }
+        .tiers-grid {
+          grid-template-columns: 1fr;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .impact-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a class="nav-logo" href="index.html">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M32 4 L58 18 L58 46 L32 60 L6 46 L6 18 Z"
+            fill="#0a0a0a"
+            stroke="#c8923c"
+            stroke-width="2"
+            stroke-linejoin="miter"
+          />
+          <text
+            x="32"
+            y="40"
+            text-anchor="middle"
+            font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+            font-weight="700"
+            font-size="16"
+            fill="#c8923c"
+            letter-spacing="1.5"
+          >
+            FAF
+          </text>
+          <line
+            x1="16"
+            y1="31"
+            x2="48"
+            y2="31"
+            stroke="#c8923c"
+            stroke-width="0.75"
+            opacity="0.4"
+          />
+        </svg>
+        <div class="nav-wordmark">Fathers<br /><span>and Football</span></div>
+      </a>
+      <ul>
+        <li><a href="index.html#mission">Mission</a></li>
+        <li><a href="index.html#programs">Programs</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="sponsors.html" class="nav-cta">Become a Sponsor</a></li>
+      </ul>
+      <button
+        class="nav-hamburger"
+        aria-label="Menu"
+        onclick="document.getElementById('mobileMenu').classList.toggle('open')"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a
+        href="index.html#mission"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Mission</a
+      >
+      <a
+        href="index.html#programs"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Programs</a
+      >
+      <a
+        href="community.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Community</a
+      >
+      <a
+        href="index.html#about"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >About</a
+      >
+      <a
+        href="blog.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Blog</a
+      >
+      <a
+        href="sponsors.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        style="color: var(--gold)"
+        >Become a Sponsor</a
+      >
+    </div>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <p class="section-label">Partner With Us</p>
+      <h1>Invest in fathers. <em>Invest in the game.</em></h1>
+      <p>
+        Your sponsorship directly funds programs that put fathers on the field
+        with their kids. Every dollar builds connection, builds character,
+        builds legacy.
+      </p>
+    </section>
+
+    <!-- IMPACT -->
+    <section>
+      <div class="container">
+        <div style="text-align: center">
+          <p class="section-label">Your Impact</p>
+          <h2 class="section-title">
+            What your <em>partnership</em> makes possible
+          </h2>
+        </div>
+        <div class="impact-grid">
+          <div class="impact-stat">
+            <div class="impact-num">2</div>
+            <div class="impact-label">Active Programs</div>
+          </div>
+          <div class="impact-stat">
+            <div class="impact-num">2</div>
+            <div class="impact-label">States Reached</div>
+          </div>
+          <div class="impact-stat">
+            <div class="impact-num">100%</div>
+            <div class="impact-label">Goes to Programs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSORSHIP TIERS -->
+    <section class="tiers">
+      <div class="container">
+        <div style="text-align: center">
+          <p class="section-label">Sponsorship Levels</p>
+          <h2 class="section-title">Choose how you <em>show up</em></h2>
+        </div>
+        <div class="tiers-grid">
+          <div class="tier-card">
+            <div class="tier-name">Sideline</div>
+            <div class="tier-amount">$250</div>
+            <div class="tier-period">one-time or annual</div>
+            <div class="tier-divider"></div>
+            <ul class="tier-benefits">
+              <li>Name on sponsor wall (website)</li>
+              <li>Social media recognition</li>
+              <li>Quarterly impact update</li>
+            </ul>
+          </div>
+          <div class="tier-card featured">
+            <div class="tier-name">Playmaker</div>
+            <div class="tier-amount">$1,000</div>
+            <div class="tier-period">one-time or annual</div>
+            <div class="tier-divider"></div>
+            <ul class="tier-benefits">
+              <li>Everything in Sideline</li>
+              <li>Logo on program materials</li>
+              <li>Invitation to FAF events</li>
+              <li>Featured partner spotlight</li>
+            </ul>
+          </div>
+          <div class="tier-card">
+            <div class="tier-name">Legacy</div>
+            <div class="tier-amount">$5,000+</div>
+            <div class="tier-period">one-time or annual</div>
+            <div class="tier-divider"></div>
+            <ul class="tier-benefits">
+              <li>Everything in Playmaker</li>
+              <li>Named program sponsorship</li>
+              <li>Co-branded camp or event</li>
+              <li>Direct impact reporting</li>
+              <li>Advisory board invitation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTAKE FORM -->
+    <section class="intake-section" id="sponsor-form">
+      <div class="container">
+        <div style="text-align: center">
+          <p class="section-label">Get Started</p>
+          <h2 class="section-title">
+            Tell us about <em>your organization</em>
+          </h2>
+        </div>
+        <div class="form-wrap">
+          <form id="sponsorForm" onsubmit="return handleSubmit(event);">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First name"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@company.com"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="phone">Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="(555) 555-5555"
+                />
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-field">
+                <label for="org">Organization / Business Name</label>
+                <input
+                  type="text"
+                  id="org"
+                  name="org"
+                  placeholder="Company or organization name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-field">
+                <label for="tier">Sponsorship Level of Interest</label>
+                <select id="tier" name="tier" required>
+                  <option value="" disabled selected>Select a level</option>
+                  <option value="sideline">Sideline ($250)</option>
+                  <option value="playmaker">Playmaker ($1,000)</option>
+                  <option value="legacy">Legacy ($5,000+)</option>
+                  <option value="custom">Custom / Let's discuss</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="form-field">
+                <label for="message">Tell Us More</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="What draws you to Fathers and Football? Any specific programs or events you'd like to support?"
+                ></textarea>
+              </div>
+            </div>
+            <p class="form-note">
+              Fathers and Football is a 501(c)(3) tax-exempt organization (EIN
+              42-1980182). All sponsorships and donations are tax-deductible to
+              the extent allowed by law. We will follow up within 2 business
+              days.
+            </p>
+            <button type="submit" class="btn-primary">Submit Inquiry</button>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <h3>Thank you for your interest.</h3>
+            <p>
+              We received your inquiry and will reach out within 2 business days
+              to discuss next steps.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-logo">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M100 10 L185 55 L185 150 L100 210 L15 150 L15 55 Z"
+            fill="none"
+            stroke="#c8923c"
+            stroke-width="2.5"
+            stroke-linejoin="miter"
+          />
+          <path
+            d="M100 28 L172 65 L172 142 L100 195 L28 142 L28 65 Z"
+            fill="none"
+            stroke="#c8923c"
+            stroke-width="1"
+            opacity="0.25"
+          />
+          <line
+            x1="50"
+            y1="100"
+            x2="150"
+            y2="100"
+            stroke="#c8923c"
+            stroke-width="1"
+            opacity="0.4"
+          />
+          <text
+            x="100"
+            y="125"
+            text-anchor="middle"
+            font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+            font-weight="700"
+            font-size="48"
+            fill="#c8923c"
+            letter-spacing="6"
+          >
+            FAF
+          </text>
+        </svg>
+      </div>
+      <p class="footer-tagline">Presence is the play. Legacy is the game.</p>
+      <ul class="footer-links">
+        <li><a href="index.html#mission">Mission</a></li>
+        <li><a href="index.html#programs">Programs</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="mailto:info@fathersandfootball.org">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+      </ul>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved. &nbsp;|&nbsp;
+        501(c)(3) &nbsp;|&nbsp; EIN 42-1980182
+      </p>
+    </footer>
+
+    <script>
+      function handleSubmit(e) {
+        e.preventDefault();
+        var form = document.getElementById("sponsorForm");
+        var data = new FormData(form);
+        var body = {};
+        data.forEach(function (v, k) {
+          body[k] = v;
+        });
+
+        var subject = encodeURIComponent("Sponsor Inquiry: " + body.org);
+        var mailBody = encodeURIComponent(
+          "Name: " +
+            body.firstName +
+            " " +
+            body.lastName +
+            "\n" +
+            "Email: " +
+            body.email +
+            "\n" +
+            "Phone: " +
+            (body.phone || "N/A") +
+            "\n" +
+            "Organization: " +
+            body.org +
+            "\n" +
+            "Tier: " +
+            body.tier +
+            "\n" +
+            "Message: " +
+            (body.message || "N/A"),
+        );
+        window.location.href =
+          "mailto:info@fathersandfootball.org?subject=" +
+          subject +
+          "&body=" +
+          mailBody;
+
+        form.style.display = "none";
+        document.getElementById("formSuccess").style.display = "block";
+        return false;
+      }
+    </script>
+  </body>
+</html>
