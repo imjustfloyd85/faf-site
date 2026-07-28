@@ -1,11 +1,19 @@
-name: Deploy to Cloudflare Pages
+# DEPRECATED — 2026-07-28
+# Deployment has moved to Azure Pipelines (azure-pipelines.yml).
+# ADO is the single deploy source. This GitHub Actions workflow is
+# retained only as a reference for the github-archive remote.
+# Do not re-enable without explicit approval.
+#
+# See docs/deployment.md for the current deployment strategy.
+
+name: Deploy to Cloudflare Pages (DEPRECATED)
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
