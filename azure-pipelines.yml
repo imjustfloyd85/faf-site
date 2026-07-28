@@ -1,0 +1,32 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: faf-cloudflare
+
+steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - task: NodeTool@0
+    displayName: "Install Node.js"
+    inputs:
+      versionSpec: "20.x"
+
+  - script: npm install -g wrangler
+    displayName: "Install Wrangler CLI"
+
+  - script: |
+      wrangler pages deploy . \
+        --project-name=faf-site \
+        --branch=main \
+        --commit-dirty=true
+    displayName: "Deploy to Cloudflare Pages"
+    env:
+      CLOUDFLARE_API_TOKEN: $(CF_API_TOKEN)
+      CLOUDFLARE_ACCOUNT_ID: $(CF_ACCOUNT_ID)
