@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog — Fathers and Football</title>
+    <title>
+      Westfield, Indiana: What the National Championship Gave Us — Fathers and
+      Football
+    </title>
     <meta
       name="description"
-      content="Stories, coaching philosophy, and updates from Fathers and Football — a nonprofit connecting fathers to their kids through the game."
+      content="Frisco Elite competed at the 2026 NFL FLAG Championships in Westfield, Indiana — an honest recap of how it went, what we learned, and what comes next: The Star on August 8-9 and a free skills clinic, combine, and tryouts August 23."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -139,7 +142,7 @@
 
       /* HERO */
       .page-hero {
-        padding: 160px 24px 80px;
+        padding: 160px 24px 64px;
         text-align: center;
         border-bottom: 1px solid var(--border);
         position: relative;
@@ -164,11 +167,12 @@
         margin-bottom: 16px;
       }
       .page-hero h1 {
-        font-size: clamp(36px, 6vw, 64px);
+        font-size: clamp(30px, 5vw, 52px);
         font-weight: 800;
-        line-height: 1.1;
+        line-height: 1.15;
         color: var(--warm);
-        margin-bottom: 20px;
+        margin: 0 auto 20px;
+        max-width: 780px;
       }
       .page-hero h1 em {
         font-family: "Playfair Display", serif;
@@ -176,171 +180,129 @@
         font-weight: 400;
         color: var(--gold);
       }
-      .page-hero p {
-        font-size: 17px;
-        line-height: 1.7;
-        color: var(--muted);
-        max-width: 520px;
-        margin: 0 auto;
-      }
-
-      /* GRID */
-      .blog-section {
-        padding: 80px 24px;
-      }
-      .container {
-        max-width: 1080px;
-        margin: 0 auto;
-      }
-
-      .featured-post {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0;
-        border: 1px solid var(--border);
-        margin-bottom: 48px;
-        transition: border-color 0.3s;
-        text-decoration: none;
-        color: inherit;
-      }
-      .featured-post:hover {
-        border-color: var(--gold);
-      }
-      .featured-img {
-        overflow: hidden;
-      }
-      .featured-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s;
-      }
-      .featured-post:hover .featured-img img {
-        transform: scale(1.03);
-      }
-      .featured-content {
-        padding: 48px 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background: var(--dark-2);
-      }
-      .post-tag {
-        display: inline-block;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 3px;
+      .page-hero .post-meta {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
         text-transform: uppercase;
+        color: var(--muted);
+      }
+      .page-hero .post-meta span {
         color: var(--gold);
+      }
+
+      .hero-img {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .hero-img img {
+        width: 100%;
+        display: block;
         border: 1px solid var(--border);
-        padding: 4px 10px;
-        border-radius: 2px;
-        margin-bottom: 20px;
-        align-self: flex-start;
       }
-      .featured-content h2 {
-        font-size: clamp(22px, 3vw, 32px);
-        font-weight: 800;
-        line-height: 1.2;
+
+      /* ARTICLE */
+      .article-section {
+        padding: 64px 24px 80px;
+      }
+      .article {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .article p {
+        font-size: 17px;
+        line-height: 1.8;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+      .article p strong {
         color: var(--warm);
-        margin-bottom: 16px;
+        font-weight: 700;
       }
-      .featured-content h2 em {
+      .article h2 {
+        font-size: clamp(22px, 3vw, 30px);
+        font-weight: 800;
+        line-height: 1.25;
+        color: var(--warm);
+        margin: 48px 0 20px;
+      }
+      .article h2 em {
         font-family: "Playfair Display", serif;
         font-style: italic;
         font-weight: 400;
         color: var(--gold);
       }
-      .featured-content p {
-        font-size: 16px;
-        line-height: 1.75;
+      .article blockquote {
+        border-left: 2px solid var(--gold);
+        padding: 4px 0 4px 24px;
+        margin: 32px 0;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 20px;
+        color: var(--warm);
+        line-height: 1.6;
+      }
+      .article ul {
+        margin: 0 0 24px 20px;
+      }
+      .article li {
+        font-size: 17px;
+        line-height: 1.8;
         color: var(--muted);
-        margin-bottom: 28px;
+        margin-bottom: 10px;
       }
-      .post-meta {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-      .post-meta span {
-        color: var(--gold);
-      }
-      .read-more {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--gold);
-        margin-top: 24px;
+      .article li strong {
+        color: var(--warm);
       }
 
-      .posts-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-      }
-      .post-card {
-        background: var(--dark-2);
+      .cta-box {
         border: 1px solid var(--border);
-        text-decoration: none;
-        color: inherit;
-        transition:
-          border-color 0.3s,
-          background 0.3s;
-        display: flex;
-        flex-direction: column;
+        background: var(--dark-2);
+        padding: 36px 32px;
+        margin: 48px 0;
+        text-align: center;
       }
-      .post-card:hover {
-        border-color: var(--gold);
-        background: var(--dark-3);
-      }
-      .post-card-img {
-        overflow: hidden;
-        aspect-ratio: 16/9;
-      }
-      .post-card-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s;
-      }
-      .post-card:hover .post-card-img img {
-        transform: scale(1.04);
-      }
-      .post-card-body {
-        padding: 28px 24px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      }
-      .post-card-body .post-tag {
-        margin-bottom: 14px;
-      }
-      .post-card-body h3 {
-        font-size: 17px;
-        font-weight: 700;
-        line-height: 1.3;
-        color: var(--warm);
-        margin-bottom: 12px;
-      }
-      .post-card-body p {
-        font-size: 14px;
-        line-height: 1.7;
+      .cta-box p {
         color: var(--muted);
-        flex: 1;
+        font-size: 15px;
+        margin-bottom: 20px;
       }
-      .post-card-footer {
-        padding: 16px 24px;
-        border-top: 1px solid var(--border);
-        font-size: 11px;
-        font-weight: 600;
+      .cta-box a.btn {
+        display: inline-block;
+        background: var(--gold);
+        color: var(--dark);
+        font-size: 12px;
+        font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
+        padding: 14px 28px;
+        border-radius: 2px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .cta-box a.btn:hover {
+        background: var(--gold-lt);
+      }
+
+      .signoff {
         color: var(--muted);
+        font-size: 15px;
+        margin-top: 40px;
+        font-style: italic;
+      }
+
+      .back-to-blog {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 16px;
       }
 
       /* NEWSLETTER */
@@ -446,20 +408,8 @@
         .nav-hamburger {
           display: flex;
         }
-        .featured-post {
-          grid-template-columns: 1fr;
-        }
-        .featured-img {
-          aspect-ratio: 16/9;
-        }
-        .posts-grid {
-          grid-template-columns: 1fr 1fr;
-        }
       }
       @media (max-width: 600px) {
-        .posts-grid {
-          grid-template-columns: 1fr;
-        }
         .nl-form {
           flex-direction: column;
         }
@@ -472,11 +422,52 @@
           border-radius: 0 0 2px 2px;
         }
       }
+
+      /* NATIONALS STAT STRIP — NFL FLAG palette */
+      .stat-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: #03aef2;
+        border: 1px solid #053d73;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 40px;
+      }
+      .stat-strip .stat {
+        background: #053d73;
+        padding: 22px 12px;
+        text-align: center;
+      }
+      .stat-strip .stat-num {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: 34px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      .stat-strip .stat-label {
+        display: block;
+        margin-top: 6px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #03aef2;
+      }
+      .stat-strip .stat:first-child .stat-num {
+        color: #d63430;
+      }
+      @media (max-width: 640px) {
+        .stat-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
     <nav>
-      <a class="nav-back" href="index.html">
+      <a class="nav-back" href="blog.html">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -485,9 +476,9 @@
         >
           <path d="M19 12H5M5 12l7 7M5 12l7-7" />
         </svg>
-        Fathers &amp; Football
+        Field Notes
       </a>
-      <div class="nav-wordmark">The <span>Field Notes</span></div>
+      <div class="nav-wordmark">Fathers &amp; <span>Football</span></div>
       <button
         class="nav-hamburger"
         aria-label="Menu"
@@ -499,320 +490,146 @@
 
     <div class="mobile-menu" id="mobileMenu">
       <a
-        href="index.html#mission"
+        href="blog.html"
         onclick="this.closest('#mobileMenu').classList.remove('open')"
-        >Mission</a
+        >Field Notes</a
       >
       <a
-        href="index.html#programs"
+        href="frisco-elite.html"
         onclick="this.closest('#mobileMenu').classList.remove('open')"
-        >Programs</a
+        >Frisco Elite</a
       >
       <a
-        href="sponsors.html"
+        href="index.html#involved"
         onclick="this.closest('#mobileMenu').classList.remove('open')"
         style="color: var(--gold)"
-        >Become a Sponsor</a
+        >Get Involved</a
       >
     </div>
 
     <!-- HERO -->
     <div class="page-hero">
-      <p class="section-label">Field Notes</p>
-      <h1>Stories from the <em>sideline</em></h1>
-      <p>
-        Coaching philosophy, program updates, and the stories that don't fit in
-        a score.
+      <p class="section-label">Frisco Elite &middot; Nationals Recap</p>
+      <h1>
+        Westfield, Indiana: What the <em>National Championship</em> Gave Us
+      </h1>
+      <p class="post-meta">
+        July 2026 &nbsp;&middot;&nbsp; <span>Justin Floyd</span>
       </p>
     </div>
 
-    <!-- POSTS -->
-    <section class="blog-section">
-      <div class="container">
-        <!-- FEATURED POST -->
-        <a href="nationals-recap.html" class="featured-post">
-          <div class="featured-img">
-            <img
-              src="img/teams/frisco-elite/champs.jpg"
-              alt="Frisco Elite at the NFL FLAG National Championship in Westfield, Indiana"
-            />
+    <div class="hero-img">
+      <img
+        src="img/teams/frisco-elite/champs.jpg"
+        alt="Frisco Elite at the NFL FLAG National Championship"
+      />
+    </div>
+
+    <!-- ARTICLE -->
+    <section class="article-section">
+      <div class="article">
+        <div class="stat-strip">
+          <div class="stat">
+            <span class="stat-num">350+</span
+            ><span class="stat-label">Teams</span>
           </div>
-          <div class="featured-content">
-            <span class="post-tag">Nationals Recap</span>
-            <h2>
-              Westfield, Indiana: What the <em>National Championship</em> Gave
-              Us
-            </h2>
-            <p>
-              Frisco Elite stood among 350-plus teams from twelve countries at
-              the NFL FLAG Championships. The scoreboard didn't go our way —
-              here's the honest recap, what we learned, and what comes next: The
-              Star on August 8-9, and a free skills clinic, combine, and tryouts
-              on August 23.
-            </p>
-            <p class="post-meta">
-              July 2026 &nbsp;·&nbsp; <span>Justin Floyd</span>
-            </p>
-            <p class="read-more">Read More &rarr;</p>
+          <div class="stat">
+            <span class="stat-num">13</span
+            ><span class="stat-label">Divisions</span>
           </div>
-        </a>
-
-        <!-- POST GRID -->
-        <div class="posts-grid">
-          <a href="als-ice-bucket-challenge.html" class="post-card">
-            <div class="post-card-img">
-              <img
-                src="img/teams/frisco-elite/champs.jpg"
-                alt="Frisco Elite team taking on the ALS Ice Bucket Challenge"
-              />
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Community &amp; Cause</span>
-              <h3>Before Nationals, a Bigger Game: The Ice Bucket Challenge</h3>
-              <p>
-                Chris Johnson's ALS diagnosis stopped the football world. Ahead
-                of nationals, Frisco Elite took the Ice Bucket Challenge and
-                reached out to support the ALS Association of Texas.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              July 2026 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="frisco-elite.html" class="post-card">
-            <div class="post-card-img">
-              <img
-                src="img/teams/frisco-elite/champs.jpg"
-                alt="Frisco Elite 2025 Dallas Cowboys Regional Champions"
-              />
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Championship</span>
-              <h3>Rings, Fathers, and the Moment After the Win</h3>
-              <p>
-                When Frisco Elite won the 2025 Dallas Cowboys Regional, the
-                celebration wasn't about the score. It was about every father
-                who showed up — every practice, every early morning, every car
-                ride home.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              March 2026 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="legacy7.html" class="post-card">
-            <div class="post-card-img">
-              <img
-                src="img/champ-virginia.jpg"
-                alt="Legacy Seven United Virginia Championship"
-              />
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Program</span>
-              <h3>Virginia Is Building Something</h3>
-              <p>
-                The Brambleton program is in its first season with evaluations
-                open. Here's what we're building — and what we're looking for in
-                an athlete.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              February 2026 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="frisco-elite.html" class="post-card">
-            <div class="post-card-img">
-              <img
-                src="img/teams/frisco-elite/mvp.jpg"
-                alt="Carter Edwards — Frisco Elite MVP"
-              />
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Coaching</span>
-              <h3>Father First. Then Coach.</h3>
-              <p>
-                Why we separate the parent role from the coaching role — and why
-                that separation is the most important thing we do for our
-                athletes.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              January 2026 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="legacy7.html" class="post-card">
-            <div
-              class="post-card-img"
-              style="
-                background: var(--dark-3);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 160px;
-              "
-            >
-              <img
-                src="img/l7-logo.png"
-                alt="Legacy Seven United"
-                style="width: 60%; padding: 20px; object-fit: contain"
-              />
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Foundation</span>
-              <h3>Why We Named It Legacy Seven</h3>
-              <p>
-                Seven values. Seven reasons. The story behind the name and what
-                each number means to the program — and to the fathers who built
-                it.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              December 2025 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="index.html#programs" class="post-card">
-            <div
-              class="post-card-img"
-              style="
-                background: var(--dark-3);
-                min-height: 160px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <svg viewBox="0 0 80 80" style="width: 64px; opacity: 0.15">
-                <path
-                  d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z"
-                  fill="none"
-                  stroke="#c8923c"
-                  stroke-width="2"
-                />
-                <text
-                  x="40"
-                  y="47"
-                  text-anchor="middle"
-                  font-family="Helvetica"
-                  font-weight="700"
-                  font-size="18"
-                  fill="#c8923c"
-                  letter-spacing="2"
-                >
-                  FAF
-                </text>
-              </svg>
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Nonprofit</span>
-              <h3>
-                Starting a Nonprofit Is Harder Than Winning a Championship
-              </h3>
-              <p>
-                501(c)(3) paperwork, fundraising, building something from
-                nothing. What I didn't know when I started Fathers and Football.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              November 2025 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="index.html#programs" class="post-card">
-            <div
-              class="post-card-img"
-              style="
-                background: var(--dark-3);
-                min-height: 160px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <svg viewBox="0 0 80 80" style="width: 64px; opacity: 0.15">
-                <path
-                  d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z"
-                  fill="none"
-                  stroke="#c8923c"
-                  stroke-width="2"
-                />
-                <text
-                  x="40"
-                  y="47"
-                  text-anchor="middle"
-                  font-family="Helvetica"
-                  font-weight="700"
-                  font-size="18"
-                  fill="#c8923c"
-                  letter-spacing="2"
-                >
-                  FAF
-                </text>
-              </svg>
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Presence</span>
-              <h3>The Play That Changed How I Coach</h3>
-              <p>
-                16 years in, one moment on the sideline reminded me why none of
-                the wins matter without the relationship.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              October 2025 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
-
-          <a href="index.html#programs" class="post-card">
-            <div
-              class="post-card-img"
-              style="
-                background: var(--dark-3);
-                min-height: 160px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <svg viewBox="0 0 80 80" style="width: 64px; opacity: 0.15">
-                <path
-                  d="M40 4 L74 22 L74 58 L40 76 L6 58 L6 22 Z"
-                  fill="none"
-                  stroke="#c8923c"
-                  stroke-width="2"
-                />
-                <text
-                  x="40"
-                  y="47"
-                  text-anchor="middle"
-                  font-family="Helvetica"
-                  font-weight="700"
-                  font-size="18"
-                  fill="#c8923c"
-                  letter-spacing="2"
-                >
-                  FAF
-                </text>
-              </svg>
-            </div>
-            <div class="post-card-body">
-              <span class="post-tag">Coalition</span>
-              <h3>Two States. One Standard.</h3>
-              <p>
-                Texas and Virginia operating under the same seven values, the
-                same philosophy, and the same expectation — what a coalition
-                looks like in practice.
-              </p>
-            </div>
-            <div class="post-card-footer">
-              September 2025 &nbsp;·&nbsp; Justin Floyd
-            </div>
-          </a>
+          <div class="stat">
+            <span class="stat-num">12</span
+            ><span class="stat-label">Countries</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">4</span
+            ><span class="stat-label">Days on the National Stage</span>
+          </div>
         </div>
+
+        <p>
+          From July 23 to 26, Frisco Elite was one of more than 350 teams at the
+          NFL FLAG Championships at Grand Park Sports Campus in Westfield,
+          Indiana — the largest youth flag football tournament in the world.
+          Thirteen divisions. Teams from twelve countries on five continents.
+          Games running on ESPN, ABC, and Disney. Our kids from Frisco, Texas
+          were in the middle of all of it, because they earned it — this team
+          won the 2025 Dallas Cowboys Regional to punch that ticket.
+        </p>
+
+        <h2>The scoreboard <em>didn't go our way</em></h2>
+
+        <p>
+          Let's say it plainly, because our players deserve honesty more than
+          they need a highlight reel: we didn't get the results we wanted in
+          Westfield. Against the best teams in the country, we came up short.
+          That stings, and it should — you don't get better by pretending a loss
+          didn't happen.
+        </p>
+
+        <p>
+          But here's what else is true. Every rep against that level of
+          competition is worth ten against anyone else. Our players stood on the
+          same fields where the Girls High School final was decided by one point
+          in overtime — on national TV. They saw up close what elite looks like,
+          and now they know exactly how far the gap is and exactly what closing
+          it takes. That knowledge doesn't show up in a bracket. It shows up
+          next season.
+        </p>
+
+        <blockquote>
+          "Elite on the field. Elite at home." The standard doesn't change
+          because of a scoreboard — it's what gets us back to nationals.
+        </blockquote>
+
+        <h2>What comes <em>next</em></h2>
+
+        <p>
+          We're not waiting until next summer to respond. The next chapter of
+          Fathers and Football starts in the next few weeks, close to home:
+        </p>
+
+        <ul>
+          <li>
+            <strong
+              >August 8&ndash;9 — Tournament at The Star in Frisco.</strong
+            >
+            Back on the field where this team won its regional title, at the
+            home of the Dallas Cowboys.
+          </li>
+          <li>
+            <strong
+              >August 23 — Free Skills Clinic, Combine, and Tryouts.</strong
+            >
+            Open to everyone in our community at no cost. Come work with our
+            coaches in the morning, then stay and compete — we are recruiting
+            new players and building our next team right now.
+          </li>
+        </ul>
+
+        <p>
+          If Westfield taught us anything, it's that the programs who make deep
+          runs are the ones who develop their own. That's what the clinic, the
+          combine, and the tryouts are about — finding the next group of kids
+          who want to be part of this, and giving them a real path.
+        </p>
+
+        <div class="cta-box">
+          <p>
+            Want in? The August 23 clinic is free and open to all — and if you
+            can play, stay for the combine and tryouts. Reach out and we'll save
+            you a spot.
+          </p>
+          <a
+            class="btn"
+            href="mailto:info@fathersandfootball.org?subject=Skills Clinic %2B Tryouts — August 23"
+            >Join Us August 23</a
+          >
+        </div>
+
+        <p class="signoff">— Justin Floyd, Fathers and Football</p>
+
+        <a class="back-to-blog" href="blog.html">&larr; Back to Field Notes</a>
       </div>
     </section>
 
@@ -840,7 +657,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="legacy7.html">Legacy 7</a></li>
         <li><a href="frisco-elite.html">Frisco Elite</a></li>
-        <li><a href="sponsors.html">Become a Sponsor</a></li>
+        <li><a href="index.html#involved">Get Involved</a></li>
         <li><a href="mailto:info@fathersandfootball.org">Contact</a></li>
       </ul>
       <p class="footer-copy">
@@ -1030,6 +847,47 @@
         #chat-panel {
           width: calc(100vw - 32px);
           right: -8px;
+        }
+      }
+
+      /* NATIONALS STAT STRIP — NFL FLAG palette */
+      .stat-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: #03aef2;
+        border: 1px solid #053d73;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 40px;
+      }
+      .stat-strip .stat {
+        background: #053d73;
+        padding: 22px 12px;
+        text-align: center;
+      }
+      .stat-strip .stat-num {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: 34px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      .stat-strip .stat-label {
+        display: block;
+        margin-top: 6px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #03aef2;
+      }
+      .stat-strip .stat:first-child .stat-num {
+        color: #d63430;
+      }
+      @media (max-width: 640px) {
+        .stat-strip {
+          grid-template-columns: repeat(2, 1fr);
         }
       }
     </style>
