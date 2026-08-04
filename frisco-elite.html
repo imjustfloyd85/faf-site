@@ -467,6 +467,29 @@
         margin: 28px 0;
       }
 
+      /* COACH BIO */
+      .coach-bio-grid {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .coach-bio-grid.reverse {
+        grid-template-columns: 1fr auto;
+      }
+      .coach-bio-photo {
+        width: min(260px, 70vw);
+        border-radius: 2px;
+        overflow: hidden;
+        border: 2px solid var(--border);
+        flex-shrink: 0;
+      }
+      .coach-bio-photo img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
       /* PILLARS */
       .pillars-grid {
         display: grid;
@@ -745,6 +768,14 @@
         .pillars-grid {
           grid-template-columns: 1fr;
         }
+        .coach-bio-grid,
+        .coach-bio-grid.reverse {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .coach-bio-grid .coach-bio-photo {
+          order: -1;
+        }
         .expectations-grid {
           grid-template-columns: 1fr;
         }
@@ -980,27 +1011,11 @@
       style="background: var(--dark); border-top: 1px solid var(--border)"
     >
       <div class="container">
-        <div
-          style="
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 64px;
-            align-items: center;
-          "
-        >
-          <div
-            style="
-              width: min(260px, 70vw);
-              border-radius: 2px;
-              overflow: hidden;
-              border: 2px solid var(--border);
-              flex-shrink: 0;
-            "
-          >
+        <div class="coach-bio-grid">
+          <div class="coach-bio-photo">
             <img
               src="img/teams/frisco-elite/rob-washington.jpg"
               alt="Rob Washington — Head Coach & Founder, Frisco Elite"
-              style="width: 100%; height: auto; display: block"
             />
           </div>
           <div>
@@ -1027,6 +1042,35 @@
               showing up and built a program that extends that impact to every
               family in his community.
             </p>
+          </div>
+        </div>
+
+        <div class="coach-bio-grid reverse" style="margin-top: 80px">
+          <div>
+            <p class="section-label">Co-Founder &amp; Coach</p>
+            <h2 class="section-title" style="font-size: clamp(32px, 5vw, 52px)">
+              Justin Floyd
+            </h2>
+            <p class="section-body" style="margin-bottom: 20px">
+              Justin Floyd is the Co-Founder and President of Fathers and
+              Football, and now coaches alongside Rob Washington on the
+              Frisco Elite sideline. A father first, Justin brings the same
+              standard he holds at home to every practice — discipline, real
+              accountability, and the belief that confidence is built through
+              reps, not compliments.
+            </p>
+            <p class="section-body">
+              For Justin, coaching Frisco Elite isn't separate from the
+              mission of Fathers and Football — it's the mission in action.
+              Showing up, doing the work, and building the same character in
+              these athletes that he asks of every family in the program.
+            </p>
+          </div>
+          <div class="coach-bio-photo">
+            <img
+              src="img/headshot.jpg"
+              alt="Justin Floyd — Co-Founder & President, Fathers and Football, Coach, Frisco Elite"
+            />
           </div>
         </div>
       </div>
