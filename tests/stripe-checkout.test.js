@@ -617,6 +617,66 @@ test("T4.13: Publishable key (not secret key) is in client-side code", function 
   );
 });
 
+test("T4.14: escapeHtml() exists and is defined before the email builders", function () {
+  var src = fs.readFileSync(
+    path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
+    "utf8",
+  );
+  var escapeIdx = src.indexOf("function escapeHtml(");
+  var builderIdx = src.indexOf("function buildDonationEmail(");
+  assert.ok(escapeIdx !== -1, "escapeHtml() helper is missing");
+  assert.ok(
+    escapeIdx < builderIdx,
+    "escapeHtml() must be defined before the email builders that use it",
+  );
+});
+
+test("T4.15: escapeHtml() actually neutralizes HTML/script injection payloads", function () {
+  // Extract the real escapeHtml function body and execute it directly --
+  // a pattern-match alone can't prove the escaping logic is correct.
+  var src = fs.readFileSync(
+    path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
+    "utf8",
+  );
+  var match = src.match(/function escapeHtml\(value\) \{[\s\S]*?\n\}/);
+  assert.ok(match, "Could not locate escapeHtml() function body to test");
+  var escapeHtml = new Function(
+    "value",
+    match[0].replace(/^function escapeHtml\(value\) \{/, "").replace(/\}$/, ""),
+  );
+
+  var payload = '<script>alert(1)</script><img src=x onerror="steal()">';
+  var escaped = escapeHtml(payload);
+  assert.ok(!escaped.includes("<script>"), "raw <script> tag survived escaping");
+  assert.ok(!escaped.includes("<img"), "raw <img> tag survived escaping");
+  assert.ok(escaped.includes("&lt;script&gt;"), "expected entity-encoded output");
+});
+
+test("T4.16: Donor/sponsor name and email are escaped before HTML interpolation", function () {
+  var src = fs.readFileSync(
+    path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
+    "utf8",
+  );
+  // Both email builders must assign their donor-facing name/email through
+  // escapeHtml() rather than interpolating the raw Stripe/metadata value.
+  assert.ok(
+    /const donorName = escapeHtml\(rawDonorName\)/.test(src),
+    "buildDonationEmail: donorName is not escaped",
+  );
+  assert.ok(
+    /const donorEmail = escapeHtml\(rawDonorEmail\)/.test(src),
+    "buildDonationEmail: donorEmail is not escaped",
+  );
+  assert.ok(
+    /const sponsorName = escapeHtml\(rawSponsorName\)/.test(src),
+    "buildSponsorshipEmail: sponsorName is not escaped",
+  );
+  assert.ok(
+    /const sponsorEmail = escapeHtml\(rawSponsorEmail\)/.test(src),
+    "buildSponsorshipEmail: sponsorEmail is not escaped",
+  );
+});
+
 // ============================================================
 // Results
 // ============================================================

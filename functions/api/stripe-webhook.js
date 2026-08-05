@@ -132,17 +132,35 @@ async function verifyStripeSignature(payload, sigHeader, secret) {
 
 // --- Email Templates ---
 
+// User-controllable values (donor name, tier, email) must never be
+// interpolated into HTML emails unescaped -- a submitted name like
+// "<script>..." or "<img onerror=...>" would otherwise land unescaped
+// in both the org notification and the donor's own receipt email.
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildDonationEmail(session) {
   const amount = (session.amount_total / 100).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
-  const donorName =
+  const rawDonorName =
     session.metadata?.donor_name ||
     session.customer_details?.name ||
     "Supporter";
-  const donorEmail =
+  const rawDonorEmail =
     session.customer_details?.email || session.customer_email || "";
+  // Escaped for HTML interpolation below. Subject lines use the raw
+  // (but newline-stripped) value since they are not HTML-rendered.
+  const donorName = escapeHtml(rawDonorName);
+  const donorEmail = escapeHtml(rawDonorEmail);
+  const subjectSafeName = String(rawDonorName).replace(/[\r\n]/g, " ");
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -152,7 +170,7 @@ function buildDonationEmail(session) {
 
   return {
     toOrg: {
-      subject: `Donation Received: ${amount} from ${donorName}`,
+      subject: `Donation Received: ${amount} from ${subjectSafeName}`,
       html: `
         <h2>Fathers and Football -- New Donation</h2>
         <p><strong>Donor:</strong> ${donorName}</p>
@@ -194,12 +212,20 @@ function buildSponsorshipEmail(session) {
     style: "currency",
     currency: "USD",
   });
-  const sponsorName =
+  const rawSponsorName =
     session.metadata?.donor_name || session.customer_details?.name || "Sponsor";
-  const sponsorEmail =
+  const rawSponsorEmail =
     session.customer_details?.email || session.customer_email || "";
+  const sponsorName = escapeHtml(rawSponsorName);
+  const sponsorEmail = escapeHtml(rawSponsorEmail);
+  const subjectSafeName = String(rawSponsorName).replace(/[\r\n]/g, " ");
+  // tier is server-set metadata from our own create-checkout-session.js
+  // (only ever "sideline"/"playmaker"/"legacy"), not user-controllable,
+  // but escape anyway since it's still interpolated into HTML below.
   const tier = session.metadata?.tier || "unknown";
-  const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+  const tierLabel = escapeHtml(
+    tier.charAt(0).toUpperCase() + tier.slice(1),
+  );
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -208,7 +234,7 @@ function buildSponsorshipEmail(session) {
 
   return {
     toOrg: {
-      subject: `Sponsorship Received: ${tierLabel} (${amount}) from ${sponsorName}`,
+      subject: `Sponsorship Received: ${tierLabel} (${amount}) from ${subjectSafeName}`,
       html: `
         <h2>Fathers and Football -- New Sponsorship</h2>
         <p><strong>Sponsor:</strong> ${sponsorName}</p>
