@@ -213,6 +213,54 @@
         text-transform: uppercase;
         color: var(--dark);
       }
+
+      /* CONFETTI — NFL FLAG Championships palette accent */
+      .confetti-field {
+        position: relative;
+        display: inline-block;
+      }
+      .confetti-field::before,
+      .confetti-field::after {
+        content: "";
+        position: absolute;
+        top: -48px;
+        left: -60px;
+        right: -60px;
+        bottom: -48px;
+        pointer-events: none;
+        background-image: radial-gradient(circle, #d63430 5px, transparent 5.5px),
+          radial-gradient(circle, #03aef2 5px, transparent 5.5px),
+          radial-gradient(circle, #ffffff 4px, transparent 4.5px),
+          radial-gradient(circle, #d63430 4.5px, transparent 5px),
+          radial-gradient(circle, #03aef2 4.5px, transparent 5px),
+          radial-gradient(circle, #ffffff 3.5px, transparent 4px),
+          radial-gradient(circle, #d63430 3.5px, transparent 4px),
+          radial-gradient(circle, #03aef2 3.5px, transparent 4px);
+        background-repeat: no-repeat;
+        background-size: 8px 8px;
+        background-position:
+          3% 8%,
+          95% 12%,
+          8% 90%,
+          92% 88%,
+          48% 2%,
+          75% 95%,
+          2% 45%,
+          98% 50%;
+        opacity: 1;
+      }
+      .confetti-field::after {
+        background-position:
+          18% 22%,
+          80% 28%,
+          25% 72%,
+          70% 76%,
+          8% 55%,
+          95% 60%,
+          40% 88%,
+          60% 10%;
+        opacity: 0.75;
+      }
       .hero-actions {
         position: relative;
         display: flex;
@@ -378,6 +426,68 @@
         border-radius: 2px;
         margin-bottom: 8px;
         margin-right: 8px;
+      }
+
+      /* CELEBRATION STRIP — NFL FLAG Championships palette */
+      .celebration-strip {
+        position: relative;
+        background: #053d73;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(214, 52, 48, 0.12) 0px,
+          rgba(214, 52, 48, 0.12) 14px,
+          transparent 14px,
+          transparent 28px
+        );
+        border-top: 6px solid #d63430;
+        border-bottom: 6px solid #03aef2;
+        padding: 44px 24px;
+        overflow: hidden;
+      }
+      .celebration-grid {
+        position: relative;
+        max-width: 1080px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        text-align: center;
+      }
+      .celebration-grid .stat-num {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(34px, 5.5vw, 56px);
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      }
+      .celebration-grid .stat:nth-child(1) .stat-num {
+        color: #ffffff;
+      }
+      .celebration-grid .stat:nth-child(2) .stat-num {
+        color: #03aef2;
+      }
+      .celebration-grid .stat:nth-child(3) .stat-num {
+        color: #ffffff;
+      }
+      .celebration-grid .stat:nth-child(4) .stat-num {
+        color: #d63430;
+      }
+      .celebration-grid .stat-label {
+        display: block;
+        margin-top: 8px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      @media (max-width: 640px) {
+        .celebration-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 28px 16px;
+        }
       }
 
       /* MVP */
@@ -847,10 +957,13 @@
       <p class="hero-sub">
         Texas Football &nbsp;&mdash;&nbsp; Dallas–Fort Worth
       </p>
-      <div class="hero-champ-badge">
-        <span
-          >2025 Dallas Cowboys Regional Champions &nbsp;&mdash;&nbsp; 10U</span
-        >
+      <div class="confetti-field">
+        <div class="hero-champ-badge">
+          <span
+            >2025 Dallas Cowboys Regional Champions &nbsp;&mdash;&nbsp;
+            10U</span
+          >
+        </div>
       </div>
       <div class="hero-actions">
         <a href="sponsors.html" class="btn-primary">Become a Sponsor</a>
@@ -939,6 +1052,28 @@
         </div>
       </div>
     </section>
+
+    <!-- CELEBRATION STRIP -->
+    <div class="celebration-strip">
+      <div class="celebration-grid">
+        <div class="stat">
+          <span class="stat-num">2025</span>
+          <span class="stat-label">Champions</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">10U</span>
+          <span class="stat-label">Division</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Regional Title</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Tournament MVP</span>
+        </div>
+      </div>
+    </div>
 
     <!-- MVP -->
     <section class="mvp-section">
