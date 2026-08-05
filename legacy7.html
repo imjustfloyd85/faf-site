@@ -745,6 +745,62 @@
           grid-template-columns: repeat(2, 1fr);
         }
       }
+
+      /* CELEBRATION STRIP — NFL FLAG Championships palette */
+      .celebration-strip {
+        position: relative;
+        background: #053d73;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(214, 52, 48, 0.12) 0px,
+          rgba(214, 52, 48, 0.12) 14px,
+          transparent 14px,
+          transparent 28px
+        );
+        border-top: 6px solid #d63430;
+        border-bottom: 6px solid #03aef2;
+        padding: 44px 24px;
+        overflow: hidden;
+      }
+      .celebration-grid {
+        position: relative;
+        max-width: 1080px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        text-align: center;
+      }
+      .celebration-grid .stat-num {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(34px, 5.5vw, 56px);
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      }
+      .celebration-grid .stat:nth-child(2) .stat-num {
+        color: #03aef2;
+      }
+      .celebration-grid .stat:nth-child(4) .stat-num {
+        color: #d63430;
+      }
+      .celebration-grid .stat-label {
+        display: block;
+        margin-top: 8px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      @media (max-width: 640px) {
+        .celebration-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 28px 16px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -840,6 +896,28 @@
         <span class="ticker-item">Confidence</span>
         <span class="ticker-item">Toughness</span>
         <span class="ticker-item">Legacy</span>
+      </div>
+    </div>
+
+    <!-- CELEBRATION STRIP -->
+    <div class="celebration-strip">
+      <div class="celebration-grid">
+        <div class="stat">
+          <span class="stat-num">7</span>
+          <span class="stat-label">Core Values</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">4x</span>
+          <span class="stat-label">Championship Coach</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">16+</span>
+          <span class="stat-label">Years Coaching</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">VA</span>
+          <span class="stat-label">Brambleton Program</span>
+        </div>
       </div>
     </div>
 

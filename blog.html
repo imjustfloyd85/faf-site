@@ -145,6 +145,23 @@
         position: relative;
         overflow: hidden;
       }
+      .page-hero::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(
+          90deg,
+          #d63430 0%,
+          #d63430 33%,
+          #03aef2 33%,
+          #03aef2 66%,
+          #053d73 66%,
+          #053d73 100%
+        );
+      }
       .page-hero::before {
         content: "";
         position: absolute;
