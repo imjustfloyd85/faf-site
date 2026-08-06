@@ -232,6 +232,157 @@
         color: var(--gold);
       }
 
+      /* ── DONATE NOW ── */
+      .donate-section {
+        background: var(--dark-2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .donate-wrap {
+        max-width: 560px;
+        margin: 0 auto;
+        margin-top: 48px;
+      }
+
+      .amount-presets {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .amount-btn {
+        padding: 16px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        text-align: center;
+      }
+
+      .amount-btn:hover,
+      .amount-btn.active {
+        border-color: var(--gold);
+        background: rgba(200, 146, 60, 0.08);
+      }
+
+      .custom-amount-row {
+        margin-bottom: 16px;
+      }
+
+      .custom-amount-row input {
+        width: 100%;
+        padding: 16px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .custom-amount-row input:focus {
+        border-color: var(--gold);
+      }
+
+      .custom-amount-row input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+        font-weight: 400;
+        font-size: 14px;
+      }
+
+      .frequency-toggle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .freq-btn {
+        padding: 14px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--muted);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background 0.2s;
+        text-align: center;
+      }
+
+      .freq-btn:hover,
+      .freq-btn.active {
+        border-color: var(--gold);
+        color: var(--gold);
+        background: rgba(200, 146, 60, 0.08);
+      }
+
+      .donate-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .donate-fields input {
+        padding: 12px 16px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .donate-fields input:focus {
+        border-color: var(--gold);
+      }
+
+      .donate-fields input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+      }
+
+      .donate-note {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .donate-error {
+        display: none;
+        font-size: 13px;
+        color: #d63430;
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        background: rgba(214, 52, 48, 0.08);
+        border: 1px solid rgba(214, 52, 48, 0.2);
+        border-radius: 2px;
+      }
+
       /* ── TIERS ── */
       .tiers {
         background: var(--dark-2);
@@ -251,6 +402,8 @@
         border: 1px solid var(--border);
         text-align: center;
         transition: border-color 0.3s;
+        display: flex;
+        flex-direction: column;
       }
 
       .tier-card:hover {
@@ -311,6 +464,7 @@
       .tier-benefits {
         list-style: none;
         text-align: left;
+        flex: 1;
       }
 
       .tier-benefits li {
@@ -334,6 +488,94 @@
         border-radius: 50%;
         margin-right: 12px;
         vertical-align: middle;
+      }
+
+      .tier-btn {
+        display: block;
+        margin-top: 24px;
+        padding: 14px 24px;
+        background: transparent;
+        color: var(--gold);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border: 1px solid var(--gold);
+        border-radius: 2px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          transform 0.2s;
+      }
+
+      .tier-btn:hover {
+        background: var(--gold);
+        color: var(--dark);
+        transform: translateY(-1px);
+      }
+
+      .tier-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Legacy custom amount input */
+      .legacy-amount-row {
+        margin-top: 16px;
+      }
+
+      .legacy-amount-row input {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .legacy-amount-row input:focus {
+        border-color: var(--gold);
+      }
+
+      .legacy-amount-row input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+      }
+
+      /* Sponsorship email input */
+      .tier-email-row {
+        margin-top: 12px;
+      }
+
+      .tier-email-row input {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .tier-email-row input:focus {
+        border-color: var(--gold);
+      }
+
+      .tier-email-row input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
       }
 
       /* ── IMPACT ── */
@@ -471,6 +713,12 @@
       .btn-primary:hover {
         background: var(--gold-lt);
         transform: translateY(-1px);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
       }
 
       .form-success {
@@ -619,6 +867,9 @@
         .form-row {
           grid-template-columns: 1fr;
         }
+        .donate-fields {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -721,6 +972,93 @@
       </p>
     </section>
 
+    <!-- DONATE NOW -->
+    <section class="donate-section" id="donate">
+      <div class="container">
+        <div style="text-align: center">
+          <p class="section-label">Donate Now</p>
+          <h2 class="section-title">Make a <em>direct gift</em></h2>
+          <p
+            style="
+              color: var(--muted);
+              max-width: 560px;
+              margin: 0 auto;
+              font-size: 15px;
+              line-height: 1.7;
+            "
+          >
+            Every dollar goes directly to programs that connect fathers to their
+            children through football. Choose an amount or enter your own.
+          </p>
+        </div>
+        <div class="donate-wrap">
+          <div class="amount-presets">
+            <button class="amount-btn" data-amount="25" type="button">
+              $25
+            </button>
+            <button class="amount-btn active" data-amount="50" type="button">
+              $50
+            </button>
+            <button class="amount-btn" data-amount="100" type="button">
+              $100
+            </button>
+          </div>
+          <div class="custom-amount-row">
+            <input
+              type="number"
+              id="donateCustomAmount"
+              min="1"
+              max="999999"
+              placeholder="Or enter a custom amount"
+              aria-label="Custom donation amount in dollars"
+            />
+          </div>
+          <div class="frequency-toggle">
+            <button
+              class="freq-btn active"
+              data-recurring="false"
+              type="button"
+            >
+              One-Time
+            </button>
+            <button class="freq-btn" data-recurring="true" type="button">
+              Monthly
+            </button>
+          </div>
+          <div class="donate-fields">
+            <input
+              type="text"
+              id="donateName"
+              placeholder="Your name"
+              aria-label="Donor name"
+            />
+            <input
+              type="email"
+              id="donateEmail"
+              placeholder="Email address"
+              required
+              aria-label="Donor email"
+            />
+          </div>
+          <p class="donate-note">
+            Fathers and Football is a 501(c)(3) tax-exempt organization (EIN
+            42-1980182). No goods or services are provided in exchange for
+            donations. Your entire contribution is tax-deductible to the extent
+            allowed by law. You will receive a written acknowledgment by email.
+          </p>
+          <div class="donate-error" id="donateError"></div>
+          <button
+            type="button"
+            class="btn-primary"
+            id="donateBtn"
+            onclick="handleDonate()"
+          >
+            Donate Now
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- IMPACT -->
     <section>
       <div class="container">
@@ -748,7 +1086,7 @@
     </section>
 
     <!-- SPONSORSHIP TIERS -->
-    <section class="tiers">
+    <section class="tiers" id="tiers">
       <div class="container">
         <div style="text-align: center">
           <p class="section-label">Sponsorship Levels</p>
@@ -765,6 +1103,21 @@
               <li>Social media recognition</li>
               <li>Quarterly impact update</li>
             </ul>
+            <div class="tier-email-row">
+              <input
+                type="email"
+                class="tier-email"
+                placeholder="Email address"
+                aria-label="Sideline sponsor email"
+              />
+            </div>
+            <button
+              class="tier-btn"
+              type="button"
+              onclick="handleTierCheckout('sideline', this)"
+            >
+              Sponsor Now
+            </button>
           </div>
           <div class="tier-card featured">
             <div class="tier-name">Playmaker</div>
@@ -777,6 +1130,21 @@
               <li>Invitation to FAF events</li>
               <li>Featured partner spotlight</li>
             </ul>
+            <div class="tier-email-row">
+              <input
+                type="email"
+                class="tier-email"
+                placeholder="Email address"
+                aria-label="Playmaker sponsor email"
+              />
+            </div>
+            <button
+              class="tier-btn"
+              type="button"
+              onclick="handleTierCheckout('playmaker', this)"
+            >
+              Sponsor Now
+            </button>
           </div>
           <div class="tier-card">
             <div class="tier-name">Legacy</div>
@@ -790,8 +1158,47 @@
               <li>Direct impact reporting</li>
               <li>Advisory board invitation</li>
             </ul>
+            <div class="legacy-amount-row">
+              <input
+                type="number"
+                id="legacyAmount"
+                min="5000"
+                placeholder="Amount ($5,000 minimum)"
+                aria-label="Legacy sponsorship amount"
+              />
+            </div>
+            <div class="tier-email-row">
+              <input
+                type="email"
+                class="tier-email"
+                placeholder="Email address"
+                aria-label="Legacy sponsor email"
+              />
+            </div>
+            <button
+              class="tier-btn"
+              type="button"
+              onclick="handleTierCheckout('legacy', this)"
+            >
+              Sponsor Now
+            </button>
           </div>
         </div>
+        <p
+          class="form-note"
+          style="text-align: center; max-width: 800px; margin: 32px auto 0"
+        >
+          Fathers and Football is a 501(c)(3) tax-exempt organization (EIN
+          42-1980182). Because each sponsorship tier includes tangible benefits
+          (such as logo placement, event invitations, or co-branded
+          programming), only the portion of your contribution that exceeds the
+          fair market value of the benefits you receive may be tax-deductible.
+          In accordance with IRC Section 6115, Fathers and Football will provide
+          each sponsor a written acknowledgment that includes a good-faith
+          estimate of the fair market value of the benefits associated with your
+          selected tier. Please consult your tax advisor for guidance specific
+          to your situation.
+        </p>
       </div>
     </section>
 
@@ -803,9 +1210,21 @@
           <h2 class="section-title">
             Tell us about <em>your organization</em>
           </h2>
+          <p
+            style="
+              color: var(--muted);
+              max-width: 560px;
+              margin: 0 auto;
+              font-size: 15px;
+              line-height: 1.7;
+            "
+          >
+            Prefer to discuss sponsorship details before committing? Fill out
+            the form below and we will follow up within 2 business days.
+          </p>
         </div>
         <div class="form-wrap">
-          <form id="sponsorForm" onsubmit="return handleSubmit(event);">
+          <form id="sponsorForm" onsubmit="return handleFormSubmit(event);">
             <div class="form-row">
               <div class="form-field">
                 <label for="firstName">First Name</label>
@@ -830,10 +1249,10 @@
             </div>
             <div class="form-row">
               <div class="form-field">
-                <label for="email">Email</label>
+                <label for="formEmail">Email</label>
                 <input
                   type="email"
-                  id="email"
+                  id="formEmail"
                   name="email"
                   placeholder="you@company.com"
                   required
@@ -884,17 +1303,8 @@
               </div>
             </div>
             <p class="form-note">
-              Fathers and Football is a 501(c)(3) tax-exempt organization (EIN
-              42-1980182). Because each sponsorship tier includes tangible
-              benefits (such as logo placement, event invitations, or co-branded
-              programming), only the portion of your contribution that exceeds
-              the fair market value of the benefits you receive may be
-              tax-deductible. In accordance with IRC Section 6115, Fathers and
-              Football will provide each sponsor a written acknowledgment that
-              includes a good-faith estimate of the fair market value of the
-              benefits associated with your selected tier. Please consult your
-              tax advisor for guidance specific to your situation. We will
-              follow up within 2 business days.
+              We will follow up within 2 business days to discuss your
+              sponsorship.
             </p>
             <button type="submit" class="btn-primary">Submit Inquiry</button>
           </form>
@@ -966,7 +1376,183 @@
     </footer>
 
     <script>
-      function handleSubmit(e) {
+      // ── Stripe Checkout Integration ──
+      // Publishable key is safe for client-side (Stripe documentation confirms this).
+      var STRIPE_PK =
+        "pk_test_51U1BP7EowJm6emkRNPldNfqY63EMjySjwOFMmx5YUw5SWDFNz9GmaBCRJmkfOrfibWmCXQJDbZQRIB1a2vPw52dW00HDKd4gqf";
+      var API_URL = "/api/create-checkout-session";
+
+      // ── Donate Now state ──
+      var selectedAmount = 50;
+      var isRecurring = false;
+
+      // Amount preset buttons
+      document.querySelectorAll(".amount-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".amount-btn").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          selectedAmount = parseInt(btn.dataset.amount, 10);
+          document.getElementById("donateCustomAmount").value = "";
+        });
+      });
+
+      // Custom amount input
+      document
+        .getElementById("donateCustomAmount")
+        .addEventListener("input", function () {
+          var val = parseInt(this.value, 10);
+          if (val > 0) {
+            selectedAmount = val;
+            document.querySelectorAll(".amount-btn").forEach(function (b) {
+              b.classList.remove("active");
+            });
+          }
+        });
+
+      // Frequency toggle
+      document.querySelectorAll(".freq-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".freq-btn").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          isRecurring = btn.dataset.recurring === "true";
+        });
+      });
+
+      function showDonateError(msg) {
+        var el = document.getElementById("donateError");
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+
+      function hideDonateError() {
+        document.getElementById("donateError").style.display = "none";
+      }
+
+      // ── Donate Now handler ──
+      async function handleDonate() {
+        hideDonateError();
+        var btn = document.getElementById("donateBtn");
+        var email = document.getElementById("donateEmail").value.trim();
+        var name = document.getElementById("donateName").value.trim();
+
+        // Check custom amount field
+        var customVal = document.getElementById("donateCustomAmount").value;
+        if (customVal) {
+          selectedAmount = parseInt(customVal, 10);
+        }
+
+        if (!selectedAmount || selectedAmount < 1) {
+          showDonateError("Please select or enter a donation amount.");
+          return;
+        }
+
+        if (!email || !email.includes("@")) {
+          showDonateError("Please enter a valid email address.");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        try {
+          var res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "donation",
+              amount: selectedAmount,
+              recurring: isRecurring,
+              name: name,
+              email: email,
+            }),
+          });
+
+          var data = await res.json();
+
+          if (!res.ok || !data.url) {
+            showDonateError(
+              data.error || "Something went wrong. Please try again.",
+            );
+            btn.disabled = false;
+            btn.textContent = "Donate Now";
+            return;
+          }
+
+          window.location.href = data.url;
+        } catch (err) {
+          showDonateError(
+            "Network error. Please check your connection and try again.",
+          );
+          btn.disabled = false;
+          btn.textContent = "Donate Now";
+        }
+      }
+
+      // ── Sponsorship Tier Checkout handler ──
+      async function handleTierCheckout(tier, btnEl) {
+        var card = btnEl.closest(".tier-card");
+        var emailInput = card.querySelector(".tier-email");
+        var email = emailInput ? emailInput.value.trim() : "";
+
+        if (!email || !email.includes("@")) {
+          emailInput.style.borderColor = "#d63430";
+          emailInput.focus();
+          return;
+        }
+        emailInput.style.borderColor = "";
+
+        var amount = null;
+        if (tier === "legacy") {
+          var legacyInput = document.getElementById("legacyAmount");
+          amount = parseInt(legacyInput.value, 10);
+          if (!amount || amount < 5000) {
+            legacyInput.style.borderColor = "#d63430";
+            legacyInput.focus();
+            return;
+          }
+          legacyInput.style.borderColor = "";
+        }
+
+        btnEl.disabled = true;
+        btnEl.textContent = "Processing...";
+
+        try {
+          var body = {
+            type: "sponsorship",
+            tier: tier,
+            email: email,
+          };
+          if (amount) body.amount = amount;
+
+          var res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+
+          var data = await res.json();
+
+          if (!res.ok || !data.url) {
+            alert(data.error || "Something went wrong. Please try again.");
+            btnEl.disabled = false;
+            btnEl.textContent = "Sponsor Now";
+            return;
+          }
+
+          window.location.href = data.url;
+        } catch (err) {
+          alert("Network error. Please check your connection and try again.");
+          btnEl.disabled = false;
+          btnEl.textContent = "Sponsor Now";
+        }
+      }
+
+      // ── Sponsor Inquiry Form (existing mailto fallback replaced with mailto) ──
+      function handleFormSubmit(e) {
         e.preventDefault();
         var form = document.getElementById("sponsorForm");
         var data = new FormData(form);
