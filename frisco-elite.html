@@ -228,7 +228,8 @@
         right: -60px;
         bottom: -48px;
         pointer-events: none;
-        background-image: radial-gradient(circle, #d63430 5px, transparent 5.5px),
+        background-image:
+          radial-gradient(circle, #d63430 5px, transparent 5.5px),
           radial-gradient(circle, #03aef2 5px, transparent 5.5px),
           radial-gradient(circle, #ffffff 4px, transparent 4.5px),
           radial-gradient(circle, #d63430 4.5px, transparent 5px),
@@ -931,6 +932,11 @@
         >Join</a
       >
       <a
+        href="events.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Events</a
+      >
+      <a
         href="sponsors.html"
         onclick="this.closest('#mobileMenu').classList.remove('open')"
         style="color: var(--gold)"
@@ -1188,17 +1194,17 @@
             </h2>
             <p class="section-body" style="margin-bottom: 20px">
               Justin Floyd is the Co-Founder and President of Fathers and
-              Football, and now coaches alongside Rob Washington on the
-              Frisco Elite sideline. A father first, Justin brings the same
-              standard he holds at home to every practice — discipline, real
-              accountability, and the belief that confidence is built through
-              reps, not compliments.
+              Football, and now coaches alongside Rob Washington on the Frisco
+              Elite sideline. A father first, Justin brings the same standard he
+              holds at home to every practice — discipline, real accountability,
+              and the belief that confidence is built through reps, not
+              compliments.
             </p>
             <p class="section-body">
-              For Justin, coaching Frisco Elite isn't separate from the
-              mission of Fathers and Football — it's the mission in action.
-              Showing up, doing the work, and building the same character in
-              these athletes that he asks of every family in the program.
+              For Justin, coaching Frisco Elite isn't separate from the mission
+              of Fathers and Football — it's the mission in action. Showing up,
+              doing the work, and building the same character in these athletes
+              that he asks of every family in the program.
             </p>
           </div>
           <div class="coach-bio-photo">
@@ -1280,11 +1286,33 @@
       </div>
     </section>
 
-    <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
-      <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
-      <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)" aria-label="Previous">&larr;</button>
+    <div
+      class="lightbox"
+      id="lightbox"
+      onclick="if (event.target === this) closeLightbox();"
+    >
+      <button
+        class="lightbox-close"
+        onclick="closeLightbox()"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+      <button
+        class="lightbox-nav lightbox-prev"
+        onclick="navLightbox(-1)"
+        aria-label="Previous"
+      >
+        &larr;
+      </button>
       <img id="lightbox-img" src="" alt="" />
-      <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)" aria-label="Next">&rarr;</button>
+      <button
+        class="lightbox-nav lightbox-next"
+        onclick="navLightbox(1)"
+        aria-label="Next"
+      >
+        &rarr;
+      </button>
     </div>
 
     <!-- PILLARS -->
@@ -1331,8 +1359,8 @@
           <p class="section-label">Where We're Headed</p>
           <h2 class="section-title">Building <em>something bigger</em></h2>
           <p class="section-body" style="margin: 0 auto; max-width: 640px">
-            Frisco Elite is growing into a true Select program. Here's what
-            that means for our athletes, our families, and our community.
+            Frisco Elite is growing into a true Select program. Here's what that
+            means for our athletes, our families, and our community.
           </p>
         </div>
         <div class="divider"></div>
@@ -1340,25 +1368,25 @@
           <div class="expectation">
             <h3>Select Team, Two Divisions</h3>
             <p>
-              We're building a Select Team that competes in both Rec and
-              Elite Divisions, raising the level of competition and
-              opportunity for every athlete on the roster.
+              We're building a Select Team that competes in both Rec and Elite
+              Divisions, raising the level of competition and opportunity for
+              every athlete on the roster.
             </p>
           </div>
           <div class="expectation">
             <h3>Growing Rosters</h3>
             <p>
               We're adding to our rosters and bringing in new players. This
-              program is growing, and we're building it with athletes who
-              want to compete at this level.
+              program is growing, and we're building it with athletes who want
+              to compete at this level.
             </p>
           </div>
           <div class="expectation">
             <h3>Real Commitment</h3>
             <p>
-              Joining this program is a commitment — from the athlete and
-              from the family standing behind him. We're building something
-              that asks for both.
+              Joining this program is a commitment — from the athlete and from
+              the family standing behind him. We're building something that asks
+              for both.
             </p>
           </div>
           <div class="expectation">
@@ -1379,10 +1407,10 @@
             margin: 40px auto 0;
           "
         >
-          And our reach goes beyond the field. Fathers and Football is
-          building toward supporting our community on and off the field —
-          through <strong style="color: var(--white)">STEM</strong> as well
-          as <strong style="color: var(--white)">Athletics</strong>.
+          And our reach goes beyond the field. Fathers and Football is building
+          toward supporting our community on and off the field — through
+          <strong style="color: var(--white)">STEM</strong> as well as
+          <strong style="color: var(--white)">Athletics</strong>.
         </p>
       </div>
     </section>
