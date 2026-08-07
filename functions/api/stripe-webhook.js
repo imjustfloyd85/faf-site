@@ -35,9 +35,10 @@ async function sendViaACS(env, { from, to, replyTo, subject, html }) {
     return { ok: false, status: 500 };
   }
 
+  const toList = Array.isArray(to) ? to : [to];
   const body = JSON.stringify({
     senderAddress: from,
-    recipients: { to: [{ address: to }] },
+    recipients: { to: toList.map((address) => ({ address })) },
     replyTo: replyTo ? [{ address: replyTo }] : undefined,
     content: { subject, html },
   });
@@ -318,8 +319,8 @@ export async function onRequestPost(context) {
 
       // Send notification to FAF org
       const orgResult = await sendViaACS(context.env, {
-        from: "Fathers and Football <info@fathersandfootball.org>",
-        to: "jwfloyd85@gmail.com",
+        from: "Fathers and Football <communications@fathersandfootball.org>",
+        to: ["justin@fathersandfootball.org", "communications@fathersandfootball.org"],
         subject: emails.toOrg.subject,
         html: emails.toOrg.html,
       });
@@ -333,7 +334,7 @@ export async function onRequestPost(context) {
         session.customer_details?.email || session.customer_email;
       if (donorEmail) {
         const donorResult = await sendViaACS(context.env, {
-          from: "Fathers and Football <info@fathersandfootball.org>",
+          from: "Fathers and Football <communications@fathersandfootball.org>",
           to: donorEmail,
           subject: emails.toDonor.subject,
           html: emails.toDonor.html,
