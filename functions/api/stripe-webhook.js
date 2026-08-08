@@ -231,9 +231,7 @@ function buildSponsorshipEmail(session) {
   // (only ever "sideline"/"playmaker"/"legacy"), not user-controllable,
   // but escape anyway since it's still interpolated into HTML below.
   const tier = session.metadata?.tier || "unknown";
-  const tierLabel = escapeHtml(
-    tier.charAt(0).toUpperCase() + tier.slice(1),
-  );
+  const tierLabel = escapeHtml(tier.charAt(0).toUpperCase() + tier.slice(1));
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -377,34 +375,19 @@ async function createPendingQboEntry(context, session, paymentType) {
     </div>
   `;
 
-  // Send approval email to BOTH justin@ and communications@
+  // Send approval email to both justin@ and communications@
   const approvalResult = await sendViaACS(context.env, {
-    from: "Fathers and Football <info@fathersandfootball.org>",
-    to: "justin@fathersandfootball.org",
+    from: "Fathers and Football <communications@fathersandfootball.org>",
+    to: [
+      "justin@fathersandfootball.org",
+      "communications@fathersandfootball.org",
+    ],
     subject: `[QBO Approval] ${type}: ${amountStr} from ${donorName}`,
     html: approvalHtml,
   });
 
   if (!approvalResult.ok) {
-    console.error(
-      "Failed to send QBO approval email to justin@:",
-      approvalResult.status,
-    );
-  }
-
-  // Second recipient
-  const approvalResult2 = await sendViaACS(context.env, {
-    from: "Fathers and Football <info@fathersandfootball.org>",
-    to: "communications@fathersandfootball.org",
-    subject: `[QBO Approval] ${type}: ${amountStr} from ${donorName}`,
-    html: approvalHtml,
-  });
-
-  if (!approvalResult2.ok) {
-    console.error(
-      "Failed to send QBO approval email to communications@:",
-      approvalResult2.status,
-    );
+    console.error("Failed to send QBO approval email:", approvalResult.status);
   }
 
   console.log(`QBO pending entry created: ${entryId} (${type}, ${amountStr})`);
@@ -465,7 +448,10 @@ export async function onRequestPost(context) {
       // Send notification to FAF org
       const orgResult = await sendViaACS(context.env, {
         from: "Fathers and Football <communications@fathersandfootball.org>",
-        to: ["justin@fathersandfootball.org", "communications@fathersandfootball.org"],
+        to: [
+          "justin@fathersandfootball.org",
+          "communications@fathersandfootball.org",
+        ],
         subject: emails.toOrg.subject,
         html: emails.toOrg.html,
       });
