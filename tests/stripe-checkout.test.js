@@ -647,9 +647,15 @@ test("T4.15: escapeHtml() actually neutralizes HTML/script injection payloads", 
 
   var payload = '<script>alert(1)</script><img src=x onerror="steal()">';
   var escaped = escapeHtml(payload);
-  assert.ok(!escaped.includes("<script>"), "raw <script> tag survived escaping");
+  assert.ok(
+    !escaped.includes("<script>"),
+    "raw <script> tag survived escaping",
+  );
   assert.ok(!escaped.includes("<img"), "raw <img> tag survived escaping");
-  assert.ok(escaped.includes("&lt;script&gt;"), "expected entity-encoded output");
+  assert.ok(
+    escaped.includes("&lt;script&gt;"),
+    "expected entity-encoded output",
+  );
 });
 
 test("T4.16: Donor/sponsor name and email are escaped before HTML interpolation", function () {
