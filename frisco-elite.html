@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -25,16 +25,17 @@
       :root {
         --gold: #c8923c;
         --gold-lt: #e0b06a;
-        --navy: #0d1b2e;
-        --navy-2: #162236;
+        --navy: #152d4a;
+        --navy-2: #1c3554;
         --silver: #b0b8c4;
-        --dark: #0a0a0a;
-        --dark-2: #0f1720;
+        --dark: #121a26;
+        --dark-2: #182636;
         --warm: #f5f0eb;
         --muted: #8a9ab0;
         --white: #ffffff;
         --border-gold: rgba(200, 146, 60, 0.25);
         --border-silver: rgba(176, 184, 196, 0.2);
+        --border: rgba(200, 146, 60, 0.2);
       }
       html {
         scroll-behavior: smooth;
@@ -429,6 +430,52 @@
         margin-right: 8px;
       }
 
+      /* VALUES TICKER — celebration-strip visual language */
+      .values-ticker {
+        position: relative;
+        background: #053d73;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(214, 52, 48, 0.12) 0px,
+          rgba(214, 52, 48, 0.12) 14px,
+          transparent 14px,
+          transparent 28px
+        );
+        border-top: 6px solid #d63430;
+        border-bottom: 6px solid #03aef2;
+        overflow: hidden;
+        padding: 16px 0;
+      }
+      .values-ticker-inner {
+        display: flex;
+        gap: 0;
+        white-space: nowrap;
+        animation: values-ticker-scroll 28s linear infinite;
+      }
+      .values-ticker-item {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #ffffff;
+        padding: 0 40px;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+      }
+      .values-ticker-item::after {
+        content: "\2605";
+        margin-left: 40px;
+        color: #03aef2;
+      }
+      @keyframes values-ticker-scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
       /* CELEBRATION STRIP — NFL FLAG Championships palette */
       .celebration-strip {
         position: relative;
@@ -790,7 +837,7 @@
 
       /* FOOTER */
       footer {
-        background: #050505;
+        background: #0e1520;
         border-top: 1px solid var(--border-gold);
         padding: 48px 24px 32px;
         text-align: center;
@@ -976,6 +1023,26 @@
         <a href="#join" class="btn-ghost">Join the Team</a>
       </div>
     </section>
+
+    <!-- VALUES TICKER -->
+    <div class="values-ticker">
+      <div class="values-ticker-inner">
+        <span class="values-ticker-item">Effort</span>
+        <span class="values-ticker-item">Discipline</span>
+        <span class="values-ticker-item">Integrity</span>
+        <span class="values-ticker-item">Brotherhood</span>
+        <span class="values-ticker-item">Confidence</span>
+        <span class="values-ticker-item">Toughness</span>
+        <span class="values-ticker-item">Legacy</span>
+        <span class="values-ticker-item">Effort</span>
+        <span class="values-ticker-item">Discipline</span>
+        <span class="values-ticker-item">Integrity</span>
+        <span class="values-ticker-item">Brotherhood</span>
+        <span class="values-ticker-item">Confidence</span>
+        <span class="values-ticker-item">Toughness</span>
+        <span class="values-ticker-item">Legacy</span>
+      </div>
+    </div>
 
     <!-- COACH LETTER CALLOUT -->
     <section
