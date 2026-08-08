@@ -1,5 +1,6 @@
 // Cloudflare Pages Function — Stripe Webhook Handler
-// Verifies Stripe signature, sends acknowledgment emails via ACS.
+// Verifies Stripe signature, sends acknowledgment emails via ACS,
+// and queues pending QBO entries for human approval (Story 1248).
 //
 // DEPENDENCY: STRIPE_WEBHOOK_SECRET must be set as a CF Pages secret.
 // Floyd will create the webhook endpoint in Stripe after deployment,
@@ -7,6 +8,12 @@
 //
 // DEPENDENCY: ACS_CONNECTION_STRING must be set as a CF Pages secret
 // for email sending to work.
+//
+// DEPENDENCY (KV binding, Story 1248):
+//   FAF_KV — stores pending QBO entries
+//   QBO_APPROVAL_SECRET — HMAC key for signing approval tokens
+
+import { createApprovalToken } from "../lib/approval-tokens.js";
 
 // --- ACS Email (same pattern as faf-chat/worker.js) ---
 
@@ -273,6 +280,144 @@ function buildSponsorshipEmail(session) {
   };
 }
 
+// --- QBO Pending Entry Queue (Story 1248) ---
+
+async function createPendingQboEntry(context, session, paymentType) {
+  const kv = context.env.FAF_KV;
+  const approvalSecret = context.env.QBO_APPROVAL_SECRET;
+
+  if (!kv || !approvalSecret) {
+    console.error(
+      "QBO pending entry skipped: FAF_KV or QBO_APPROVAL_SECRET not configured",
+    );
+    return;
+  }
+
+  const donorName =
+    session.metadata?.donor_name || session.customer_details?.name || "Unknown";
+  const donorEmail =
+    session.customer_details?.email || session.customer_email || "";
+  const amountCents = session.amount_total || 0;
+  const type = paymentType === "sponsorship" ? "sponsorship" : "donation";
+
+  // Suggest 990 category: donations = Program, sponsorships = Fundraising
+  const category990 = type === "sponsorship" ? "Fundraising" : "Program";
+
+  const entryId = crypto.randomUUID();
+  const entry = {
+    id: entryId,
+    donorName,
+    donorEmail,
+    amountCents,
+    type,
+    tier: session.metadata?.tier || null,
+    category990,
+    date: new Date().toISOString().split("T")[0],
+    stripeSessionId: session.id,
+    status: "pending",
+    createdAt: new Date().toISOString(),
+    processedAt: null,
+  };
+
+  // Store pending entry in KV (TTL 30 days — matches approval token window)
+  await kv.put(`qbo:pending:${entryId}`, JSON.stringify(entry), {
+    expirationTtl: 30 * 24 * 60 * 60,
+  });
+
+  // Create signed approval tokens (one for approve, one for reject)
+  const approveToken = await createApprovalToken(
+    entryId,
+    "approve",
+    approvalSecret,
+  );
+  const rejectToken = await createApprovalToken(
+    entryId,
+    "reject",
+    approvalSecret,
+  );
+
+  const siteUrl = "https://fathersandfootball.org";
+  const approveUrl = `${siteUrl}/api/quickbooks-approve?token=${encodeURIComponent(approveToken)}`;
+  const rejectUrl = `${siteUrl}/api/quickbooks-approve?token=${encodeURIComponent(rejectToken)}`;
+
+  const amountStr = (amountCents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  const tierLabel = entry.tier
+    ? ` (${entry.tier.charAt(0).toUpperCase() + entry.tier.slice(1)} tier)`
+    : "";
+
+  const approvalHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #c8923c;">QuickBooks Approval Required</h2>
+      <p>A new ${type}${tierLabel} needs your review before posting to QuickBooks.</p>
+      <table style="border-collapse: collapse; width: 100%; margin: 16px 0;">
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Donor/Sponsor</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(donorName)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(donorEmail)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Amount</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${amountStr}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Type</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${type}${tierLabel}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">990 Category</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${category990}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Date</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${entry.date}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Stripe Session</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${session.id}</td></tr>
+      </table>
+      <p style="margin: 24px 0;">
+        <a href="${approveUrl}" style="display: inline-block; padding: 12px 24px; background: #28a745; color: #fff; text-decoration: none; border-radius: 4px; margin-right: 12px;">Approve &amp; Post to QuickBooks</a>
+        <a href="${rejectUrl}" style="display: inline-block; padding: 12px 24px; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px;">Reject</a>
+      </p>
+      <p style="font-size: 12px; color: #666;">This link expires in 7 days. All financial data is verified server-side — the link cannot be tampered with.</p>
+    </div>
+  `;
+
+  // Send approval email to BOTH justin@ and communications@
+  const approvalResult = await sendViaACS(context.env, {
+    from: "Fathers and Football <info@fathersandfootball.org>",
+    to: "justin@fathersandfootball.org",
+    subject: `[QBO Approval] ${type}: ${amountStr} from ${donorName}`,
+    html: approvalHtml,
+  });
+
+  if (!approvalResult.ok) {
+    console.error(
+      "Failed to send QBO approval email to justin@:",
+      approvalResult.status,
+    );
+  }
+
+  // Second recipient
+  const approvalResult2 = await sendViaACS(context.env, {
+    from: "Fathers and Football <info@fathersandfootball.org>",
+    to: "communications@fathersandfootball.org",
+    subject: `[QBO Approval] ${type}: ${amountStr} from ${donorName}`,
+    html: approvalHtml,
+  });
+
+  if (!approvalResult2.ok) {
+    console.error(
+      "Failed to send QBO approval email to communications@:",
+      approvalResult2.status,
+    );
+  }
+
+  console.log(`QBO pending entry created: ${entryId} (${type}, ${amountStr})`);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 // --- Main Handler ---
 
 export async function onRequestPost(context) {
@@ -344,6 +489,11 @@ export async function onRequestPost(context) {
           console.error("Failed to send donor receipt:", donorResult.status);
         }
       }
+
+      // --- QBO Pending Entry Queue (Story 1248) ---
+      // Write a pending entry to KV and send an approval email.
+      // The entry is NOT posted to QuickBooks until a human clicks Approve.
+      await createPendingQboEntry(context, session, paymentType);
     }
 
     return new Response(JSON.stringify({ received: true }), {
