@@ -1,0 +1,10 @@
+name = "faf-zorts-scraper"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[[kv_namespaces]]
+binding = "FAF_KV"
+id = "f2ced3e931084f4f80a99fe53a1f744f"
