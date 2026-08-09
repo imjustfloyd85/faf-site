@@ -393,14 +393,6 @@ async function createPendingQboEntry(context, session, paymentType) {
   console.log(`QBO pending entry created: ${entryId} (${type}, ${amountStr})`);
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 // --- Main Handler ---
 
 export async function onRequestPost(context) {
