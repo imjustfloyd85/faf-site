@@ -1,0 +1,7 @@
+name = "faf-site"
+pages_build_output_dir = "."
+compatibility_date = "2026-03-27"
+
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "faf-media-uploads"
