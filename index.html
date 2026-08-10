@@ -750,6 +750,114 @@
         }
       }
 
+      /* ── FAF DAWGS SLIDESHOW ── */
+      .dawgs {
+        background: var(--dark-2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .dawgs-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+
+      .dawgs-slideshow {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background: var(--dark-3);
+      }
+
+      .dawgs-slideshow img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .dawgs-slideshow img.active {
+        opacity: 1;
+      }
+
+      .dawgs-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(10, 10, 10, 0.6);
+        border: 1px solid rgba(200, 146, 60, 0.3);
+        color: var(--warm);
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 2px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 2;
+        line-height: 1;
+      }
+
+      .dawgs-slideshow:hover .dawgs-nav {
+        opacity: 1;
+      }
+
+      .dawgs-nav:hover {
+        background: rgba(200, 146, 60, 0.3);
+      }
+
+      .dawgs-nav-prev {
+        left: 12px;
+      }
+
+      .dawgs-nav-next {
+        right: 12px;
+      }
+
+      .dawgs-dots {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+
+      .dawgs-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(245, 240, 235, 0.3);
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.3s;
+      }
+
+      .dawgs-dot.active {
+        background: var(--gold);
+      }
+
+      @media (max-width: 900px) {
+        .dawgs-layout {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
       /* CELEBRATION STRIP — NFL FLAG Championships palette */
       .celebration-strip {
         position: relative;
@@ -1288,6 +1396,102 @@
           <div class="stat">
             <div class="stat-num">100s</div>
             <div class="stat-label">Kids Connected</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAF DAWGS -->
+    <section class="dawgs" id="dawgs">
+      <div class="container">
+        <div class="dawgs-layout">
+          <div>
+            <p class="section-label">FAF Dawgs</p>
+            <h2 class="section-title">Got That <em>Dawg</em> In Me</h2>
+            <p class="section-body">
+              After standout games, one athlete earns the belt. It's not about
+              stats — it's about grit, hustle, and heart. The kind of effort
+              that makes teammates better and coaches proud. Every kid who
+              straps on that belt earned it the hard way.
+            </p>
+          </div>
+          <div class="dawgs-slideshow" id="dawgsSlideshow">
+            <img
+              src="img/teams/frisco-elite/dawg-belt-1.jpeg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              class="active"
+            />
+            <img
+              src="img/teams/frisco-elite/dawg-belt-2.jpeg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              loading="lazy"
+            />
+            <img
+              src="img/teams/frisco-elite/dawg-belt-3.jpeg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              loading="lazy"
+            />
+            <img
+              src="img/teams/frisco-elite/champs-2026.jpg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              loading="lazy"
+            />
+            <img
+              src="img/teams/frisco-elite/dawg-belt-4.jpeg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              loading="lazy"
+            />
+            <img
+              src="img/teams/frisco-elite/dawg-belt-5.jpeg"
+              alt="Frisco Elite athlete with the Got That Dawg In Me championship belt"
+              loading="lazy"
+            />
+            <button
+              class="dawgs-nav dawgs-nav-prev"
+              onclick="dawgsNav(-1)"
+              aria-label="Previous photo"
+            >
+              &#8592;
+            </button>
+            <button
+              class="dawgs-nav dawgs-nav-next"
+              onclick="dawgsNav(1)"
+              aria-label="Next photo"
+            >
+              &#8594;
+            </button>
+            <div class="dawgs-dots">
+              <button
+                class="dawgs-dot active"
+                onclick="dawgsGo(0)"
+                aria-label="Photo 1"
+              ></button>
+              <button
+                class="dawgs-dot"
+                onclick="dawgsGo(1)"
+                aria-label="Photo 2"
+              ></button>
+              <button
+                class="dawgs-dot"
+                onclick="dawgsGo(2)"
+                aria-label="Photo 3"
+              ></button>
+              <button
+                class="dawgs-dot"
+                onclick="dawgsGo(3)"
+                aria-label="Photo 4"
+              ></button>
+              <button
+                class="dawgs-dot"
+                onclick="dawgsGo(4)"
+                aria-label="Photo 5"
+              ></button>
+              <button
+                class="dawgs-dot"
+                onclick="dawgsGo(5)"
+                aria-label="Photo 6"
+              ></button>
+            </div>
           </div>
         </div>
       </div>
@@ -1856,6 +2060,77 @@
           );
         }
       }
+    </script>
+
+    <!-- FAF DAWGS SLIDESHOW JS -->
+    <script>
+      (function () {
+        var idx = 0;
+        var slides = document.querySelectorAll("#dawgsSlideshow img");
+        var dots = document.querySelectorAll(".dawgs-dot");
+        var total = slides.length;
+        var timer;
+        var INTERVAL = 4000;
+
+        function show(n) {
+          idx = (n + total) % total;
+          for (var i = 0; i < total; i++) {
+            slides[i].classList.remove("active");
+            dots[i].classList.remove("active");
+          }
+          slides[idx].classList.add("active");
+          dots[idx].classList.add("active");
+        }
+
+        function advance() {
+          show(idx + 1);
+        }
+
+        function startTimer() {
+          clearInterval(timer);
+          timer = setInterval(advance, INTERVAL);
+        }
+
+        window.dawgsNav = function (dir) {
+          show(idx + dir);
+          startTimer();
+        };
+
+        window.dawgsGo = function (n) {
+          show(n);
+          startTimer();
+        };
+
+        var el = document.getElementById("dawgsSlideshow");
+        el.addEventListener("mouseenter", function () {
+          clearInterval(timer);
+        });
+        el.addEventListener("mouseleave", function () {
+          startTimer();
+        });
+
+        var touchStartX = 0;
+        el.addEventListener(
+          "touchstart",
+          function (e) {
+            touchStartX = e.touches[0].clientX;
+          },
+          { passive: true },
+        );
+        el.addEventListener(
+          "touchend",
+          function (e) {
+            var diff = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(diff) > 40) {
+              show(idx + (diff < 0 ? 1 : -1));
+              startTimer();
+            }
+          },
+          { passive: true },
+        );
+
+        startTimer();
+      })();
     </script>
   </body>
 </html>
