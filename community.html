@@ -315,6 +315,54 @@
         color: var(--muted);
       }
 
+      /* MENTORSHIP */
+      .mentor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
+        margin-top: 48px;
+      }
+      .mentor-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        min-height: 320px;
+      }
+      .mentor-text {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 48px 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .mentor-text h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+      .mentor-text p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .mentor-text p:last-child {
+        margin-bottom: 0;
+      }
+      .mentor-highlight {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gold);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+
       /* FOOTER */
       footer {
         background: #050505;
@@ -423,6 +471,9 @@
         .teams-grid {
           grid-template-columns: 1fr;
         }
+        .mentor-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -441,6 +492,7 @@
       </a>
       <ul>
         <li><a href="#teams">Teams</a></li>
+        <li><a href="#mentorship">Mentorship</a></li>
         <li><a href="#values">Values</a></li>
         <li><a href="events.html">Events</a></li>
         <li><a href="sponsors.html">Become a Sponsor</a></li>
@@ -620,6 +672,78 @@
               the real scoreboard.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENTORSHIP -->
+    <section
+      id="mentorship"
+      style="
+        background: var(--dark);
+        border-top: 1px solid var(--border);
+        padding: 80px 24px;
+      "
+    >
+      <div class="container">
+        <p class="section-label">Community Impact</p>
+        <h2 class="section-title">
+          More Than <em>Football</em>
+        </h2>
+        <p class="section-body">
+          FAF was built to bring fathers closer to their children through
+          football. What we did not expect is how many single mothers have
+          found their way to us because of the absence of a father figure
+          for their athlete. That is not everyone's story, but it is far
+          more common than most people realize.
+        </p>
+
+        <div class="mentor-grid">
+          <img
+            src="img/mentorship-coaching.jpeg"
+            alt="Coaches working with athletes on the field"
+            class="mentor-photo"
+          />
+          <div class="mentor-text">
+            <p class="mentor-highlight">Mentorship, Not a Business</p>
+            <h3>Open Workouts at The Star</h3>
+            <p>
+              On days we are not practicing, we hold open workouts at The
+              Star in Frisco for players we invite -- including kids who
+              are not on the team. It has been a great way to meet families
+              in the community and give extra attention to athletes who
+              need it.
+            </p>
+            <p>
+              People have told us we could charge for what we do. We would
+              rather someone donate to FAF than pay us personally. This is
+              not a side hustle. It is about getting our own sons the extra
+              work and bringing other kids along for the ride.
+            </p>
+          </div>
+        </div>
+
+        <div class="mentor-grid" style="margin-top: 2px">
+          <div class="mentor-text">
+            <h3>Structured Mentorship</h3>
+            <p>
+              Each head coach mentors up to three athletes beyond their own
+              son. That cap keeps the commitment real -- not a talking
+              point, but consistent one-on-one time with kids who benefit
+              from a steady male presence.
+            </p>
+            <p>
+              As a single father, surrounding my son with other boys has
+              helped him learn, compete, and grow in ways I cannot
+              replicate alone. That same door is open to every family in
+              the program.
+            </p>
+          </div>
+          <img
+            src="img/teams/frisco-elite/gallery-training.jpeg"
+            alt="Athletes training on the turf at The Star in Frisco"
+            class="mentor-photo"
+          />
         </div>
       </div>
     </section>
