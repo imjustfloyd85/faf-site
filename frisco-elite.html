@@ -476,6 +476,196 @@
         }
       }
 
+      /* TOURNAMENT TICKER — live bracket status from Zorts */
+      .tournament-ticker {
+        position: relative;
+        background: #053d73;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(214, 52, 48, 0.12) 0px,
+          rgba(214, 52, 48, 0.12) 14px,
+          transparent 14px,
+          transparent 28px
+        );
+        border-top: 6px solid #d63430;
+        border-bottom: 6px solid #03aef2;
+        padding: 32px 24px;
+        overflow: hidden;
+      }
+      .tournament-ticker-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .tournament-ticker-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #03aef2;
+        margin-bottom: 4px;
+      }
+      .tournament-ticker-name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(18px, 3vw, 24px);
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ffffff;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      .tournament-ticker-venue {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 2px;
+      }
+      .tournament-ticker-grid {
+        max-width: 1080px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .ticker-card {
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 4px;
+        padding: 20px;
+        transition: border-color 0.3s;
+      }
+      .ticker-card:hover {
+        border-color: rgba(3, 174, 242, 0.5);
+      }
+      .ticker-card-division {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #03aef2;
+        margin-bottom: 4px;
+      }
+      .ticker-card-record {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 12px;
+      }
+      .ticker-card-record .seed {
+        color: #c8923c;
+        margin-left: 8px;
+      }
+      .ticker-game {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .ticker-game:first-of-type {
+        border-top: none;
+      }
+      .ticker-game-status {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 900;
+        letter-spacing: 1px;
+      }
+      .ticker-game-status.win {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+      }
+      .ticker-game-status.loss {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+      .ticker-game-status.tie {
+        background: rgba(250, 204, 21, 0.2);
+        color: #facc15;
+      }
+      .ticker-game-status.upcoming {
+        background: rgba(3, 174, 242, 0.15);
+        color: #03aef2;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .ticker-game-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .ticker-game-opponent {
+        font-size: 14px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ticker-game-meta {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 2px;
+      }
+      .ticker-game-score {
+        flex-shrink: 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 1px;
+      }
+      .ticker-game-time {
+        flex-shrink: 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #03aef2;
+        letter-spacing: 1px;
+      }
+      .ticker-empty {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        padding: 16px;
+      }
+      .ticker-updated {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .ticker-pulse {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #22c55e;
+        margin-right: 6px;
+        animation: ticker-pulse-anim 2s ease-in-out infinite;
+      }
+      @keyframes ticker-pulse-anim {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
       /* CELEBRATION STRIP — NFL FLAG Championships palette */
       .celebration-strip {
         position: relative;
@@ -1042,6 +1232,17 @@
         <span class="values-ticker-item">Toughness</span>
         <span class="values-ticker-item">Legacy</span>
       </div>
+    </div>
+
+    <!-- TOURNAMENT TICKER — live bracket status -->
+    <div class="tournament-ticker" id="tournamentTicker" style="display: none">
+      <div class="tournament-ticker-header">
+        <div class="tournament-ticker-label">Live Tournament Status</div>
+        <div class="tournament-ticker-name" id="tickerTournamentName"></div>
+        <div class="tournament-ticker-venue" id="tickerVenue"></div>
+      </div>
+      <div class="tournament-ticker-grid" id="tickerGrid"></div>
+      <div class="ticker-updated" id="tickerUpdated"></div>
     </div>
 
     <!-- COACH LETTER CALLOUT -->
@@ -1899,6 +2100,178 @@
         if (e.key === "ArrowLeft") navLightbox(-1);
         if (e.key === "ArrowRight") navLightbox(1);
       });
+    </script>
+
+    <!-- TOURNAMENT TICKER JS -->
+    <script>
+      (function () {
+        var POLL_INTERVAL = 30000;
+        var API_URL = "/api/tournament-status";
+        var tickerEl = document.getElementById("tournamentTicker");
+        var gridEl = document.getElementById("tickerGrid");
+        var nameEl = document.getElementById("tickerTournamentName");
+        var venueEl = document.getElementById("tickerVenue");
+        var updatedEl = document.getElementById("tickerUpdated");
+
+        function escapeText(s) {
+          var d = document.createElement("div");
+          d.textContent = s;
+          return d.innerHTML;
+        }
+
+        function renderGameRow(game) {
+          var statusClass = "upcoming";
+          var statusText = "--";
+          var rightSide = "";
+
+          if (game.result === "W") {
+            statusClass = "win";
+            statusText = "W";
+          } else if (game.result === "L") {
+            statusClass = "loss";
+            statusText = "L";
+          } else if (game.result === "T") {
+            statusClass = "tie";
+            statusText = "T";
+          }
+
+          if (game.score) {
+            rightSide =
+              '<span class="ticker-game-score">' +
+              game.score.team +
+              "-" +
+              game.score.opponent +
+              "</span>";
+          } else if (game.time) {
+            statusText = game.time.replace(/\s*(AM|PM)/i, "<br>$1");
+            rightSide =
+              '<span class="ticker-game-time">' +
+              escapeText(game.field || "") +
+              "</span>";
+          }
+
+          var meta = escapeText(game.day || "");
+          if (game.field && game.score) {
+            meta += " / " + escapeText(game.field);
+          }
+
+          return (
+            '<div class="ticker-game">' +
+            '<div class="ticker-game-status ' +
+            statusClass +
+            '">' +
+            statusText +
+            "</div>" +
+            '<div class="ticker-game-info">' +
+            '<div class="ticker-game-opponent">' +
+            (game.isAway ? "@ " : "vs ") +
+            escapeText(game.opponent) +
+            "</div>" +
+            '<div class="ticker-game-meta">' +
+            meta +
+            "</div>" +
+            "</div>" +
+            rightSide +
+            "</div>"
+          );
+        }
+
+        function renderCard(div) {
+          var recordText = "";
+          if (div.standings) {
+            recordText =
+              div.standings.wins +
+              "W-" +
+              div.standings.losses +
+              "L-" +
+              div.standings.ties +
+              "T";
+            if (div.standings.place) {
+              recordText +=
+                '<span class="seed">#' + div.standings.place + " seed</span>";
+            }
+          }
+
+          var gamesHtml = "";
+          if (div.games && div.games.length > 0) {
+            for (var i = 0; i < div.games.length; i++) {
+              gamesHtml += renderGameRow(div.games[i]);
+            }
+          } else {
+            gamesHtml =
+              '<div class="ticker-empty">No games scheduled yet</div>';
+          }
+
+          return (
+            '<div class="ticker-card">' +
+            '<div class="ticker-card-division">' +
+            escapeText(div.division) +
+            "</div>" +
+            '<div class="ticker-card-record">' +
+            recordText +
+            "</div>" +
+            gamesHtml +
+            "</div>"
+          );
+        }
+
+        function renderTicker(data) {
+          if (!data || !data.tournaments || data.tournaments.length === 0) {
+            tickerEl.style.display = "none";
+            return;
+          }
+
+          var t = data.tournaments[0];
+          if (
+            !t.divisions ||
+            t.divisions.length === 0 ||
+            t.divisions.every(function (d) {
+              return d.error && (!d.games || d.games.length === 0);
+            })
+          ) {
+            tickerEl.style.display = "none";
+            return;
+          }
+
+          nameEl.textContent = t.name || "Tournament";
+          venueEl.textContent =
+            (t.venue || "") + (t.dates ? " / " + t.dates : "");
+
+          var html = "";
+          for (var i = 0; i < t.divisions.length; i++) {
+            html += renderCard(t.divisions[i]);
+          }
+          gridEl.innerHTML = html;
+
+          if (data.lastUpdated) {
+            var ago = Math.round(
+              (Date.now() - new Date(data.lastUpdated).getTime()) / 60000,
+            );
+            var agoText =
+              ago < 1 ? "just now" : ago === 1 ? "1 min ago" : ago + " min ago";
+            updatedEl.innerHTML =
+              '<span class="ticker-pulse"></span>Updated ' + agoText;
+          }
+
+          tickerEl.style.display = "block";
+        }
+
+        function fetchStatus() {
+          fetch(API_URL)
+            .then(function (r) {
+              return r.json();
+            })
+            .then(function (data) {
+              renderTicker(data);
+            })
+            .catch(function () {
+              /* keep last-known-good state visible */
+            });
+        }
+
+        fetchStatus();
+        setInterval(fetchStatus, POLL_INTERVAL);
+      })();
     </script>
   </body>
 </html>
