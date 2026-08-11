@@ -450,6 +450,10 @@
         border-color: rgba(3, 174, 242, 0.4);
         color: #03aef2;
       }
+      .event-tag.completed {
+        border-color: rgba(76, 175, 80, 0.4);
+        color: #4caf50;
+      }
       .event-cta {
         display: inline-block;
         font-size: 11px;
@@ -458,6 +462,48 @@
         text-transform: uppercase;
         color: var(--gold);
         margin-top: auto;
+      }
+      .event-results {
+        margin-bottom: 20px;
+      }
+      .event-results-division {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .event-results-games {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 14px;
+      }
+      .event-results-game {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .event-results-game .result-badge {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .result-badge.w {
+        color: #4caf50;
+      }
+      .result-badge.l {
+        color: #e57373;
+      }
+      .result-badge.t {
+        color: #ffd54f;
       }
 
       /* ANNOUNCEMENTS SECTION */
@@ -711,17 +757,52 @@
             <h3>The Star <em>Tournament</em></h3>
             <div class="event-location">The Star, Frisco, Texas</div>
             <p class="event-desc">
-              Frisco Elite returns to The Star -- the Dallas Cowboys' world
-              headquarters -- for two days of NFL FLAG competition. This is the
-              premier regional tournament in DFW and a proving ground for our
-              competitive program.
+              SLCT Flag Summer Nationals at The Star and Keller Central HS. Two
+              days of NFL FLAG 5-on-5 competition across two age divisions.
             </p>
+            <div class="event-results">
+              <div class="event-results-division">Boy's 10U &mdash; 4W-1L</div>
+              <div class="event-results-games">
+                <div class="event-results-game">
+                  <span class="result-badge w">W</span> @ ETX Lions 32-0
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge w">W</span> @ Purge XBlurr 15-0
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge w">W</span> vs Thunder Elite 29-6
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge w">W</span> vs NTX Gladiators 7-0
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge l">L</span> vs Hurricanes 0-13
+                </div>
+              </div>
+              <div class="event-results-division">
+                Boy's 9U &mdash; 1W-1L-1T
+              </div>
+              <div class="event-results-games">
+                <div class="event-results-game">
+                  <span class="result-badge w">W</span> vs The Mob 7-6
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge t">T</span> vs G2 x Purge Saints 7-7
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge l">L</span> @ Texas Heat 0-13
+                </div>
+                <div class="event-results-game">
+                  <span class="result-badge l">L</span> vs Flight 7-13
+                </div>
+              </div>
+            </div>
             <div class="event-tags">
+              <span class="event-tag completed">Completed</span>
               <span class="event-tag">NFL FLAG</span>
               <span class="event-tag">Tournament</span>
-              <span class="event-tag">Competitive</span>
             </div>
-            <span class="event-cta">Details Coming Soon</span>
+            <span class="event-cta">SLCT Flag Summer Nationals</span>
           </div>
         </div>
 
@@ -769,19 +850,10 @@
         <!-- EVENT 3: SKILLS CLINIC / COMBINE / TRYOUTS -->
         <div class="event-card">
           <div class="event-flyer">
-            <div class="event-flyer-placeholder">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M21 15l-5-5L5 21" />
-              </svg>
-              <span>Flyer Coming Soon</span>
-            </div>
+            <img
+              src="img/events/skills-clinic-poster.jpeg"
+              alt="FAF Free Skills Clinic and Mini Combine"
+            />
           </div>
           <div class="event-details">
             <div class="event-date-badge">
