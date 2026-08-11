@@ -115,6 +115,7 @@ export async function onRequestGet(context) {
         prefix: UPLOADS_PREFIX,
         limit: LIST_PAGE_SIZE,
         cursor,
+        include: ["httpMetadata", "customMetadata"],
       });
 
       const items = [];
