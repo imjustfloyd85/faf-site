@@ -845,6 +845,271 @@
         color: var(--gold);
       }
 
+      /* ── SPONSOR WALL (approved sponsors) ── */
+      .sponsor-wall {
+        margin-top: 48px;
+      }
+
+      .sponsor-logos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+      }
+
+      .sponsor-logo-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        transition: border-color 0.2s;
+      }
+
+      .sponsor-logo-card:hover {
+        border-color: var(--gold);
+      }
+
+      .sponsor-logo-card img {
+        max-width: 140px;
+        max-height: 80px;
+        object-fit: contain;
+      }
+
+      .sponsor-logo-card .sponsor-name {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .sponsor-logo-card .sponsor-tier {
+        font-size: 10px;
+        color: var(--gold);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .sponsor-wall-empty {
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+        padding: 24px;
+      }
+
+      /* ── AGREEMENT MODAL ── */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.85);
+        justify-content: center;
+        align-items: flex-start;
+        padding: 80px 24px 40px;
+        overflow-y: auto;
+      }
+
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        max-width: 680px;
+        width: 100%;
+        padding: 40px 32px;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 24px;
+        cursor: pointer;
+        padding: 4px 8px;
+        line-height: 1;
+      }
+
+      .modal-close:hover {
+        color: var(--warm);
+      }
+
+      .modal-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--warm);
+        margin-bottom: 8px;
+      }
+
+      .modal-subtitle {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+
+      .modal-section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
+        margin-top: 24px;
+      }
+
+      .modal-field {
+        margin-bottom: 16px;
+      }
+
+      .modal-field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .modal-field input[type="text"],
+      .modal-field input[type="email"] {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+      }
+
+      .modal-field input:focus {
+        border-color: var(--gold);
+      }
+
+      .modal-field input::placeholder {
+        color: var(--muted);
+        opacity: 0.5;
+      }
+
+      .logo-upload-area {
+        border: 2px dashed var(--border);
+        border-radius: 4px;
+        padding: 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+
+      .logo-upload-area:hover {
+        border-color: var(--gold);
+      }
+
+      .logo-upload-area.has-file {
+        border-color: var(--gold);
+        border-style: solid;
+      }
+
+      .logo-upload-area input[type="file"] {
+        display: none;
+      }
+
+      .logo-upload-label {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .logo-upload-label strong {
+        color: var(--gold);
+        cursor: pointer;
+      }
+
+      .logo-preview-img {
+        max-width: 160px;
+        max-height: 80px;
+        margin-top: 8px;
+        display: none;
+      }
+
+      .agreement-scroll {
+        max-height: 240px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 16px;
+        background: var(--dark);
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+
+      .agreement-scroll h3 {
+        font-size: 14px;
+        color: var(--warm);
+        margin-bottom: 8px;
+      }
+
+      .agreement-scroll h4 {
+        font-size: 12px;
+        color: var(--warm);
+        margin-top: 12px;
+        margin-bottom: 4px;
+      }
+
+      .agreement-scroll ul {
+        margin: 8px 0;
+        padding-left: 20px;
+      }
+
+      .agreement-checkbox {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .agreement-checkbox input[type="checkbox"] {
+        margin-top: 3px;
+        accent-color: var(--gold);
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      .agreement-checkbox label {
+        font-size: 13px;
+        color: var(--warm);
+        line-height: 1.5;
+        cursor: pointer;
+      }
+
+      .modal-error {
+        display: none;
+        font-size: 13px;
+        color: #d63430;
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        background: rgba(214, 52, 48, 0.08);
+        border: 1px solid rgba(214, 52, 48, 0.2);
+        border-radius: 2px;
+      }
+
       @media (max-width: 900px) {
         nav {
           padding: 16px 24px;
@@ -869,6 +1134,9 @@
         }
         .donate-fields {
           grid-template-columns: 1fr;
+        }
+        .modal-content {
+          padding: 24px 16px;
         }
       }
     </style>
@@ -1202,6 +1470,110 @@
       </div>
     </section>
 
+    <!-- APPROVED SPONSORS WALL -->
+    <section id="sponsor-wall">
+      <div class="container">
+        <div style="text-align: center">
+          <p class="section-label">Our Sponsors</p>
+          <h2 class="section-title">Partners who <em>show up</em></h2>
+        </div>
+        <div class="sponsor-wall" id="approvedSponsorsWall">
+          <div class="sponsor-wall-empty" id="sponsorWallEmpty">
+            Loading sponsors...
+          </div>
+          <div class="sponsor-logos" id="sponsorLogosGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGREEMENT MODAL -->
+    <div class="modal-overlay" id="agreementModal">
+      <div class="modal-content">
+        <button
+          class="modal-close"
+          onclick="closeAgreementModal()"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <div class="modal-title">Sponsor Logo Placement</div>
+        <div class="modal-subtitle" id="modalTierLabel"></div>
+
+        <p class="modal-section-label">Your Information</p>
+        <div class="modal-field">
+          <label for="modalSponsorName">Contact Name</label>
+          <input
+            type="text"
+            id="modalSponsorName"
+            placeholder="Your full name"
+          />
+        </div>
+        <div class="modal-field">
+          <label for="modalSponsorOrg">Organization / Business Name</label>
+          <input
+            type="text"
+            id="modalSponsorOrg"
+            placeholder="Company or organization"
+          />
+        </div>
+        <div class="modal-field">
+          <label for="modalSponsorEmail">Email Address</label>
+          <input
+            type="email"
+            id="modalSponsorEmail"
+            placeholder="you@company.com"
+          />
+        </div>
+
+        <p class="modal-section-label">Upload Your Logo</p>
+        <div class="modal-field">
+          <div
+            class="logo-upload-area"
+            id="logoUploadArea"
+            onclick="document.getElementById('logoFileInput').click()"
+          >
+            <input
+              type="file"
+              id="logoFileInput"
+              accept="image/jpeg,image/png,image/gif,image/webp"
+              onchange="handleLogoSelect(this)"
+            />
+            <div class="logo-upload-label" id="logoUploadLabel">
+              <strong>Click to upload</strong> or drag your logo here<br />
+              JPEG, PNG, GIF, or WebP (max 5 MB)
+            </div>
+            <img
+              class="logo-preview-img"
+              id="logoPreviewImg"
+              alt="Logo preview"
+            />
+          </div>
+        </div>
+
+        <p class="modal-section-label">Sponsorship Agreement</p>
+        <div class="agreement-scroll" id="agreementText"></div>
+        <div class="agreement-checkbox">
+          <input type="checkbox" id="agreementAccept" />
+          <label for="agreementAccept">
+            I have read and accept the Sponsorship Logo Placement Agreement. I
+            represent and warrant that I own all rights to the submitted logo
+            and agree to indemnify Fathers and Football against any third-party
+            IP claims.
+          </label>
+        </div>
+
+        <div class="modal-error" id="modalError"></div>
+        <button
+          type="button"
+          class="btn-primary"
+          id="modalSubmitBtn"
+          onclick="handleModalSubmit()"
+        >
+          Upload Logo &amp; Proceed to Payment
+        </button>
+      </div>
+    </div>
+
     <!-- INTAKE FORM -->
     <section class="intake-section" id="sponsor-form">
       <div class="container">
@@ -1493,7 +1865,52 @@
       }
 
       // ── Sponsorship Tier Checkout handler ──
-      async function handleTierCheckout(tier, btnEl) {
+      // Opens the agreement modal instead of going directly to Stripe.
+      // The modal collects logo, org info, and agreement acceptance.
+      var pendingTier = null;
+      var pendingTierBtn = null;
+      var pendingTierEmail = null;
+      var pendingTierAmount = null;
+      var selectedLogoFile = null;
+
+      var TIER_LABELS = {
+        sideline: "Sideline ($250)",
+        playmaker: "Playmaker ($1,000)",
+        legacy: "Legacy ($5,000+)",
+      };
+
+      // Agreement HTML (mirrors functions/lib/sponsor-agreement.js v1.0)
+      var AGREEMENT_HTML =
+        '<h3 style="margin-bottom:12px;">Fathers and Football — Sponsorship Logo Placement Agreement</h3>' +
+        '<p style="font-size:13px;color:#999;margin-bottom:16px;">Agreement Version 1.0</p>' +
+        "<p>This Sponsorship Logo Placement Agreement is entered into between the Sponsor and " +
+        "<strong>Fathers and Football</strong>, a 501(c)(3) tax-exempt organization (EIN 42-1980182), " +
+        "effective as of the date of electronic acceptance below.</p>" +
+        "<h4>1. Grant of License</h4>" +
+        "<p>Sponsor grants FAF a non-exclusive, royalty-free, revocable license to reproduce, display, " +
+        "and distribute Sponsor's logo on the FAF website, program materials, and event signage.</p>" +
+        "<h4>2. Representations and Warranties</h4>" +
+        "<p>Sponsor represents and warrants that: Sponsor is the sole owner of the logo; the logo does " +
+        "not infringe any copyright, trademark, or other intellectual property right of any third party; " +
+        "and Sponsor has full authority to grant the license described herein.</p>" +
+        "<h4>3. Indemnification</h4>" +
+        "<p>Sponsor shall indemnify, defend, and hold harmless FAF from and against any and all claims, " +
+        "damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising " +
+        "out of any breach of the representations and warranties or any allegation that the logo " +
+        "infringes third-party intellectual property rights.</p>" +
+        "<h4>4. Tax Disclosure (IRC Section 6115)</h4>" +
+        "<p>Because each sponsorship tier includes tangible benefits (such as logo placement, event " +
+        "invitations, or co-branded programming), only the portion of your contribution that exceeds " +
+        "the fair market value of the benefits received may be tax-deductible.</p>" +
+        "<h4>5. Approval and Placement</h4>" +
+        "<p>All logo placements are subject to FAF review and approval. Your logo will not appear on " +
+        "the FAF website until FAF has reviewed and approved the submission.</p>" +
+        "<h4>6. Termination</h4>" +
+        "<p>Either party may terminate this Agreement upon thirty (30) days' written notice.</p>" +
+        "<h4>7. Governing Law</h4>" +
+        "<p>This Agreement shall be governed by the laws of the State of Texas.</p>";
+
+      function handleTierCheckout(tier, btnEl) {
         var card = btnEl.closest(".tier-card");
         var emailInput = card.querySelector(".tier-email");
         var email = emailInput ? emailInput.value.trim() : "";
@@ -1517,39 +1934,217 @@
           legacyInput.style.borderColor = "";
         }
 
-        btnEl.disabled = true;
-        btnEl.textContent = "Processing...";
+        // Store pending checkout state and open modal
+        pendingTier = tier;
+        pendingTierBtn = btnEl;
+        pendingTierEmail = email;
+        pendingTierAmount = amount;
+        openAgreementModal(tier, email);
+      }
+
+      function openAgreementModal(tier, email) {
+        document.getElementById("modalTierLabel").textContent =
+          TIER_LABELS[tier] || tier;
+        document.getElementById("modalSponsorEmail").value = email;
+        document.getElementById("agreementText").innerHTML = AGREEMENT_HTML;
+        document.getElementById("agreementAccept").checked = false;
+        document.getElementById("modalError").style.display = "none";
+        document.getElementById("modalSubmitBtn").disabled = false;
+        document.getElementById("modalSubmitBtn").textContent =
+          "Upload Logo & Proceed to Payment";
+        selectedLogoFile = null;
+        document.getElementById("logoFileInput").value = "";
+        document.getElementById("logoPreviewImg").style.display = "none";
+        document.getElementById("logoUploadLabel").style.display = "block";
+        document.getElementById("logoUploadArea").classList.remove("has-file");
+        document.getElementById("agreementModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeAgreementModal() {
+        document.getElementById("agreementModal").classList.remove("open");
+        document.body.style.overflow = "";
+        if (pendingTierBtn) {
+          pendingTierBtn.disabled = false;
+          pendingTierBtn.textContent = "Sponsor Now";
+        }
+      }
+
+      function handleLogoSelect(input) {
+        var file = input.files[0];
+        if (!file) return;
+        selectedLogoFile = file;
+        var preview = document.getElementById("logoPreviewImg");
+        var label = document.getElementById("logoUploadLabel");
+        var area = document.getElementById("logoUploadArea");
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = "block";
+          label.style.display = "none";
+          area.classList.add("has-file");
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function showModalError(msg) {
+        var el = document.getElementById("modalError");
+        el.textContent = msg;
+        el.style.display = "block";
+      }
+
+      async function handleModalSubmit() {
+        var btn = document.getElementById("modalSubmitBtn");
+        var name = document.getElementById("modalSponsorName").value.trim();
+        var org = document.getElementById("modalSponsorOrg").value.trim();
+        var email = document.getElementById("modalSponsorEmail").value.trim();
+        var agreed = document.getElementById("agreementAccept").checked;
+
+        document.getElementById("modalError").style.display = "none";
+
+        if (!name) {
+          showModalError("Please enter your name.");
+          return;
+        }
+        if (!org) {
+          showModalError("Please enter your organization name.");
+          return;
+        }
+        if (!email || !email.includes("@")) {
+          showModalError("Please enter a valid email address.");
+          return;
+        }
+        if (!selectedLogoFile) {
+          showModalError("Please upload your logo.");
+          return;
+        }
+        if (selectedLogoFile.size > 5 * 1024 * 1024) {
+          showModalError("Logo file is too large. Maximum size is 5 MB.");
+          return;
+        }
+        if (!agreed) {
+          showModalError(
+            "You must accept the sponsorship agreement to proceed.",
+          );
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "Uploading logo...";
 
         try {
-          var body = {
-            type: "sponsorship",
-            tier: tier,
-            email: email,
-          };
-          if (amount) body.amount = amount;
+          // Step 1: Upload logo and create pending sponsor entry
+          var formData = new FormData();
+          formData.append("logo", selectedLogoFile);
+          formData.append("sponsorName", name);
+          formData.append("sponsorEmail", email);
+          formData.append("sponsorOrg", org);
+          formData.append("tier", pendingTier);
+          formData.append("agreementAccepted", "true");
 
-          var res = await fetch(API_URL, {
+          var uploadRes = await fetch("/api/sponsor-logo-upload", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            body: formData,
           });
 
-          var data = await res.json();
+          var uploadData = await uploadRes.json();
 
-          if (!res.ok || !data.url) {
-            alert(data.error || "Something went wrong. Please try again.");
-            btnEl.disabled = false;
-            btnEl.textContent = "Sponsor Now";
+          if (!uploadRes.ok || !uploadData.entryId) {
+            showModalError(
+              uploadData.error || "Logo upload failed. Please try again.",
+            );
+            btn.disabled = false;
+            btn.textContent = "Upload Logo & Proceed to Payment";
             return;
           }
 
-          window.location.href = data.url;
+          // Step 2: Create Stripe checkout session with sponsor entry ID
+          btn.textContent = "Redirecting to payment...";
+
+          var checkoutBody = {
+            type: "sponsorship",
+            tier: pendingTier,
+            email: email,
+            name: name,
+            sponsorEntryId: uploadData.entryId,
+          };
+          if (pendingTierAmount) checkoutBody.amount = pendingTierAmount;
+
+          var checkoutRes = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(checkoutBody),
+          });
+
+          var checkoutData = await checkoutRes.json();
+
+          if (!checkoutRes.ok || !checkoutData.url) {
+            showModalError(
+              checkoutData.error || "Something went wrong. Please try again.",
+            );
+            btn.disabled = false;
+            btn.textContent = "Upload Logo & Proceed to Payment";
+            return;
+          }
+
+          window.location.href = checkoutData.url;
         } catch (err) {
-          alert("Network error. Please check your connection and try again.");
-          btnEl.disabled = false;
-          btnEl.textContent = "Sponsor Now";
+          showModalError(
+            "Network error. Please check your connection and try again.",
+          );
+          btn.disabled = false;
+          btn.textContent = "Upload Logo & Proceed to Payment";
         }
       }
+
+      // ── Approved Sponsors Display ──
+      async function loadApprovedSponsors() {
+        var grid = document.getElementById("sponsorLogosGrid");
+        var emptyMsg = document.getElementById("sponsorWallEmpty");
+
+        try {
+          var res = await fetch("/api/approved-sponsors");
+          var data = await res.json();
+
+          if (!data.sponsors || data.sponsors.length === 0) {
+            emptyMsg.textContent =
+              "Be the first to have your logo on our sponsors wall.";
+            return;
+          }
+
+          emptyMsg.style.display = "none";
+          grid.innerHTML = "";
+
+          data.sponsors.forEach(function (sponsor) {
+            var card = document.createElement("div");
+            card.className = "sponsor-logo-card";
+
+            var img = document.createElement("img");
+            img.src = "/api/sponsor-logo?id=" + encodeURIComponent(sponsor.id);
+            img.alt = sponsor.name + " logo";
+            img.loading = "lazy";
+            card.appendChild(img);
+
+            var nameEl = document.createElement("div");
+            nameEl.className = "sponsor-name";
+            nameEl.textContent = sponsor.name;
+            card.appendChild(nameEl);
+
+            var tierEl = document.createElement("div");
+            tierEl.className = "sponsor-tier";
+            tierEl.textContent = sponsor.tier;
+            card.appendChild(tierEl);
+
+            grid.appendChild(card);
+          });
+        } catch (err) {
+          emptyMsg.textContent =
+            "Be the first to have your logo on our sponsors wall.";
+        }
+      }
+
+      // Load approved sponsors on page load
+      loadApprovedSponsors();
 
       // ── Sponsor Inquiry Form (existing mailto fallback replaced with mailto) ──
       function handleFormSubmit(e) {
