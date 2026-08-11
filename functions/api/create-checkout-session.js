@@ -47,7 +47,7 @@ export async function onRequestPost(context) {
     }
 
     const body = await context.request.json();
-    const { type, tier, amount, recurring, name, email } = body;
+    const { type, tier, amount, recurring, name, email, sponsorEntryId } = body;
 
     // Validate common fields
     if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -95,6 +95,9 @@ export async function onRequestPost(context) {
       productName = tierDef.name + " — Fathers and Football";
       mode = "payment"; // sponsorships are one-time
       metadata = { type: "sponsorship", tier };
+      if (sponsorEntryId) {
+        metadata.sponsor_entry_id = String(sponsorEntryId).slice(0, 100);
+      }
 
       lineItem = {
         price_data: {

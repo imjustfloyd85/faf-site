@@ -393,6 +393,120 @@ async function createPendingQboEntry(context, session, paymentType) {
   console.log(`QBO pending entry created: ${entryId} (${type}, ${amountStr})`);
 }
 
+// --- Sponsor Logo Approval Queue ---
+
+async function updateSponsorEntryAndNotify(context, session) {
+  const kv = context.env.FAF_KV;
+  const approvalSecret = context.env.QBO_APPROVAL_SECRET;
+
+  if (!kv || !approvalSecret) {
+    console.error(
+      "Sponsor entry update skipped: FAF_KV or QBO_APPROVAL_SECRET not configured",
+    );
+    return;
+  }
+
+  const sponsorEntryId = session.metadata.sponsor_entry_id;
+  const entryRaw = await kv.get(`sponsor:pending:${sponsorEntryId}`);
+  if (!entryRaw) {
+    console.error(`Sponsor entry not found: ${sponsorEntryId}`);
+    return;
+  }
+
+  let entry;
+  try {
+    entry = JSON.parse(entryRaw);
+  } catch {
+    console.error(`Sponsor entry parse error: ${sponsorEntryId}`);
+    return;
+  }
+
+  // Update entry with payment info and advance status
+  entry.status = "pending-approval";
+  entry.stripeSessionId = session.id;
+  entry.amountCents = session.amount_total || 0;
+  entry.paidAt = new Date().toISOString();
+
+  await kv.put(`sponsor:pending:${sponsorEntryId}`, JSON.stringify(entry), {
+    expirationTtl: 30 * 24 * 60 * 60,
+  });
+
+  // Create signed approval tokens
+  const approveToken = await createApprovalToken(
+    sponsorEntryId,
+    "approve",
+    approvalSecret,
+  );
+  const rejectToken = await createApprovalToken(
+    sponsorEntryId,
+    "reject",
+    approvalSecret,
+  );
+
+  const siteUrl = "https://fathersandfootball.org";
+  const approveUrl = `${siteUrl}/api/sponsor-approve?token=${encodeURIComponent(approveToken)}`;
+  const rejectUrl = `${siteUrl}/api/sponsor-approve?token=${encodeURIComponent(rejectToken)}`;
+  const logoPreviewUrl = `${siteUrl}/api/sponsor-logo?id=${encodeURIComponent(sponsorEntryId)}`;
+
+  const amountStr = (entry.amountCents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  const tierLabel = entry.tier.charAt(0).toUpperCase() + entry.tier.slice(1);
+
+  const approvalHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #c8923c;">Sponsor Logo Approval Required</h2>
+      <p>A new <strong>${escapeHtml(tierLabel)}</strong> sponsor has paid and submitted a logo for placement on the website. Review the logo and approve or reject.</p>
+      <table style="border-collapse: collapse; width: 100%; margin: 16px 0;">
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Sponsor</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(entry.sponsorName)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Organization</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(entry.sponsorOrg)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(entry.sponsorEmail)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Tier</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${escapeHtml(tierLabel)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Amount</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${amountStr}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Agreement</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">v${escapeHtml(entry.agreementVersion)} accepted ${escapeHtml(entry.agreementAcceptedAt)}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Stripe Session</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${session.id}</td></tr>
+      </table>
+      <p style="margin: 16px 0;"><strong>Logo Preview:</strong></p>
+      <p><a href="${logoPreviewUrl}" style="color: #c8923c;">View submitted logo</a></p>
+      <p style="margin: 24px 0;">
+        <a href="${approveUrl}" style="display: inline-block; padding: 12px 24px; background: #28a745; color: #fff; text-decoration: none; border-radius: 4px; margin-right: 12px;">Approve Logo Placement</a>
+        <a href="${rejectUrl}" style="display: inline-block; padding: 12px 24px; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px;">Reject</a>
+      </p>
+      <p style="font-size: 12px; color: #666;">This link expires in 7 days. The sponsor accepted the logo placement agreement (rep/warranty on IP ownership + indemnification). Their logo will NOT appear on the site until you click Approve.</p>
+    </div>
+  `;
+
+  const approvalResult = await sendViaACS(context.env, {
+    from: "Fathers and Football <communications@fathersandfootball.org>",
+    to: [
+      "justin@fathersandfootball.org",
+      "communications@fathersandfootball.org",
+    ],
+    subject: `[Sponsor Approval] ${escapeHtml(tierLabel)} logo: ${escapeHtml(entry.sponsorOrg)}`,
+    html: approvalHtml,
+  });
+
+  if (!approvalResult.ok) {
+    console.error(
+      "Failed to send sponsor approval email:",
+      approvalResult.status,
+    );
+  }
+
+  console.log(
+    `Sponsor entry updated to pending-approval: ${sponsorEntryId} (${entry.sponsorOrg}, ${tierLabel})`,
+  );
+}
+
 // --- Main Handler ---
 
 export async function onRequestPost(context) {
@@ -472,6 +586,14 @@ export async function onRequestPost(context) {
       // Write a pending entry to KV and send an approval email.
       // The entry is NOT posted to QuickBooks until a human clicks Approve.
       await createPendingQboEntry(context, session, paymentType);
+
+      // --- Sponsor Logo Approval Queue ---
+      // If this sponsorship has a linked sponsor entry (logo upload + agreement),
+      // update the entry status and send an admin approval email for the logo
+      // placement. The logo stays hidden on the public site until approved.
+      if (paymentType === "sponsorship" && session.metadata?.sponsor_entry_id) {
+        await updateSponsorEntryAndNotify(context, session);
+      }
     }
 
     return new Response(JSON.stringify({ received: true }), {
