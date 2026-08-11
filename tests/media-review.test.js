@@ -278,6 +278,48 @@ test("T3.3: List action supports pagination via cursor", function () {
   );
 });
 
+test("T3.4a: List action requests httpMetadata from R2", function () {
+  // bucket.list() must include httpMetadata so contentType is populated
+  var listCallStart = fnSrc.indexOf("bucket.list(");
+  assert.ok(listCallStart !== -1, "Must call bucket.list");
+  var listCallBlock = fnSrc.substring(listCallStart, listCallStart + 300);
+  assert.ok(
+    listCallBlock.includes("httpMetadata"),
+    "bucket.list() must include httpMetadata — without it, obj.httpMetadata is undefined and contentType falls back to application/octet-stream",
+  );
+});
+
+test("T3.4b: List action requests customMetadata from R2", function () {
+  // bucket.list() must include customMetadata so submitterName/caption/originalFilename are populated
+  var listCallStart = fnSrc.indexOf("bucket.list(");
+  var listCallBlock = fnSrc.substring(listCallStart, listCallStart + 300);
+  assert.ok(
+    listCallBlock.includes("customMetadata"),
+    "bucket.list() must include customMetadata — without it, obj.customMetadata is undefined and submitterName/caption/originalFilename are blank",
+  );
+});
+
+test("T3.4c: List action passes include option to bucket.list()", function () {
+  // The include option must be an array containing both metadata types
+  var listCallStart = fnSrc.indexOf("bucket.list(");
+  var listCallBlock = fnSrc.substring(listCallStart, listCallStart + 300);
+  assert.ok(
+    listCallBlock.includes("include:") || listCallBlock.includes("include :"),
+    "bucket.list() options must contain an 'include' property",
+  );
+  // Verify both metadata types are requested
+  assert.ok(
+    listCallBlock.includes('"httpMetadata"') ||
+      listCallBlock.includes("'httpMetadata'"),
+    "include array must contain 'httpMetadata'",
+  );
+  assert.ok(
+    listCallBlock.includes('"customMetadata"') ||
+      listCallBlock.includes("'customMetadata'"),
+    "include array must contain 'customMetadata'",
+  );
+});
+
 test("T3.4: Serve action streams R2 object body", function () {
   assert.ok(fnSrc.includes("obj.body"), "Serve must stream the R2 object body");
 });
