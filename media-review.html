@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Review — Fathers and Football</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --teal: #008e97;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+      nav ul {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+      nav ul a {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      nav ul a:hover {
+        color: var(--gold);
+      }
+      .nav-cta {
+        padding: 9px 22px;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      /* HERO (compact for admin) */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 24px 40px;
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          rgba(200, 146, 60, 0.05) 0%,
+          transparent 65%
+        );
+      }
+      .hero-badge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 16px;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+      .hero h1 {
+        position: relative;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(36px, 8vw, 72px);
+        font-weight: 900;
+        line-height: 0.9;
+        color: var(--warm);
+        letter-spacing: -1px;
+        text-transform: uppercase;
+      }
+      .hero h1 em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+        text-transform: none;
+      }
+
+      /* AUTH GATE */
+      .auth-gate {
+        padding: 40px 24px 64px;
+      }
+      .auth-card {
+        max-width: 480px;
+        margin: 0 auto;
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 48px 36px;
+      }
+      .form-group {
+        margin-bottom: 24px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+      .form-group input[type="password"] {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus {
+        border-color: var(--gold);
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 16px;
+        background: transparent;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .submit-btn:hover:not(:disabled) {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .submit-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* STATUS MESSAGES */
+      .status-msg {
+        display: none;
+        padding: 16px;
+        border-radius: 2px;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .status-msg.visible {
+        display: block;
+      }
+      .status-msg.error {
+        background: rgba(192, 57, 43, 0.1);
+        border: 1px solid rgba(192, 57, 43, 0.3);
+        color: #e74c3c;
+      }
+      .status-msg.success {
+        background: rgba(39, 174, 96, 0.1);
+        border: 1px solid rgba(39, 174, 96, 0.3);
+        color: #2ecc71;
+      }
+
+      /* REVIEW PANEL (hidden until authenticated) */
+      .review-panel {
+        display: none;
+        padding: 0 24px 64px;
+      }
+      .review-panel.visible {
+        display: block;
+      }
+      .review-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* FILTERS */
+      .filter-bar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .filter-btn {
+        padding: 10px 20px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--muted);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .filter-btn:hover {
+        color: var(--gold);
+        border-color: var(--gold);
+      }
+      .filter-btn.active {
+        background: var(--gold);
+        color: var(--dark);
+        border-color: var(--gold);
+      }
+      .filter-count {
+        font-size: 12px;
+        color: var(--muted);
+        margin-left: auto;
+      }
+
+      /* MEDIA GRID */
+      .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .media-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .media-card:hover {
+        border-color: var(--gold);
+      }
+      .media-preview {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: var(--dark-3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .media-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .media-preview video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .media-type-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 3px 10px;
+        background: rgba(10, 10, 10, 0.85);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--warm);
+      }
+      .media-status-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 3px 10px;
+        border-radius: 2px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .media-status-badge.pending {
+        background: rgba(200, 146, 60, 0.2);
+        border: 1px solid rgba(200, 146, 60, 0.4);
+        color: var(--gold);
+      }
+      .media-status-badge.approved {
+        background: rgba(39, 174, 96, 0.2);
+        border: 1px solid rgba(39, 174, 96, 0.4);
+        color: #2ecc71;
+      }
+      .media-status-badge.rejected {
+        background: rgba(192, 57, 43, 0.2);
+        border: 1px solid rgba(192, 57, 43, 0.4);
+        color: #e74c3c;
+      }
+      .media-info {
+        padding: 16px;
+      }
+      .media-filename {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--warm);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+      .media-meta {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .media-actions {
+        display: flex;
+        gap: 8px;
+        padding: 0 16px 16px;
+      }
+      .action-btn {
+        flex: 1;
+        padding: 10px 8px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+        background: transparent;
+      }
+      .action-btn.approve {
+        color: var(--green);
+        border-color: rgba(39, 174, 96, 0.3);
+      }
+      .action-btn.approve:hover {
+        background: var(--green);
+        color: var(--dark);
+        border-color: var(--green);
+      }
+      .action-btn.reject {
+        color: var(--gold);
+        border-color: rgba(200, 146, 60, 0.3);
+      }
+      .action-btn.reject:hover {
+        background: var(--gold);
+        color: var(--dark);
+        border-color: var(--gold);
+      }
+      .action-btn.delete {
+        color: var(--red);
+        border-color: rgba(192, 57, 43, 0.3);
+      }
+      .action-btn.delete:hover {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+      }
+      .action-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      .action-btn:disabled:hover {
+        background: transparent;
+      }
+      .media-view-link {
+        display: block;
+        text-align: center;
+        padding: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .media-view-link:hover {
+        color: var(--gold);
+      }
+
+      /* EMPTY STATE */
+      .empty-state {
+        text-align: center;
+        padding: 80px 24px;
+        color: var(--muted);
+      }
+      .empty-state p {
+        font-size: 15px;
+      }
+
+      /* LOADING */
+      .loading {
+        text-align: center;
+        padding: 80px 24px;
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      /* LOAD MORE */
+      .load-more-wrap {
+        text-align: center;
+        margin-top: 32px;
+      }
+
+      /* CONFIRM DIALOG */
+      .confirm-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+      }
+      .confirm-overlay.visible {
+        display: flex;
+      }
+      .confirm-box {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 36px;
+        max-width: 420px;
+        width: 90%;
+      }
+      .confirm-box h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--red);
+        margin-bottom: 12px;
+      }
+      .confirm-box p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+      .confirm-box .confirm-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      /* MOBILE NAV */
+      .nav-hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--warm);
+        border-radius: 2px;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(10, 10, 10, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        flex-direction: column;
+        gap: 0;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .mobile-menu a:last-child {
+        border-bottom: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--gold);
+      }
+
+      /* FOOTER */
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 48px 24px 32px;
+        text-align: center;
+      }
+      .footer-parent {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .footer-parent a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 16px 0;
+      }
+      .footer-links a {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-size: 11px;
+        color: rgba(125, 122, 119, 0.4);
+        margin-top: 14px;
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 20px;
+        }
+        nav ul {
+          display: none;
+        }
+        .nav-hamburger {
+          display: flex;
+        }
+        .auth-card {
+          padding: 32px 20px;
+        }
+        .media-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-back" href="index.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+        </svg>
+        Fathers &amp; Football
+      </a>
+      <ul>
+        <li><a href="community.html">Teams</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="sponsors.html">Become a Sponsor</a></li>
+      </ul>
+      <a href="sponsors.html" class="nav-cta">Become a Sponsor</a>
+      <button
+        class="nav-hamburger"
+        aria-label="Menu"
+        onclick="document.getElementById('mobileMenu').classList.toggle('open')"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a
+        href="community.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Teams</a
+      >
+      <a
+        href="events.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Events</a
+      >
+      <a
+        href="sponsors.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Become a Sponsor</a
+      >
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge">Admin</div>
+      <h1>Media <em>Review</em></h1>
+    </section>
+
+    <!-- AUTH GATE -->
+    <section class="auth-gate" id="authGate">
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="adminPasscode">Admin Passcode</label>
+          <input
+            type="password"
+            id="adminPasscode"
+            placeholder="Enter admin passcode"
+            required
+            autocomplete="off"
+          />
+          <p class="form-hint">
+            This is the admin passcode, not the team upload passcode.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="submit-btn"
+          id="authBtn"
+          onclick="authenticate()"
+        >
+          Sign In
+        </button>
+        <div class="status-msg" id="authStatus"></div>
+      </div>
+    </section>
+
+    <!-- REVIEW PANEL (hidden until authenticated) -->
+    <section class="review-panel" id="reviewPanel">
+      <div class="review-container">
+        <div class="filter-bar">
+          <button
+            class="filter-btn active"
+            data-status="pending"
+            onclick="setFilter('pending', this)"
+          >
+            Pending
+          </button>
+          <button
+            class="filter-btn"
+            data-status="approved"
+            onclick="setFilter('approved', this)"
+          >
+            Approved
+          </button>
+          <button
+            class="filter-btn"
+            data-status="rejected"
+            onclick="setFilter('rejected', this)"
+          >
+            Rejected
+          </button>
+          <button
+            class="filter-btn"
+            data-status=""
+            onclick="setFilter('', this)"
+          >
+            All
+          </button>
+          <span class="filter-count" id="filterCount"></span>
+        </div>
+
+        <div id="mediaContent">
+          <div class="loading" id="loadingState">Loading media...</div>
+          <div class="media-grid" id="mediaGrid"></div>
+          <div class="empty-state" id="emptyState" style="display: none">
+            <p>No media found for this filter.</p>
+          </div>
+          <div class="load-more-wrap" id="loadMoreWrap" style="display: none">
+            <button
+              class="submit-btn"
+              onclick="loadMore()"
+              style="max-width: 300px; margin: 0 auto"
+            >
+              Load More
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DELETE CONFIRM DIALOG -->
+    <div class="confirm-overlay" id="confirmOverlay">
+      <div class="confirm-box">
+        <h3>Delete Media</h3>
+        <p>
+          This will permanently remove this file from storage. This action
+          cannot be undone.
+        </p>
+        <div class="confirm-actions">
+          <button class="submit-btn" style="flex: 1" onclick="cancelDelete()">
+            Cancel
+          </button>
+          <button
+            class="action-btn delete"
+            style="flex: 1; padding: 16px"
+            id="confirmDeleteBtn"
+            onclick="confirmDelete()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p class="footer-parent">
+        A <a href="index.html">Fathers and Football</a> Initiative
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var adminPasscode = "";
+      var currentFilter = "pending";
+      var currentCursor = null;
+      var pendingDeleteKey = null;
+
+      var IMAGE_TYPES = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+        "image/heic",
+        "image/heif",
+      ];
+      var VIDEO_TYPES = [
+        "video/mp4",
+        "video/quicktime",
+        "video/x-msvideo",
+        "video/webm",
+        "video/x-matroska",
+      ];
+
+      function authenticate() {
+        var pc = document.getElementById("adminPasscode").value.trim();
+        if (!pc) {
+          showAuthStatus("Enter the admin passcode.", "error");
+          return;
+        }
+
+        document.getElementById("authBtn").disabled = true;
+        document.getElementById("authBtn").textContent = "CHECKING...";
+
+        var url =
+          "/api/media-review?action=list&status=pending&passcode=" +
+          encodeURIComponent(pc);
+
+        fetch(url)
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              adminPasscode = pc;
+              document.getElementById("authGate").style.display = "none";
+              document.getElementById("reviewPanel").classList.add("visible");
+              renderItems(result.data.items);
+              currentCursor = result.data.cursor;
+              updateLoadMore(result.data.truncated);
+            } else {
+              showAuthStatus(
+                result.data.error || "Authentication failed.",
+                "error",
+              );
+            }
+          })
+          .catch(function () {
+            showAuthStatus("Network error. Please try again.", "error");
+          })
+          .finally(function () {
+            document.getElementById("authBtn").disabled = false;
+            document.getElementById("authBtn").textContent = "SIGN IN";
+          });
+      }
+
+      function showAuthStatus(msg, type) {
+        var el = document.getElementById("authStatus");
+        el.textContent = msg;
+        el.className = "status-msg visible " + type;
+      }
+
+      function setFilter(status, btn) {
+        currentFilter = status;
+        currentCursor = null;
+        document.querySelectorAll(".filter-btn").forEach(function (b) {
+          b.classList.remove("active");
+        });
+        btn.classList.add("active");
+        loadMedia();
+      }
+
+      function loadMedia() {
+        var grid = document.getElementById("mediaGrid");
+        var loading = document.getElementById("loadingState");
+        var empty = document.getElementById("emptyState");
+        grid.innerHTML = "";
+        loading.style.display = "block";
+        empty.style.display = "none";
+        document.getElementById("loadMoreWrap").style.display = "none";
+
+        var url =
+          "/api/media-review?action=list&passcode=" +
+          encodeURIComponent(adminPasscode);
+        if (currentFilter)
+          url += "&status=" + encodeURIComponent(currentFilter);
+
+        fetch(url)
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            loading.style.display = "none";
+            if (result.status === 200) {
+              renderItems(result.data.items);
+              currentCursor = result.data.cursor;
+              updateLoadMore(result.data.truncated);
+            }
+          })
+          .catch(function () {
+            loading.style.display = "none";
+          });
+      }
+
+      function loadMore() {
+        if (!currentCursor) return;
+        var url =
+          "/api/media-review?action=list&passcode=" +
+          encodeURIComponent(adminPasscode) +
+          "&cursor=" +
+          encodeURIComponent(currentCursor);
+        if (currentFilter)
+          url += "&status=" + encodeURIComponent(currentFilter);
+
+        fetch(url)
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              renderItems(result.data.items, true);
+              currentCursor = result.data.cursor;
+              updateLoadMore(result.data.truncated);
+            }
+          });
+      }
+
+      function updateLoadMore(truncated) {
+        document.getElementById("loadMoreWrap").style.display = truncated
+          ? "block"
+          : "none";
+      }
+
+      function renderItems(items, append) {
+        var grid = document.getElementById("mediaGrid");
+        var empty = document.getElementById("emptyState");
+        var countEl = document.getElementById("filterCount");
+
+        if (!append) grid.innerHTML = "";
+
+        if (items.length === 0 && !append) {
+          empty.style.display = "block";
+          countEl.textContent = "0 items";
+          return;
+        }
+
+        var totalCards = grid.children.length;
+        countEl.textContent = totalCards + items.length + " items";
+
+        items.forEach(function (item) {
+          grid.appendChild(createCard(item));
+        });
+
+        empty.style.display = grid.children.length === 0 ? "block" : "none";
+      }
+
+      function createCard(item) {
+        var card = document.createElement("div");
+        card.className = "media-card";
+        card.id = "card-" + encodeURIComponent(item.key);
+
+        var isImage = IMAGE_TYPES.indexOf(item.contentType) !== -1;
+        var isVideo = VIDEO_TYPES.indexOf(item.contentType) !== -1;
+        var typeLabel = isImage ? "Image" : isVideo ? "Video" : "File";
+
+        var serveUrl =
+          "/api/media-review?action=serve&passcode=" +
+          encodeURIComponent(adminPasscode) +
+          "&key=" +
+          encodeURIComponent(item.key);
+
+        var previewHtml = "";
+        if (isImage) {
+          previewHtml =
+            '<img src="' +
+            serveUrl +
+            '" alt="Upload preview" loading="lazy" />';
+        } else if (isVideo) {
+          previewHtml =
+            '<video src="' + serveUrl + '" preload="metadata" muted></video>';
+        } else {
+          previewHtml =
+            '<div style="color: var(--muted); font-size: 14px;">Preview not available</div>';
+        }
+
+        var uploadDate = item.uploaded
+          ? new Date(item.uploaded).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+            })
+          : "Unknown";
+
+        function formatSize(bytes) {
+          if (!bytes) return "";
+          if (bytes < 1024) return bytes + " B";
+          if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+          return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+        }
+
+        card.innerHTML =
+          '<div class="media-preview">' +
+          previewHtml +
+          '<span class="media-type-badge">' +
+          typeLabel +
+          "</span>" +
+          '<span class="media-status-badge ' +
+          item.status +
+          '">' +
+          item.status +
+          "</span>" +
+          "</div>" +
+          '<div class="media-info">' +
+          '<div class="media-filename">' +
+          escapeHtml(item.originalFilename || item.key.split("/").pop()) +
+          "</div>" +
+          '<div class="media-meta">' +
+          uploadDate +
+          (item.size ? " &middot; " + formatSize(item.size) : "") +
+          (item.submitterName
+            ? "<br>From: " + escapeHtml(item.submitterName)
+            : "") +
+          (item.caption ? "<br>" + escapeHtml(item.caption) : "") +
+          "</div>" +
+          "</div>" +
+          '<div class="media-actions">' +
+          "<button class=\"action-btn approve\" onclick=\"doAction('approve', '" +
+          escapeAttr(item.key) +
+          '\')" title="Approve">Approve</button>' +
+          "<button class=\"action-btn reject\" onclick=\"doAction('reject', '" +
+          escapeAttr(item.key) +
+          '\')" title="Reject">Reject</button>' +
+          '<button class="action-btn delete" onclick="promptDelete(\'' +
+          escapeAttr(item.key) +
+          '\')" title="Delete permanently">Delete</button>' +
+          "</div>" +
+          '<a class="media-view-link" href="' +
+          serveUrl +
+          '" target="_blank" rel="noopener">View Full Size</a>';
+
+        return card;
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function escapeAttr(str) {
+        return str
+          .replace(/\\/g, "\\\\")
+          .replace(/'/g, "\\'")
+          .replace(/"/g, "&quot;");
+      }
+
+      function doAction(action, key) {
+        var cardId = "card-" + encodeURIComponent(key);
+        var card = document.getElementById(cardId);
+        if (card) {
+          var btns = card.querySelectorAll(".action-btn");
+          btns.forEach(function (b) {
+            b.disabled = true;
+          });
+        }
+
+        fetch("/api/media-review", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: action,
+            key: key,
+            passcode: adminPasscode,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200 && result.data.success) {
+              // Update badge on the card
+              if (card) {
+                var badge = card.querySelector(".media-status-badge");
+                if (badge) {
+                  badge.className = "media-status-badge " + action;
+                  if (action === "approve") badge.textContent = "approved";
+                  if (action === "reject") badge.textContent = "rejected";
+                }
+                // Re-enable buttons
+                var btns = card.querySelectorAll(".action-btn");
+                btns.forEach(function (b) {
+                  b.disabled = false;
+                });
+                // If filtering, remove the card after a brief delay
+                if (
+                  currentFilter &&
+                  currentFilter !== action &&
+                  action !== "delete"
+                ) {
+                  setTimeout(function () {
+                    card.style.opacity = "0";
+                    card.style.transition = "opacity 0.3s";
+                    setTimeout(function () {
+                      card.remove();
+                      checkEmpty();
+                    }, 300);
+                  }, 600);
+                }
+              }
+            } else {
+              alert(result.data.error || "Action failed.");
+              if (card) {
+                var btns = card.querySelectorAll(".action-btn");
+                btns.forEach(function (b) {
+                  b.disabled = false;
+                });
+              }
+            }
+          })
+          .catch(function () {
+            alert("Network error.");
+            if (card) {
+              var btns = card.querySelectorAll(".action-btn");
+              btns.forEach(function (b) {
+                b.disabled = false;
+              });
+            }
+          });
+      }
+
+      function promptDelete(key) {
+        pendingDeleteKey = key;
+        document.getElementById("confirmOverlay").classList.add("visible");
+      }
+
+      function cancelDelete() {
+        pendingDeleteKey = null;
+        document.getElementById("confirmOverlay").classList.remove("visible");
+      }
+
+      function confirmDelete() {
+        if (!pendingDeleteKey) return;
+        var key = pendingDeleteKey;
+        document.getElementById("confirmOverlay").classList.remove("visible");
+
+        var cardId = "card-" + encodeURIComponent(key);
+        var card = document.getElementById(cardId);
+        if (card) {
+          var btns = card.querySelectorAll(".action-btn");
+          btns.forEach(function (b) {
+            b.disabled = true;
+          });
+        }
+
+        fetch("/api/media-review", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "delete",
+            key: key,
+            passcode: adminPasscode,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200 && result.data.success) {
+              if (card) {
+                card.style.opacity = "0";
+                card.style.transition = "opacity 0.3s";
+                setTimeout(function () {
+                  card.remove();
+                  checkEmpty();
+                }, 300);
+              }
+            } else {
+              alert(result.data.error || "Delete failed.");
+              if (card) {
+                var btns = card.querySelectorAll(".action-btn");
+                btns.forEach(function (b) {
+                  b.disabled = false;
+                });
+              }
+            }
+          })
+          .catch(function () {
+            alert("Network error.");
+          });
+
+        pendingDeleteKey = null;
+      }
+
+      function checkEmpty() {
+        var grid = document.getElementById("mediaGrid");
+        var empty = document.getElementById("emptyState");
+        var countEl = document.getElementById("filterCount");
+        var count = grid.children.length;
+        empty.style.display = count === 0 ? "block" : "none";
+        countEl.textContent = count + " items";
+      }
+
+      // Allow Enter key on passcode field
+      document
+        .getElementById("adminPasscode")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") authenticate();
+        });
+    </script>
+  </body>
+</html>
