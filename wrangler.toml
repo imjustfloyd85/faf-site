@@ -5,3 +5,7 @@ compatibility_date = "2026-03-27"
 [[r2_buckets]]
 binding = "MEDIA_BUCKET"
 bucket_name = "faf-media-uploads"
+
+[[kv_namespaces]]
+binding = "FAF_KV"
+id = "f2ced3e931084f4f80a99fe53a1f744f"
