@@ -612,8 +612,12 @@ test("T4.13: Publishable key (not secret key) is in client-side code", function 
     "utf8",
   );
   assert.ok(
-    sponsorsHtml.includes("pk_test_"),
+    sponsorsHtml.includes("pk_test_") || sponsorsHtml.includes("pk_live_"),
     "Publishable key should be present in client-side code (this is safe per Stripe docs)",
+  );
+  assert.ok(
+    !sponsorsHtml.includes("sk_test_") && !sponsorsHtml.includes("sk_live_"),
+    "Secret key must never appear in client-side code",
   );
 });
 
