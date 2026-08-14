@@ -377,7 +377,7 @@ async function createPendingQboEntry(context, session, paymentType) {
 
   // Send approval email to both justin@ and communications@
   const approvalResult = await sendViaACS(context.env, {
-    from: "Fathers and Football <communications@fathersandfootball.org>",
+    from: "communications@fathersandfootball.org",
     to: [
       "justin@fathersandfootball.org",
       "communications@fathersandfootball.org",
@@ -486,7 +486,7 @@ async function updateSponsorEntryAndNotify(context, session) {
   `;
 
   const approvalResult = await sendViaACS(context.env, {
-    from: "Fathers and Football <communications@fathersandfootball.org>",
+    from: "communications@fathersandfootball.org",
     to: [
       "justin@fathersandfootball.org",
       "communications@fathersandfootball.org",
@@ -553,7 +553,7 @@ export async function onRequestPost(context) {
 
       // Send notification to FAF org
       const orgResult = await sendViaACS(context.env, {
-        from: "Fathers and Football <communications@fathersandfootball.org>",
+        from: "communications@fathersandfootball.org",
         to: [
           "justin@fathersandfootball.org",
           "communications@fathersandfootball.org",
@@ -571,7 +571,7 @@ export async function onRequestPost(context) {
         session.customer_details?.email || session.customer_email;
       if (donorEmail) {
         const donorResult = await sendViaACS(context.env, {
-          from: "Fathers and Football <communications@fathersandfootball.org>",
+          from: "communications@fathersandfootball.org",
           to: donorEmail,
           subject: emails.toDonor.subject,
           html: emails.toDonor.html,
