@@ -390,7 +390,30 @@ test("T3.9: Sponsorship email does NOT claim full deductibility", function () {
   );
 });
 
-test("T3.10: Sponsorship email does NOT invent specific FMV dollar figures", function () {
+test("T3.10: Sponsorship FMV dollar figures are sourced from one documented constant, not scattered magic numbers", function () {
+  var src = fs.readFileSync(
+    path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
+    "utf8",
+  );
+  assert.ok(
+    src.includes("TIER_FMV_CENTS"),
+    "FMV figures must come from a single named constant, not inline literals",
+  );
+  assert.ok(
+    /sideline:\s*0/.test(src) &&
+      /playmaker:\s*5000/.test(src) &&
+      /legacy:\s*50000/.test(src),
+    "TIER_FMV_CENTS must define all three tiers",
+  );
+  // These are good-faith research estimates, not a CPA-confirmed final --
+  // the sourcing/traceability comment must stay until Floyd confirms them.
+  assert.ok(
+    src.includes("Floyd to confirm") || src.includes("CPA"),
+    "FMV constant must stay flagged as pending CPA confirmation until resolved",
+  );
+});
+
+test("T3.10a: Sponsorship email states actual FMV and deductible amount per tier", function () {
   var src = fs.readFileSync(
     path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
     "utf8",
@@ -399,11 +422,16 @@ test("T3.10: Sponsorship email does NOT invent specific FMV dollar figures", fun
     src.indexOf("buildSponsorshipEmail"),
     src.indexOf("--- Main Handler ---"),
   );
-  // Should not contain patterns like "fair market value of $X" or "FMV: $X"
-  var fmvDollarPattern = /fair market value.*?\$\d/i;
   assert.ok(
-    !fmvDollarPattern.test(sponsorSection),
-    "Must NOT invent specific FMV dollar amounts per tier",
+    sponsorSection.includes("fmvAmount") &&
+      sponsorSection.includes("deductibleAmount"),
+    "Disclosure text must state the actual computed FMV and deductible amount",
+  );
+  assert.ok(
+    sponsorSection.includes(
+      "acknowledgment items with no material fair market value",
+    ),
+    "Zero-FMV tiers (Sideline) must state full deductibility explicitly, not leave it implied",
   );
 });
 
