@@ -215,6 +215,34 @@ function buildDonationEmail(session) {
   };
 }
 
+// Good-faith FMV estimates for each tier's benefit bundle, per IRC 6115.
+// Fixed dollar amounts, not percentages -- Legacy's benefits (named program
+// sponsorship, co-branded event) don't scale with how much a sponsor gives
+// above the $5,000 minimum, so the FMV floor doesn't scale either.
+//
+// Sideline: pure acknowledgment (name/logo, no qualitative language) --
+// clears the 2026 insubstantial-benefit safe harbor (2% of payment or $139,
+// whichever is lower; Rev. Proc. 2025-32), so FMV is $0 and the full
+// contribution is deductible.
+//
+// Playmaker: logo placement and the sponsor-wall listing are acknowledgment
+// ($0) -- confirmed against the actual site implementation, which renders
+// every sponsor identically regardless of tier with no bio/endorsement
+// text. The event invitation is the one real benefit; $50 is the
+// conservative (higher) end of a $25-50 good-faith estimate, since
+// understating FMV would overstate the sponsor's deductible amount.
+//
+// Legacy: named program sponsorship and co-branded event are the two
+// components with no direct IRS valuation guidance -- genuine judgment
+// calls. $500 is the conservative (higher) end of a $250-500 estimate.
+// Sourced 2026-08-16; Floyd to confirm/adjust with FAF's CPA before this
+// is treated as final. See docs/legal/faf-sponsorship-fmv-research.md.
+const TIER_FMV_CENTS = {
+  sideline: 0,
+  playmaker: 5000,
+  legacy: 50000,
+};
+
 function buildSponsorshipEmail(session) {
   const amount = (session.amount_total / 100).toLocaleString("en-US", {
     style: "currency",
@@ -238,6 +266,21 @@ function buildSponsorshipEmail(session) {
     day: "numeric",
   });
 
+  const fmvCents = TIER_FMV_CENTS[tier] ?? 0;
+  const fmvAmount = (fmvCents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const deductibleCents = Math.max(0, (session.amount_total || 0) - fmvCents);
+  const deductibleAmount = (deductibleCents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const disclosureText =
+    fmvCents === 0
+      ? `The benefits associated with your ${tierLabel} sponsorship (such as name and logo recognition) are acknowledgment items with no material fair market value under IRS guidelines. Your entire contribution of ${amount} is tax-deductible to the extent allowed by law.`
+      : `In accordance with IRC Section 6115, Fathers and Football provides this good-faith estimate: the fair market value of the benefits associated with your ${tierLabel} sponsorship is ${fmvAmount}. The deductible portion of your ${amount} contribution is ${deductibleAmount}.`;
+
   return {
     toOrg: {
       subject: `Sponsorship Received: ${tierLabel} (${amount}) from ${subjectSafeName}`,
@@ -247,6 +290,8 @@ function buildSponsorshipEmail(session) {
         <p><strong>Email:</strong> ${sponsorEmail}</p>
         <p><strong>Tier:</strong> ${tierLabel}</p>
         <p><strong>Amount:</strong> ${amount}</p>
+        <p><strong>FMV disclosed to sponsor:</strong> ${fmvAmount}</p>
+        <p><strong>Deductible amount stated:</strong> ${deductibleAmount}</p>
         <p><strong>Date:</strong> ${date}</p>
         <p><strong>Stripe Session:</strong> ${session.id}</p>
       `,
@@ -267,7 +312,7 @@ function buildSponsorshipEmail(session) {
           <strong>Date of contribution:</strong> ${date}<br/>
           <strong>Amount:</strong> ${amount}<br/>
           <strong>Sponsorship tier:</strong> ${tierLabel}</p>
-          <p><strong>Quid Pro Quo Disclosure (IRC Section 6115):</strong> Because each sponsorship tier includes tangible benefits (such as logo placement, event invitations, or co-branded programming), only the portion of your contribution that exceeds the fair market value of the benefits you receive may be tax-deductible. In accordance with IRC Section 6115, Fathers and Football will provide a good-faith estimate of the fair market value of the benefits associated with your selected tier under separate cover if applicable. Please consult your tax advisor for guidance specific to your situation.</p>
+          <p><strong>Quid Pro Quo Disclosure (IRC Section 6115):</strong> ${disclosureText} Please consult your tax advisor for guidance specific to your situation.</p>
           <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
           <p>We will be in touch within 2 business days to discuss the details of your ${tierLabel} sponsorship benefits. Welcome to the team.</p>
           <p>With gratitude,<br/>Fathers and Football<br/>
