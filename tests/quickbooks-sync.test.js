@@ -502,6 +502,82 @@ test("T3.21: OAuth callback verifies CSRF state parameter", function () {
 });
 
 // ============================================================
+// T2.x / T3.x: DISCONNECT ENDPOINT TESTS
+// ============================================================
+console.log("\n--- Disconnect Endpoint Tests ---");
+
+test("T2.17: quickbooks-disconnect.js exists", function () {
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        __dirname,
+        "..",
+        "functions",
+        "api",
+        "quickbooks-disconnect.js",
+      ),
+    ),
+  );
+});
+
+test("T2.18: quickbooks-disconnect exports onRequestGet", function () {
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(src.includes("export async function onRequestGet"));
+});
+
+test("T2.19: quickbooks-disconnect rejects POST", function () {
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(
+    src.includes("onRequestPost") && src.includes("405"),
+    "Must reject POST with 405",
+  );
+});
+
+test("T3.22: Disconnect handler deletes qbo:tokens from KV", function () {
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(
+    src.includes('kv.delete("qbo:tokens")'),
+    "Must delete the qbo:tokens key from KV",
+  );
+});
+
+test("T3.23: Disconnect handler returns HTML confirmation with reconnect link", function () {
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(
+    src.includes("text/html") && src.includes("200"),
+    "Must return 200 with HTML content type",
+  );
+  assert.ok(
+    src.includes("/api/quickbooks-connect"),
+    "Must include reconnect link",
+  );
+  assert.ok(
+    src.includes("Disconnected"),
+    "Must confirm disconnection to the user",
+  );
+});
+
+test("T3.24: Disconnect handler is idempotent (kv.delete does not throw on missing key)", function () {
+  // Cloudflare KV delete() is a no-op when the key doesn't exist.
+  // The handler must NOT wrap delete in a try/catch that would imply
+  // it could fail, and must NOT call kv.get() first to check existence.
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(
+    !src.includes('kv.get("qbo:tokens")'),
+    "Must not check key existence before deleting (delete is already idempotent)",
+  );
+});
+
+test("T3.25: Disconnect handler checks for missing KV binding", function () {
+  var src = readSrc("functions/api/quickbooks-disconnect.js");
+  assert.ok(
+    src.includes("!kv"),
+    "Must check for KV binding availability before using it",
+  );
+  assert.ok(src.includes("500"), "Must return 500 if KV is not configured");
+});
+
+// ============================================================
 // T4: ADVERSARIAL TESTS — security validation (REQUIRED)
 // New financial input surface touching accounting records.
 // ============================================================
