@@ -21,6 +21,14 @@ import { sendViaACS } from "../lib/acs-email.js";
 const FROM_ADDRESS = "DoNotReply@fathersandfootball.org";
 const REPLY_TO = "info@fathersandfootball.org";
 
+// Identical response regardless of prior subscription state (active,
+// unsubscribed, or never signed up). Differentiating the message lets
+// an unauthenticated caller enumerate whether an arbitrary email address
+// is currently or was ever on the list -- the real state only ever goes
+// to the address itself, via the emails already sent in each branch.
+const GENERIC_SIGNUP_MESSAGE =
+  "Thanks! If that address isn't already on the list, check your inbox to confirm.";
+
 function corsHeaders(origin) {
   const allowed = [
     "https://fathersandfootball.org",
@@ -133,12 +141,11 @@ export async function onRequestPost(context) {
       }
 
       if (existing && existing.status === "active") {
-        // Already subscribed -- return success without re-sending
+        // Already subscribed -- return the same generic response as every
+        // other case (see GENERIC_SIGNUP_MESSAGE) so this endpoint can't be
+        // used to probe whether an arbitrary email is on the list.
         return new Response(
-          JSON.stringify({
-            success: true,
-            message: "You're already subscribed.",
-          }),
+          JSON.stringify({ success: true, message: GENERIC_SIGNUP_MESSAGE }),
           { status: 200, headers },
         );
       }
@@ -152,11 +159,26 @@ export async function onRequestPost(context) {
         // Re-add to index
         await addToIndex(kv, hash);
 
+        // Notify the actual address -- both a courtesy and a safeguard: if
+        // someone else triggered this resubscribe (they only need to know
+        // the email address, not prove ownership), the real owner sees it
+        // happened and can unsubscribe again immediately.
+        const siteUrl = new URL(context.request.url).origin;
+        const unsubUrl = `${siteUrl}/api/newsletter-unsubscribe?token=${encodeURIComponent(existing.unsubToken)}`;
+        try {
+          await sendViaACS(context.env, {
+            from: FROM_ADDRESS,
+            to: normalizedEmail,
+            replyTo: REPLY_TO,
+            subject: "You're on the list -- Fathers and Football",
+            html: buildConfirmationEmail(escapeHtml(normalizedEmail), unsubUrl),
+          });
+        } catch (emailErr) {
+          console.error("Resubscribe confirmation email failed:", emailErr);
+        }
+
         return new Response(
-          JSON.stringify({
-            success: true,
-            message: "Welcome back! You've been re-subscribed.",
-          }),
+          JSON.stringify({ success: true, message: GENERIC_SIGNUP_MESSAGE }),
           { status: 200, headers },
         );
       }
@@ -196,7 +218,7 @@ export async function onRequestPost(context) {
     }
 
     return new Response(
-      JSON.stringify({ success: true, message: "You're subscribed!" }),
+      JSON.stringify({ success: true, message: GENERIC_SIGNUP_MESSAGE }),
       { status: 200, headers },
     );
   } catch (err) {

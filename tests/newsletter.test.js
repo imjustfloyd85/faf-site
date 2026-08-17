@@ -780,6 +780,45 @@ test("T4.22: Send endpoint escapes unsubscribe URL in email HTML", function () {
   );
 });
 
+test("T4.23: Signup response is identical regardless of prior subscription state (no enumeration oracle)", function () {
+  var src = readSrc("functions/api/newsletter-signup.js");
+  // All three response paths (already active, reactivated, brand new) must
+  // return the same message constant -- an unauthenticated caller must not
+  // be able to distinguish subscription history by probing with an email.
+  var messageLiterals = (src.match(/message:\s*"[^"]*"/g) || []).filter(
+    (m) => !m.includes("GENERIC_SIGNUP_MESSAGE"),
+  );
+  assert.strictEqual(
+    messageLiterals.length,
+    0,
+    "No response path may use a distinct hardcoded message -- all must use GENERIC_SIGNUP_MESSAGE: found " +
+      JSON.stringify(messageLiterals),
+  );
+  var genericUses = (src.match(/message:\s*GENERIC_SIGNUP_MESSAGE/g) || [])
+    .length;
+  assert.strictEqual(
+    genericUses,
+    3,
+    "Expected all three signup response paths (already-active, reactivated, new) to use GENERIC_SIGNUP_MESSAGE, found " +
+      genericUses,
+  );
+});
+
+test("T4.24: Resubscribing a previously-unsubscribed address notifies the real owner", function () {
+  var src = readSrc("functions/api/newsletter-signup.js");
+  var reactivateSection = src.substring(
+    src.indexOf('existing.status === "unsubscribed"'),
+    src.indexOf(
+      "GENERIC_SIGNUP_MESSAGE",
+      src.indexOf('existing.status === "unsubscribed"'),
+    ),
+  );
+  assert.ok(
+    reactivateSection.includes("sendViaACS"),
+    "Reactivating a subscriber must notify that address, since anyone who knows the email (not just its owner) can trigger this",
+  );
+});
+
 // ============================================================
 // Results
 // ============================================================
