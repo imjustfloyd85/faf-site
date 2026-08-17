@@ -509,6 +509,59 @@
         margin-bottom: 16px;
       }
 
+      /* ── HORIZON (Beyond the Field) ── */
+      .horizon {
+        background: var(--dark-3);
+        border-top: 2px solid var(--gold);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .horizon .section-label {
+        opacity: 0.7;
+      }
+
+      .horizon-tag {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px dashed var(--border);
+        padding: 4px 10px;
+        border-radius: 2px;
+        margin-bottom: 20px;
+      }
+
+      .horizon-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 56px;
+      }
+
+      .horizon-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 40px 32px;
+        border-radius: 2px;
+      }
+
+      .horizon-card h3 {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+
+      .horizon-card p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
       /* ── TEAMS ── */
       .teams-grid {
         display: grid;
@@ -813,6 +866,9 @@
           grid-template-columns: 1fr;
         }
         .involved-grid {
+          grid-template-columns: 1fr;
+        }
+        .horizon-grid {
           grid-template-columns: 1fr;
         }
       }
@@ -1738,6 +1794,46 @@
               <span class="team-link">View Program &rarr;</span>
             </div>
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEYOND THE FIELD -->
+    <section class="horizon" id="horizon">
+      <div class="container">
+        <span class="horizon-tag">On the Horizon</span>
+        <p class="section-label">Beyond the Field</p>
+        <h2 class="section-title">What's <em>next</em></h2>
+        <p class="section-body">
+          Football is where we started, but it's not where we stop. We're in the
+          early stages of exploring how FAF can grow into new areas that serve
+          our families and community.
+        </p>
+        <div class="horizon-grid">
+          <div class="horizon-card">
+            <h3>STEM</h3>
+            <p>
+              We're exploring partnerships that would bring career and technical
+              education opportunities to our players and their families. Two
+              early conversations are underway, but nothing is confirmed yet.
+            </p>
+          </div>
+          <div class="horizon-card">
+            <h3>Charitable Partnerships</h3>
+            <p>
+              We're beginning to plan how FAF can partner with charitable
+              organizations in a meaningful way. No partners or specifics to
+              announce yet, just the intention to build something real.
+            </p>
+          </div>
+          <div class="horizon-card">
+            <h3>Community Involvement</h3>
+            <p>
+              Beyond the teams, we want FAF to have a broader presence in the
+              communities where our families live. We're starting to think about
+              what that looks like.
+            </p>
+          </div>
         </div>
       </div>
     </section>
