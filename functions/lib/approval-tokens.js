@@ -118,5 +118,62 @@ export async function verifyApprovalToken(token, secret) {
   return { valid: true, entryId, action, expiresAt };
 }
 
+// --- Newsletter unsubscribe tokens ---
+// Non-expiring HMAC token tied to a subscriber email.
+// Format: base64url(email).base64url(hmac)
+// No expiry because CAN-SPAM unsubscribe links must work indefinitely.
+
+export async function createUnsubscribeToken(email, secret) {
+  if (!email || !secret) {
+    throw new Error("createUnsubscribeToken: missing required arguments");
+  }
+  const payload = `unsub:${email}`;
+  const sig = await hmacSign(payload, secret);
+  return toBase64Url(payload) + "." + toBase64Url(sig);
+}
+
+export async function verifyUnsubscribeToken(token, secret) {
+  if (!token || !secret) {
+    return { valid: false, reason: "missing token or secret" };
+  }
+
+  const dotIndex = token.lastIndexOf(".");
+  if (dotIndex < 1) {
+    return { valid: false, reason: "malformed token" };
+  }
+
+  let payloadStr, providedSig;
+  try {
+    payloadStr = fromBase64Url(token.substring(0, dotIndex));
+    providedSig = fromBase64Url(token.substring(dotIndex + 1));
+  } catch {
+    return { valid: false, reason: "invalid base64 encoding" };
+  }
+
+  if (!payloadStr.startsWith("unsub:")) {
+    return { valid: false, reason: "wrong token type" };
+  }
+
+  const email = payloadStr.slice("unsub:".length);
+  if (!email) {
+    return { valid: false, reason: "missing email in token" };
+  }
+
+  // Verify HMAC with constant-time comparison
+  const expectedSig = await hmacSign(payloadStr, secret);
+  if (providedSig.length !== expectedSig.length) {
+    return { valid: false, reason: "invalid signature" };
+  }
+  let mismatch = 0;
+  for (let i = 0; i < expectedSig.length; i++) {
+    mismatch |= providedSig.charCodeAt(i) ^ expectedSig.charCodeAt(i);
+  }
+  if (mismatch !== 0) {
+    return { valid: false, reason: "invalid signature" };
+  }
+
+  return { valid: true, email };
+}
+
 // Exported for testing
 export { TOKEN_TTL_SECONDS, toBase64Url, fromBase64Url };

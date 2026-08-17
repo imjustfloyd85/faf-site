@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter Admin -- Fathers and Football</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+
+      .hero {
+        padding: 140px 24px 48px;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        padding: 6px 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(28px, 5vw, 48px);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .hero h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* AUTH GATE */
+      .auth-gate {
+        display: flex;
+        justify-content: center;
+        padding: 0 24px 64px;
+      }
+      .auth-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 420px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .submit-btn:hover {
+        background: var(--gold-lt);
+      }
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status-msg {
+        margin-top: 16px;
+        font-size: 13px;
+        text-align: center;
+        min-height: 20px;
+      }
+      .status-msg.error {
+        color: var(--red);
+      }
+      .status-msg.success {
+        color: var(--green);
+      }
+
+      /* COMPOSE PANEL */
+      .compose-panel {
+        display: none;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 24px 64px;
+      }
+      .compose-panel.visible {
+        display: block;
+      }
+      .compose-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+      }
+      .compose-card textarea {
+        min-height: 280px;
+        resize: vertical;
+        line-height: 1.6;
+      }
+      .subscriber-count {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 24px;
+        padding: 12px 16px;
+        background: var(--dark-3);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .subscriber-count strong {
+        color: var(--gold);
+      }
+      .send-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 24px;
+      }
+      .send-btn:hover {
+        background: var(--gold-lt);
+      }
+      .send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .send-result {
+        margin-top: 16px;
+        font-size: 13px;
+        text-align: center;
+        min-height: 20px;
+      }
+      .send-result.error {
+        color: var(--red);
+      }
+      .send-result.success {
+        color: var(--green);
+      }
+
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .auth-card,
+        .compose-card {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="nav-back">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Home
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">Admin</div>
+      <h1>Newsletter <em>Send</em></h1>
+    </section>
+
+    <!-- AUTH GATE -->
+    <section class="auth-gate" id="authGate">
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="adminPasscode">Admin Passcode</label>
+          <input
+            type="password"
+            id="adminPasscode"
+            placeholder="Enter admin passcode"
+            required
+            autocomplete="off"
+          />
+          <p class="form-hint">
+            Same passcode as the media review admin panel.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="submit-btn"
+          id="authBtn"
+          onclick="authenticate()"
+        >
+          Sign In
+        </button>
+        <div class="status-msg" id="authStatus"></div>
+      </div>
+    </section>
+
+    <!-- COMPOSE PANEL (hidden until authenticated) -->
+    <section class="compose-panel" id="composePanel">
+      <div class="compose-card">
+        <div class="subscriber-count" id="subscriberCount">
+          Loading subscriber count...
+        </div>
+        <div class="form-group">
+          <label for="emailSubject">Subject line</label>
+          <input
+            type="text"
+            id="emailSubject"
+            placeholder="This week at FAF..."
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="emailBody">Newsletter body</label>
+          <textarea
+            id="emailBody"
+            placeholder="Write your newsletter here. Use blank lines to separate paragraphs."
+          ></textarea>
+          <p class="form-hint">
+            Plain text. Blank lines become paragraph breaks. Each subscriber
+            gets a personalized unsubscribe link automatically.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="send-btn"
+          id="sendBtn"
+          onclick="sendNewsletter()"
+        >
+          Send Now
+        </button>
+        <div class="send-result" id="sendResult"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var adminPasscode = "";
+
+      function showAuthStatus(msg, type) {
+        var el = document.getElementById("authStatus");
+        el.textContent = msg;
+        el.className = "status-msg " + (type || "");
+      }
+
+      function authenticate() {
+        var pc = document.getElementById("adminPasscode").value.trim();
+        if (!pc) {
+          showAuthStatus("Enter the admin passcode.", "error");
+          return;
+        }
+
+        document.getElementById("authBtn").disabled = true;
+        document.getElementById("authBtn").textContent = "CHECKING...";
+
+        // Validate passcode by attempting to load subscriber count
+        // via newsletter-send's auth (we use a lightweight GET check
+        // against the media-review endpoint since newsletter-send is POST-only)
+        fetch(
+          "/api/media-review?action=list&status=pending&passcode=" +
+            encodeURIComponent(pc),
+        )
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              adminPasscode = pc;
+              document.getElementById("authGate").style.display = "none";
+              document.getElementById("composePanel").classList.add("visible");
+              loadSubscriberCount();
+            } else {
+              showAuthStatus(
+                result.data.error || "Authentication failed.",
+                "error",
+              );
+              document.getElementById("authBtn").disabled = false;
+              document.getElementById("authBtn").textContent = "SIGN IN";
+            }
+          })
+          .catch(function () {
+            showAuthStatus("Connection error. Try again.", "error");
+            document.getElementById("authBtn").disabled = false;
+            document.getElementById("authBtn").textContent = "SIGN IN";
+          });
+      }
+
+      function loadSubscriberCount() {
+        // Fetch subscriber count from the newsletter-subscribers endpoint
+        fetch(
+          "/api/newsletter-subscribers?passcode=" +
+            encodeURIComponent(adminPasscode),
+        )
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            if (data.count !== undefined) {
+              document.getElementById("subscriberCount").innerHTML =
+                "Active subscribers: <strong>" + data.count + "</strong>";
+            } else {
+              document.getElementById("subscriberCount").textContent =
+                "Could not load subscriber count.";
+            }
+          })
+          .catch(function () {
+            document.getElementById("subscriberCount").textContent =
+              "Could not load subscriber count.";
+          });
+      }
+
+      function sendNewsletter() {
+        var subject = document.getElementById("emailSubject").value.trim();
+        var body = document.getElementById("emailBody").value.trim();
+        var resultEl = document.getElementById("sendResult");
+
+        if (!subject) {
+          resultEl.textContent = "Subject line is required.";
+          resultEl.className = "send-result error";
+          return;
+        }
+
+        if (!body) {
+          resultEl.textContent = "Newsletter body is required.";
+          resultEl.className = "send-result error";
+          return;
+        }
+
+        // Confirm before sending
+        if (!confirm("Send this newsletter to all active subscribers?")) {
+          return;
+        }
+
+        var btn = document.getElementById("sendBtn");
+        btn.disabled = true;
+        btn.textContent = "SENDING...";
+        resultEl.textContent = "";
+        resultEl.className = "send-result";
+
+        fetch("/api/newsletter-send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            passcode: adminPasscode,
+            subject: subject,
+            content: body,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              var msg = "Sent to " + result.data.sent + " subscribers.";
+              if (result.data.failed > 0) {
+                msg += " " + result.data.failed + " failed.";
+              }
+              resultEl.textContent = msg;
+              resultEl.className = "send-result success";
+            } else {
+              resultEl.textContent = result.data.error || "Send failed.";
+              resultEl.className = "send-result error";
+            }
+            btn.disabled = false;
+            btn.textContent = "SEND NOW";
+          })
+          .catch(function () {
+            resultEl.textContent = "Connection error. Try again.";
+            resultEl.className = "send-result error";
+            btn.disabled = false;
+            btn.textContent = "SEND NOW";
+          });
+      }
+
+      // Enter key on passcode field
+      document
+        .getElementById("adminPasscode")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") authenticate();
+        });
+    </script>
+  </body>
+</html>

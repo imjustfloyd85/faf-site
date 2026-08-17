@@ -275,6 +275,73 @@
         color: rgba(125, 122, 119, 0.5);
       }
 
+      .newsletter-signup {
+        max-width: 400px;
+        margin: 0 auto 32px;
+      }
+      .newsletter-signup p {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+      }
+      .newsletter-form {
+        display: flex;
+        gap: 8px;
+      }
+      .newsletter-form input {
+        flex: 1;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+      }
+      .newsletter-form input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .newsletter-form button {
+        padding: 10px 20px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      .newsletter-form button:hover {
+        background: var(--gold-lt);
+      }
+      .newsletter-form button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .newsletter-status {
+        font-size: 12px;
+        margin-top: 8px;
+        min-height: 18px;
+      }
+      .newsletter-status.error {
+        color: #c0392b;
+      }
+      .newsletter-status.success {
+        color: #27ae60;
+      }
+      @media (max-width: 600px) {
+        .newsletter-form {
+          flex-direction: column;
+        }
+      }
+
       @media (max-width: 900px) {
         nav {
           padding: 16px 24px;
@@ -410,10 +477,69 @@
         <li><a href="privacy.html">Privacy</a></li>
         <li><a href="terms.html">Terms</a></li>
       </ul>
+      <div class="newsletter-signup">
+        <p>Get updates from FAF</p>
+        <form
+          class="newsletter-form"
+          onsubmit="return handleNewsletterSignup(event);"
+        >
+          <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="Your email"
+            required
+            autocomplete="email"
+          />
+          <button type="submit" id="newsletterBtn">Subscribe</button>
+        </form>
+        <div class="newsletter-status" id="newsletterStatus"></div>
+      </div>
       <p class="footer-copy">
         &copy; 2026 Fathers and Football. All rights reserved. &nbsp;|&nbsp;
         501(c)(3) &nbsp;|&nbsp; EIN 42-1980182
       </p>
     </footer>
+    <script>
+      function handleNewsletterSignup(e) {
+        e.preventDefault();
+        var email = document.getElementById("newsletterEmail").value.trim();
+        var btn = document.getElementById("newsletterBtn");
+        var status = document.getElementById("newsletterStatus");
+        if (!email) return false;
+        btn.disabled = true;
+        btn.textContent = "...";
+        status.textContent = "";
+        status.className = "newsletter-status";
+        fetch("/api/newsletter-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) {
+            return res.json().then(function (d) {
+              return { ok: res.ok, data: d };
+            });
+          })
+          .then(function (r) {
+            if (r.ok && r.data.success) {
+              status.textContent = r.data.message || "You're subscribed!";
+              status.className = "newsletter-status success";
+              document.getElementById("newsletterEmail").value = "";
+            } else {
+              status.textContent = r.data.error || "Something went wrong.";
+              status.className = "newsletter-status error";
+            }
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          })
+          .catch(function () {
+            status.textContent = "Connection error. Try again.";
+            status.className = "newsletter-status error";
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          });
+        return false;
+      }
+    </script>
   </body>
 </html>
