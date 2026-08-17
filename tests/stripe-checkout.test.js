@@ -435,6 +435,34 @@ test("T3.10a: Sponsorship email states actual FMV and deductible amount per tier
   );
 });
 
+test("T3.11: Org sponsorship notification has an actionable follow-up deadline and replies to the sponsor", function () {
+  var src = fs.readFileSync(
+    path.join(__dirname, "..", "functions", "api", "stripe-webhook.js"),
+    "utf8",
+  );
+  var sponsorSection = src.substring(
+    src.indexOf("buildSponsorshipEmail"),
+    src.indexOf("--- Main Handler ---"),
+  );
+  assert.ok(
+    sponsorSection.includes("ACTION NEEDED"),
+    "Org notification subject must flag that follow-up is required",
+  );
+  assert.ok(
+    sponsorSection.includes("followUpBy") &&
+      sponsorSection.includes("addBusinessDays"),
+    "Follow-up deadline must be computed, not just a vague promise",
+  );
+  assert.ok(
+    sponsorSection.includes("replyTo: rawSponsorEmail"),
+    "Org notification must reply-to the sponsor directly for one-click follow-up",
+  );
+  assert.ok(
+    src.includes("replyTo: emails.toOrg.replyTo"),
+    "Main handler must actually pass the reply-to through to sendViaACS",
+  );
+});
+
 // ============================================================
 // T4: ADVERSARIAL TESTS — security validation (REQUIRED)
 // New financial input surface — these are non-optional.

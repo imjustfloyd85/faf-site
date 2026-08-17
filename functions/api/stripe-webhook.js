@@ -153,6 +153,18 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+// Adds N business days (skipping Sat/Sun) to a date, for follow-up deadlines.
+function addBusinessDays(startDate, days) {
+  const result = new Date(startDate);
+  let added = 0;
+  while (added < days) {
+    result.setDate(result.getDate() + 1);
+    const day = result.getDay();
+    if (day !== 0 && day !== 6) added++;
+  }
+  return result;
+}
+
 function buildDonationEmail(session) {
   const amount = (session.amount_total / 100).toLocaleString("en-US", {
     style: "currency",
@@ -281,11 +293,21 @@ function buildSponsorshipEmail(session) {
       ? `The benefits associated with your ${tierLabel} sponsorship (such as name and logo recognition) are acknowledgment items with no material fair market value under IRS guidelines. Your entire contribution of ${amount} is tax-deductible to the extent allowed by law.`
       : `In accordance with IRC Section 6115, Fathers and Football provides this good-faith estimate: the fair market value of the benefits associated with your ${tierLabel} sponsorship is ${fmvAmount}. The deductible portion of your ${amount} contribution is ${deductibleAmount}.`;
 
+  const followUpBy = addBusinessDays(new Date(), 2).toLocaleDateString(
+    "en-US",
+    { weekday: "long", year: "numeric", month: "long", day: "numeric" },
+  );
+
   return {
     toOrg: {
-      subject: `Sponsorship Received: ${tierLabel} (${amount}) from ${subjectSafeName}`,
+      subject: `ACTION NEEDED by ${followUpBy}: ${tierLabel} sponsorship (${amount}) from ${subjectSafeName}`,
+      replyTo: rawSponsorEmail || undefined,
       html: `
         <h2>Fathers and Football -- New Sponsorship</h2>
+        <p style="background: #fff3cd; padding: 10px 14px; border-radius: 4px;">
+          <strong>Follow up by ${followUpBy}</strong> -- this sponsor was
+          promised contact within 2 business days.
+        </p>
         <p><strong>Sponsor:</strong> ${sponsorName}</p>
         <p><strong>Email:</strong> ${sponsorEmail}</p>
         <p><strong>Tier:</strong> ${tierLabel}</p>
@@ -603,6 +625,7 @@ export async function onRequestPost(context) {
           "justin@fathersandfootball.org",
           "communications@fathersandfootball.org",
         ],
+        replyTo: emails.toOrg.replyTo,
         subject: emails.toOrg.subject,
         html: emails.toOrg.html,
       });
