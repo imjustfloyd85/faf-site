@@ -1734,6 +1734,149 @@
         color: var(--gold);
       }
 
+      /* Event Detail Modal */
+      .event-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(5, 5, 5, 0.82);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+      }
+      .event-modal-backdrop.open {
+        display: flex;
+        opacity: 1;
+      }
+      .event-modal {
+        background: var(--navy-2);
+        border: 1px solid var(--border-gold);
+        border-top: 3px solid var(--gold);
+        max-width: 420px;
+        width: 100%;
+        padding: 36px 32px 32px;
+        position: relative;
+        transform: scale(0.92) translateY(12px);
+        opacity: 0;
+        transition:
+          transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+          opacity 0.3s ease;
+      }
+      .event-modal-backdrop.open .event-modal {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+      .event-modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s;
+        padding: 4px;
+      }
+      .event-modal-close:hover {
+        color: var(--gold);
+      }
+      .event-modal-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 2px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .event-modal-badge.evt-practice {
+        background: rgba(138, 154, 176, 0.15);
+        color: var(--muted);
+        border-left: none;
+      }
+      .event-modal-badge.evt-tournament {
+        background: rgba(200, 146, 60, 0.15);
+        color: var(--gold);
+      }
+      .event-modal-badge.evt-milestone {
+        background: rgba(3, 174, 242, 0.15);
+        color: #03aef2;
+      }
+      .event-modal-badge.evt-prep {
+        background: rgba(224, 176, 106, 0.15);
+        color: var(--gold-lt);
+      }
+      .event-modal-badge.evt-final {
+        background: rgba(200, 146, 60, 0.15);
+        color: var(--gold);
+      }
+      .event-modal h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--white);
+        margin-bottom: 8px;
+      }
+      .event-modal-date {
+        font-size: 13px;
+        color: var(--silver);
+        margin-bottom: 24px;
+      }
+      .event-modal-venue-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .event-modal-venue {
+        font-size: 15px;
+        color: var(--warm);
+        margin-bottom: 28px;
+        line-height: 1.5;
+      }
+      .event-modal-directions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        background: var(--gold);
+        color: var(--dark);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+      .event-modal-directions:hover {
+        background: var(--gold-lt);
+        transform: translateY(-1px);
+      }
+      .cal-cell.has-event {
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          filter 0.15s ease;
+      }
+      .cal-cell.has-event:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.15);
+      }
+
       /* Note Callouts */
       .schedule-notes {
         display: grid;
@@ -2255,6 +2398,98 @@
         var tabMap = { aug: 0, sep: 1, oct: 2, nov: 3 };
         tabs[tabMap[month]].classList.add("active");
       }
+
+      // Event -> venue lookup. No entry means "no venue" (not clickable).
+      var EVENT_VENUES = {
+        Practice: "Stafford Middle School, Frisco, TX",
+        "Practice (Fri only)": "Stafford Middle School, Frisco, TX",
+        "Final Practice": "Stafford Middle School, Frisco, TX",
+        "Float Fest Prep": "Zipp Family Sports Park, New Braunfels, TX",
+        "Float Fest": "Zipp Family Sports Park, New Braunfels, TX",
+        "Hard Count": "Northwest High School, Dallas, TX",
+        "FFX Day 1": "AT&T Stadium, Arlington, TX",
+        "FFX Day 2": "AT&T Stadium, Arlington, TX",
+        "NFL Flag Regional": "The Star, Frisco, TX",
+      };
+
+      var CAL_MONTH_NAMES = {
+        "cal-aug": "August",
+        "cal-sep": "September",
+        "cal-oct": "October",
+        "cal-nov": "November",
+      };
+
+      var CAL_BADGE_LABELS = {
+        "evt-practice": "Practice",
+        "evt-tournament": "Tournament",
+        "evt-milestone": "Qualifier / Milestone",
+        "evt-prep": "Tournament Prep",
+        "evt-final": "Practice",
+      };
+
+      function initEventModals() {
+        var cells = document.querySelectorAll(
+          ".cal-cell.evt-practice, .cal-cell.evt-tournament, .cal-cell.evt-milestone, .cal-cell.evt-prep, .cal-cell.evt-final",
+        );
+        for (var i = 0; i < cells.length; i++) {
+          var cell = cells[i];
+          var evLabelEl = cell.querySelector(".cal-ev");
+          if (!evLabelEl) continue;
+          var eventName = evLabelEl.textContent.trim();
+          if (!EVENT_VENUES[eventName]) continue; // no venue -> not clickable
+          cell.classList.add("has-event");
+          cell.addEventListener("click", function () {
+            openEventModal(this);
+          });
+        }
+      }
+
+      function openEventModal(cell) {
+        var dayEl = cell.querySelector(".cal-day");
+        var evLabelEl = cell.querySelector(".cal-ev");
+        var day = dayEl ? dayEl.textContent.trim() : "";
+        var eventName = evLabelEl ? evLabelEl.textContent.trim() : "";
+        var venue = EVENT_VENUES[eventName];
+        if (!venue) return;
+
+        var monthEl = cell.closest(".cal-month");
+        var monthName = monthEl ? CAL_MONTH_NAMES[monthEl.id] || "" : "";
+
+        var categoryClass = "evt-practice";
+        var classList = [
+          "evt-practice",
+          "evt-tournament",
+          "evt-milestone",
+          "evt-prep",
+          "evt-final",
+        ];
+        for (var i = 0; i < classList.length; i++) {
+          if (cell.classList.contains(classList[i])) {
+            categoryClass = classList[i];
+            break;
+          }
+        }
+
+        var badge = document.getElementById("eventModalBadge");
+        badge.textContent = CAL_BADGE_LABELS[categoryClass] || "Event";
+        badge.className = "event-modal-badge " + categoryClass;
+
+        document.getElementById("eventModalTitle").textContent = eventName;
+        document.getElementById("eventModalDate").textContent =
+          monthName + " " + day + ", 2026";
+        document.getElementById("eventModalVenue").textContent = venue;
+        document.getElementById("eventModalDirections").href =
+          "https://www.google.com/maps/search/?api=1&query=" +
+          encodeURIComponent(venue);
+
+        document.getElementById("eventModalBackdrop").classList.add("open");
+      }
+
+      function closeEventModal() {
+        document.getElementById("eventModalBackdrop").classList.remove("open");
+      }
+
+      document.addEventListener("DOMContentLoaded", initEventModals);
     </script>
 
     <!-- CHAMPIONSHIP -->
@@ -2647,6 +2882,35 @@
         &times;
       </button>
       <video id="videoLightboxPlayer" controls playsinline></video>
+    </div>
+
+    <div
+      class="event-modal-backdrop"
+      id="eventModalBackdrop"
+      onclick="if (event.target === this) closeEventModal();"
+    >
+      <div class="event-modal">
+        <button
+          class="event-modal-close"
+          onclick="closeEventModal()"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <span class="event-modal-badge" id="eventModalBadge"></span>
+        <h3 id="eventModalTitle"></h3>
+        <p class="event-modal-date" id="eventModalDate"></p>
+        <p class="event-modal-venue-label">Location</p>
+        <p class="event-modal-venue" id="eventModalVenue"></p>
+        <a
+          class="event-modal-directions"
+          id="eventModalDirections"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          >Get Directions</a
+        >
+      </div>
     </div>
 
     <div
