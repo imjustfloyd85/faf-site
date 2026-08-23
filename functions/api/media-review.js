@@ -15,43 +15,15 @@
 //   POST {action:"approve"|"reject"|"delete", key, passcode}
 //   OPTIONS — CORS preflight
 
+import {
+  corsHeaders,
+  validateAdminPasscode,
+  errorResponse,
+} from "../lib/admin-auth.js";
+
 const UPLOADS_PREFIX = "uploads/";
 const STATUS_KEY_PREFIX = "media-status:";
 const LIST_PAGE_SIZE = 50;
-
-function corsHeaders(origin) {
-  const allowed = [
-    "https://fathersandfootball.org",
-    "https://www.fathersandfootball.org",
-    "http://localhost:8788",
-    "http://localhost:3000",
-  ];
-  return {
-    "Access-Control-Allow-Origin": allowed.includes(origin)
-      ? origin
-      : allowed[0],
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-}
-
-function validateAdminPasscode(env, submitted) {
-  const adminPasscode = env.FAF_MEDIA_ADMIN_PASSCODE;
-  if (!adminPasscode)
-    return { valid: false, reason: "not-configured", status: 500 };
-  if (!submitted) return { valid: false, reason: "missing", status: 403 };
-
-  // Reject the fan upload passcode — it must never grant admin access
-  const fanPasscode = env.FAF_MEDIA_PASSCODE;
-  if (fanPasscode && submitted === fanPasscode) {
-    return { valid: false, reason: "wrong-credential", status: 403 };
-  }
-
-  if (submitted !== adminPasscode) {
-    return { valid: false, reason: "invalid", status: 403 };
-  }
-  return { valid: true };
-}
 
 function validateObjectKey(key) {
   if (!key || typeof key !== "string") return false;
@@ -66,13 +38,6 @@ function validateObjectKey(key) {
   // No sub-directories or slashes after prefix
   if (remainder.includes("/")) return false;
   return true;
-}
-
-function errorResponse(msg, status, headers) {
-  return new Response(JSON.stringify({ error: msg }), {
-    status,
-    headers: { "Content-Type": "application/json", ...headers },
-  });
 }
 
 export async function onRequestOptions(context) {

@@ -646,13 +646,14 @@ test("T4.10: Unsubscribe rejects invalid token with 403", function () {
 
 test("T4.11: Send endpoint requires admin passcode", function () {
   var src = readSrc("functions/api/newsletter-send.js");
+  var authLib = readSrc("functions/lib/admin-auth.js");
   assert.ok(
     src.includes("validateAdminPasscode"),
     "Must validate admin passcode before sending",
   );
   assert.ok(
-    src.includes("403"),
-    "Must return 403 for invalid/missing passcode",
+    src.includes("403") || authLib.includes("403"),
+    "Must return 403 for invalid/missing passcode (inline or via shared module)",
   );
 });
 
@@ -666,13 +667,14 @@ test("T4.12: Send endpoint rejects when passcode is not configured (500, not byp
 
 test("T4.13: Subscribers endpoint requires admin passcode", function () {
   var src = readSrc("functions/api/newsletter-subscribers.js");
+  var authLib = readSrc("functions/lib/admin-auth.js");
   assert.ok(
     src.includes("validateAdminPasscode"),
     "Must validate admin passcode for subscriber listing",
   );
   assert.ok(
-    src.includes("403"),
-    "Must return 403 for invalid/missing passcode",
+    src.includes("403") || authLib.includes("403"),
+    "Must return 403 for invalid/missing passcode (inline or via shared module)",
   );
 });
 

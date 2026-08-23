@@ -52,6 +52,14 @@ const UPLOAD_FN_PATH = path.join(
 
 const fnSrc = fs.readFileSync(REVIEW_FN_PATH, "utf8");
 const pageSrc = fs.readFileSync(REVIEW_PAGE_PATH, "utf8");
+const AUTH_LIB_PATH = path.join(
+  __dirname,
+  "..",
+  "functions",
+  "lib",
+  "admin-auth.js",
+);
+const authSrc = fs.readFileSync(AUTH_LIB_PATH, "utf8");
 
 // ============================================================
 // T1: UNIT TESTS — validation logic
@@ -131,21 +139,22 @@ test("T1.8: LIST_PAGE_SIZE is defined and reasonable", function () {
   );
 });
 
-test("T1.9: validateAdminPasscode function exists", function () {
+test("T1.9: validateAdminPasscode is available (imported or defined)", function () {
   assert.ok(
-    fnSrc.includes("function validateAdminPasscode") ||
-      fnSrc.includes("validateAdminPasscode ="),
-    "Must define validateAdminPasscode function",
+    fnSrc.includes("validateAdminPasscode"),
+    "Must use validateAdminPasscode (imported from admin-auth or defined locally)",
   );
 });
 
 test("T1.10: CORS function restricts to known origins", function () {
+  // CORS origins live in the shared admin-auth module
+  var combined = fnSrc + authSrc;
   assert.ok(
-    fnSrc.includes("https://fathersandfootball.org"),
+    combined.includes("https://fathersandfootball.org"),
     "Must allow fathersandfootball.org",
   );
   assert.ok(
-    fnSrc.includes("https://www.fathersandfootball.org"),
+    combined.includes("https://www.fathersandfootball.org"),
     "Must allow www.fathersandfootball.org",
   );
 });
@@ -423,37 +432,32 @@ test("T3.15: Default filter is pending", function () {
 console.log("\n--- T4: Adversarial Tests ---");
 
 test("T4.1: Admin passcode checked SERVER-SIDE via env var", function () {
+  // Auth logic lives in shared admin-auth module, imported by media-review
+  var combined = fnSrc + authSrc;
   assert.ok(
-    fnSrc.includes("env.FAF_MEDIA_ADMIN_PASSCODE"),
+    combined.includes("env.FAF_MEDIA_ADMIN_PASSCODE"),
     "Must read admin passcode from env on server side",
   );
 });
 
 test("T4.2: Missing admin passcode returns 403", function () {
-  var validateFn = fnSrc.substring(
-    fnSrc.indexOf("function validateAdminPasscode"),
-    fnSrc.indexOf("function validateAdminPasscode") + 600,
-  );
+  // validateAdminPasscode now lives in admin-auth.js
   assert.ok(
-    validateFn.includes("403"),
+    authSrc.includes("403"),
     "Must return 403 for missing/invalid admin passcode",
   );
 });
 
 test("T4.3: Fan upload passcode is explicitly rejected for admin access", function () {
+  // Fan-passcode rejection now lives in the shared auth module
+  var combined = fnSrc + authSrc;
   assert.ok(
-    fnSrc.includes("FAF_MEDIA_PASSCODE") &&
-      fnSrc.includes("FAF_MEDIA_ADMIN_PASSCODE"),
+    combined.includes("FAF_MEDIA_PASSCODE") &&
+      combined.includes("FAF_MEDIA_ADMIN_PASSCODE"),
     "Must reference both passcodes",
   );
-  // The function must compare submitted against fan passcode and reject
-  var validateFn = fnSrc.substring(
-    fnSrc.indexOf("function validateAdminPasscode"),
-    fnSrc.indexOf("function validateAdminPasscode") + 800,
-  );
   assert.ok(
-    validateFn.includes("fanPasscode") ||
-      validateFn.includes("FAF_MEDIA_PASSCODE"),
+    authSrc.includes("fanPasscode") || authSrc.includes("FAF_MEDIA_PASSCODE"),
     "Must explicitly check that fan passcode is not used for admin access",
   );
 });
@@ -643,12 +647,9 @@ test("T4.19: Served objects are not publicly cacheable", function () {
 });
 
 test("T4.20: Missing admin env var returns 500, not a bypass", function () {
-  var validateFn = fnSrc.substring(
-    fnSrc.indexOf("function validateAdminPasscode"),
-    fnSrc.indexOf("function validateAdminPasscode") + 600,
-  );
+  // validateAdminPasscode now lives in admin-auth.js
   assert.ok(
-    validateFn.includes("500") || validateFn.includes("not-configured"),
+    authSrc.includes("500") && authSrc.includes("not-configured"),
     "Missing admin env var must return 500, never bypass auth",
   );
 });
