@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volunteer — Fathers and Football</title>
+    <meta
+      name="description"
+      content="Volunteer with Fathers and Football. Sign up to coach, help at events, mentor youth, or support our community."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --teal: #008e97;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+      nav ul {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+      nav ul a {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      nav ul a:hover {
+        color: var(--gold);
+      }
+      .nav-cta {
+        padding: 9px 22px;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 140px 24px 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          rgba(200, 146, 60, 0.05) 0%,
+          transparent 65%
+        );
+      }
+      .hero-badge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 16px;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 36px;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+      .hero h1 {
+        position: relative;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(48px, 10vw, 100px);
+        font-weight: 900;
+        line-height: 0.9;
+        color: var(--warm);
+        letter-spacing: -1px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .hero h1 em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+        text-transform: none;
+      }
+      .hero-sub {
+        position: relative;
+        font-size: 17px;
+        line-height: 1.75;
+        color: var(--muted);
+        max-width: 560px;
+        margin-top: 24px;
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 64px 24px;
+      }
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      /* FORM */
+      .upload-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 48px 36px;
+      }
+      .form-group {
+        margin-bottom: 24px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="tel"],
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: var(--gold);
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      /* SUBMIT */
+      .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 16px;
+        background: transparent;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .submit-btn:hover:not(:disabled) {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .submit-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* STATUS MESSAGES */
+      .status-msg {
+        display: none;
+        padding: 16px;
+        border-radius: 2px;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .status-msg.visible {
+        display: block;
+      }
+      .status-msg.error {
+        background: rgba(192, 57, 43, 0.1);
+        border: 1px solid rgba(192, 57, 43, 0.3);
+        color: #e74c3c;
+      }
+      .status-msg.success {
+        background: rgba(39, 174, 96, 0.1);
+        border: 1px solid rgba(39, 174, 96, 0.3);
+        color: #2ecc71;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 48px 24px 32px;
+        text-align: center;
+      }
+      .footer-parent {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .footer-parent a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 16px 0;
+      }
+      .footer-links a {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-size: 11px;
+        color: rgba(125, 122, 119, 0.4);
+        margin-top: 14px;
+      }
+
+      .newsletter-signup {
+        max-width: 400px;
+        margin: 0 auto 32px;
+      }
+      .newsletter-signup p {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+      }
+      .newsletter-form {
+        display: flex;
+        gap: 8px;
+      }
+      .newsletter-form input {
+        flex: 1;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+      }
+      .newsletter-form input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .newsletter-form button {
+        padding: 10px 20px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      .newsletter-form button:hover {
+        background: var(--gold-lt);
+      }
+      .newsletter-form button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .newsletter-status {
+        font-size: 12px;
+        margin-top: 8px;
+        min-height: 18px;
+      }
+      .newsletter-status.error {
+        color: #c0392b;
+      }
+      .newsletter-status.success {
+        color: #27ae60;
+      }
+      @media (max-width: 600px) {
+        .newsletter-form {
+          flex-direction: column;
+        }
+      }
+
+      /* MOBILE */
+      .nav-hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--warm);
+        border-radius: 2px;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(10, 10, 10, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        flex-direction: column;
+        gap: 0;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .mobile-menu a:last-child {
+        border-bottom: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--gold);
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 20px;
+        }
+        nav ul {
+          display: none;
+        }
+        .nav-hamburger {
+          display: flex;
+        }
+        .upload-card {
+          padding: 32px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-back" href="index.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+        </svg>
+        Fathers &amp; Football
+      </a>
+      <ul>
+        <li><a href="community.html">Teams</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="sponsors.html">Become a Sponsor</a></li>
+      </ul>
+      <a href="sponsors.html" class="nav-cta">Become a Sponsor</a>
+      <button
+        class="nav-hamburger"
+        aria-label="Menu"
+        onclick="document.getElementById('mobileMenu').classList.toggle('open')"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a
+        href="community.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Teams</a
+      >
+      <a
+        href="events.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Events</a
+      >
+      <a
+        href="sponsors.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Become a Sponsor</a
+      >
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge">Volunteer</div>
+      <h1>GET <em>Involved</em></h1>
+      <p class="hero-sub">
+        Want to make a difference? We need coaches, event volunteers, and
+        community leaders. Tell us how you'd like to help.
+      </p>
+    </section>
+
+    <!-- VOLUNTEER FORM -->
+    <section
+      style="background: var(--dark-2); border-top: 1px solid var(--border)"
+    >
+      <div class="container">
+        <div class="upload-card">
+          <form id="volunteerForm" onsubmit="return false;">
+            <div class="form-group">
+              <label for="volName">Full Name *</label>
+              <input
+                type="text"
+                id="volName"
+                name="name"
+                placeholder="Your full name"
+                required
+                maxlength="200"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="volEmail">Email *</label>
+              <input
+                type="email"
+                id="volEmail"
+                name="email"
+                placeholder="you@example.com"
+                required
+                maxlength="200"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="volPhone">Phone</label>
+              <input
+                type="tel"
+                id="volPhone"
+                name="phone"
+                placeholder="(optional)"
+                maxlength="30"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="volRoles">How would you like to help?</label>
+              <textarea
+                id="volRoles"
+                name="roles"
+                placeholder="Coaching, event planning, mentoring, fundraising..."
+                maxlength="500"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="volAvailability">Availability</label>
+              <input
+                type="text"
+                id="volAvailability"
+                name="availability"
+                placeholder="e.g. Weekday evenings, Saturday mornings"
+                maxlength="500"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="volExperience">Relevant Experience</label>
+              <textarea
+                id="volExperience"
+                name="experience"
+                placeholder="Any coaching, volunteer, or youth development experience"
+                maxlength="1000"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="volNotes">Additional Notes</label>
+              <textarea
+                id="volNotes"
+                name="notes"
+                placeholder="Anything else you'd like us to know"
+                maxlength="1000"
+              ></textarea>
+            </div>
+
+            <button
+              type="button"
+              class="submit-btn"
+              id="submitBtn"
+              onclick="handleVolunteerSubmit()"
+            >
+              Volunteer
+            </button>
+
+            <div class="status-msg" id="statusMsg"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-parent">
+        A <a href="index.html">Fathers and Football</a> Initiative
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <div class="newsletter-signup">
+        <p>Get updates from FAF</p>
+        <form
+          class="newsletter-form"
+          onsubmit="return handleNewsletterSignup(event);"
+        >
+          <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="Your email"
+            required
+            autocomplete="email"
+          />
+          <button type="submit" id="newsletterBtn">Subscribe</button>
+        </form>
+        <div class="newsletter-status" id="newsletterStatus"></div>
+      </div>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var submitBtn = document.getElementById("submitBtn");
+      var statusMsg = document.getElementById("statusMsg");
+
+      function showStatus(msg, type) {
+        statusMsg.textContent = msg;
+        statusMsg.className = "status-msg visible " + type;
+      }
+
+      function hideStatus() {
+        statusMsg.className = "status-msg";
+      }
+
+      function handleVolunteerSubmit() {
+        var name = document.getElementById("volName").value.trim();
+        var email = document.getElementById("volEmail").value.trim();
+
+        if (!name) {
+          showStatus("Please enter your name.", "error");
+          return;
+        }
+        if (!email) {
+          showStatus("Please enter your email address.", "error");
+          return;
+        }
+
+        var atIdx = email.indexOf("@");
+        if (atIdx < 1 || email.indexOf(".", atIdx) === -1) {
+          showStatus("Please enter a valid email address.", "error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "SUBMITTING...";
+        hideStatus();
+
+        var payload = {
+          name: name,
+          email: email,
+          phone: document.getElementById("volPhone").value.trim(),
+          roles: document.getElementById("volRoles").value.trim(),
+          availability: document.getElementById("volAvailability").value.trim(),
+          experience: document.getElementById("volExperience").value.trim(),
+          notes: document.getElementById("volNotes").value.trim(),
+        };
+
+        fetch("/api/volunteer-interest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then(function (res) {
+            return res.json().then(function (d) {
+              return { ok: res.ok, status: res.status, data: d };
+            });
+          })
+          .then(function (r) {
+            if (r.ok && r.data.ok) {
+              showStatus(
+                "Thank you for volunteering! We'll be in touch soon.",
+                "success",
+              );
+              document.getElementById("volunteerForm").reset();
+            } else if (r.status === 429) {
+              showStatus(
+                r.data.error ||
+                  "Too many submissions. Please try again in a few minutes.",
+                "error",
+              );
+            } else {
+              showStatus(
+                r.data.error || "Something went wrong. Please try again.",
+                "error",
+              );
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = "VOLUNTEER";
+          })
+          .catch(function () {
+            showStatus(
+              "Network error. Please check your connection and try again.",
+              "error",
+            );
+            submitBtn.disabled = false;
+            submitBtn.textContent = "VOLUNTEER";
+          });
+      }
+    </script>
+    <script>
+      function handleNewsletterSignup(e) {
+        e.preventDefault();
+        var email = document.getElementById("newsletterEmail").value.trim();
+        var btn = document.getElementById("newsletterBtn");
+        var status = document.getElementById("newsletterStatus");
+        if (!email) return false;
+        btn.disabled = true;
+        btn.textContent = "...";
+        status.textContent = "";
+        status.className = "newsletter-status";
+        fetch("/api/newsletter-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) {
+            return res.json().then(function (d) {
+              return { ok: res.ok, data: d };
+            });
+          })
+          .then(function (r) {
+            if (r.ok && r.data.success) {
+              status.textContent = r.data.message || "You're subscribed!";
+              status.className = "newsletter-status success";
+              document.getElementById("newsletterEmail").value = "";
+            } else {
+              status.textContent = r.data.error || "Something went wrong.";
+              status.className = "newsletter-status error";
+            }
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          })
+          .catch(function () {
+            status.textContent = "Connection error. Try again.";
+            status.className = "newsletter-status error";
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          });
+        return false;
+      }
+    </script>
+    <script src="feedback-widget.js" defer></script>
+    <script src="skills-clinic-banner.js" defer></script>
+  </body>
+</html>
