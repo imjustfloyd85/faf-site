@@ -20,25 +20,10 @@
 
 import { sendViaACS } from "../lib/acs-email.js";
 import { createUnsubscribeToken } from "../lib/approval-tokens.js";
+import { corsHeaders, validateAdminPasscode } from "../lib/admin-auth.js";
 
 const FROM_ADDRESS = "DoNotReply@fathersandfootball.org";
 const REPLY_TO = "info@fathersandfootball.org";
-
-function corsHeaders(origin) {
-  const allowed = [
-    "https://fathersandfootball.org",
-    "https://www.fathersandfootball.org",
-    "http://localhost:8788",
-    "http://localhost:3000",
-  ];
-  return {
-    "Access-Control-Allow-Origin": allowed.includes(origin)
-      ? origin
-      : allowed[0],
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-}
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -49,24 +34,17 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function validateAdminPasscode(env, submitted) {
-  const adminPasscode = env.FAF_MEDIA_ADMIN_PASSCODE;
-  if (!adminPasscode)
-    return { valid: false, reason: "not-configured", status: 500 };
-  if (!submitted) return { valid: false, reason: "missing", status: 403 };
-  if (submitted !== adminPasscode)
-    return { valid: false, reason: "invalid", status: 403 };
-  return { valid: true };
-}
-
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get("Origin") || "";
-  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders(origin, "POST, OPTIONS"),
+  });
 }
 
 export async function onRequestPost(context) {
   const origin = context.request.headers.get("Origin") || "";
-  const cors = corsHeaders(origin);
+  const cors = corsHeaders(origin, "POST, OPTIONS");
   const headers = { "Content-Type": "application/json", ...cors };
 
   try {

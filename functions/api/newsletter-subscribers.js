@@ -6,40 +6,19 @@
 //   FAF_KV                   -- KV binding
 //   FAF_MEDIA_ADMIN_PASSCODE -- admin auth
 
-function corsHeaders(origin) {
-  const allowed = [
-    "https://fathersandfootball.org",
-    "https://www.fathersandfootball.org",
-    "http://localhost:8788",
-    "http://localhost:3000",
-  ];
-  return {
-    "Access-Control-Allow-Origin": allowed.includes(origin)
-      ? origin
-      : allowed[0],
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-}
-
-function validateAdminPasscode(env, submitted) {
-  const adminPasscode = env.FAF_MEDIA_ADMIN_PASSCODE;
-  if (!adminPasscode)
-    return { valid: false, reason: "not-configured", status: 500 };
-  if (!submitted) return { valid: false, reason: "missing", status: 403 };
-  if (submitted !== adminPasscode)
-    return { valid: false, reason: "invalid", status: 403 };
-  return { valid: true };
-}
+import { corsHeaders, validateAdminPasscode } from "../lib/admin-auth.js";
 
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get("Origin") || "";
-  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders(origin, "GET, OPTIONS"),
+  });
 }
 
 export async function onRequestGet(context) {
   const origin = context.request.headers.get("Origin") || "";
-  const cors = corsHeaders(origin);
+  const cors = corsHeaders(origin, "GET, OPTIONS");
   const headers = { "Content-Type": "application/json", ...cors };
 
   try {
