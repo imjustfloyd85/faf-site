@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Player Evaluation -- Fathers and Football</title>
+    <meta
+      name="description"
+      content="Upload player evaluation videos for Fathers and Football tryouts. Videos are reviewed by coaches before any decisions are made."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --teal: #008e97;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+      nav ul {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+      nav ul a {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      nav ul a:hover {
+        color: var(--gold);
+      }
+      .nav-cta {
+        padding: 9px 22px;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .nav-cta:hover {
+        background: var(--gold);
+        color: var(--dark);
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 140px 24px 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          rgba(200, 146, 60, 0.05) 0%,
+          transparent 65%
+        );
+      }
+      .hero-badge {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 16px;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 36px;
+      }
+      .hero-badge::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+      .hero h1 {
+        position: relative;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(48px, 10vw, 100px);
+        font-weight: 900;
+        line-height: 0.9;
+        color: var(--warm);
+        letter-spacing: -1px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .hero h1 em {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+        text-transform: none;
+      }
+      .hero-sub {
+        position: relative;
+        font-size: 17px;
+        line-height: 1.75;
+        color: var(--muted);
+        max-width: 560px;
+        margin-top: 24px;
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 64px 24px;
+      }
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      /* FORM */
+      .upload-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        padding: 48px 36px;
+      }
+      .form-group {
+        margin-bottom: 24px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="password"],
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: var(--gold);
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      /* DROP ZONE */
+      .drop-zone {
+        border: 2px dashed var(--border);
+        border-radius: 4px;
+        padding: 48px 24px;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .drop-zone:hover,
+      .drop-zone.dragover {
+        border-color: var(--gold);
+        background: rgba(200, 146, 60, 0.04);
+      }
+      .drop-zone-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 16px;
+        color: var(--muted);
+      }
+      .drop-zone-text {
+        font-size: 15px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .drop-zone-text strong {
+        color: var(--gold);
+      }
+      .drop-zone-hint {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.6);
+      }
+      .drop-zone input[type="file"] {
+        display: none;
+      }
+
+      /* FILE PREVIEW */
+      .file-preview {
+        display: none;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+        padding: 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+      }
+      .file-preview.visible {
+        display: flex;
+      }
+      .file-preview-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .file-preview-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--warm);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .file-preview-size {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .file-preview-remove {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 6px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border-radius: 2px;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .file-preview-remove:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
+
+      /* PROGRESS */
+      .progress-bar {
+        display: none;
+        width: 100%;
+        height: 4px;
+        background: var(--dark-3);
+        border-radius: 2px;
+        margin-top: 16px;
+        overflow: hidden;
+      }
+      .progress-bar.visible {
+        display: block;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--gold);
+        border-radius: 2px;
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      /* SUBMIT */
+      .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 16px;
+        background: transparent;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border-radius: 2px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .submit-btn:hover:not(:disabled) {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .submit-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* STATUS MESSAGES */
+      .status-msg {
+        display: none;
+        padding: 16px;
+        border-radius: 2px;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .status-msg.visible {
+        display: block;
+      }
+      .status-msg.error {
+        background: rgba(192, 57, 43, 0.1);
+        border: 1px solid rgba(192, 57, 43, 0.3);
+        color: #e74c3c;
+      }
+      .status-msg.success {
+        background: rgba(39, 174, 96, 0.1);
+        border: 1px solid rgba(39, 174, 96, 0.3);
+        color: #2ecc71;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 48px 24px 32px;
+        text-align: center;
+      }
+      .footer-parent {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .footer-parent a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 16px 0;
+      }
+      .footer-links a {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-size: 11px;
+        color: rgba(125, 122, 119, 0.4);
+        margin-top: 14px;
+      }
+
+      .newsletter-signup {
+        max-width: 400px;
+        margin: 0 auto 32px;
+      }
+      .newsletter-signup p {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+      }
+      .newsletter-form {
+        display: flex;
+        gap: 8px;
+      }
+      .newsletter-form input {
+        flex: 1;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+      }
+      .newsletter-form input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .newsletter-form button {
+        padding: 10px 20px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      .newsletter-form button:hover {
+        background: var(--gold-lt);
+      }
+      .newsletter-form button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .newsletter-status {
+        font-size: 12px;
+        margin-top: 8px;
+        min-height: 18px;
+      }
+      .newsletter-status.error {
+        color: #c0392b;
+      }
+      .newsletter-status.success {
+        color: #27ae60;
+      }
+      @media (max-width: 600px) {
+        .newsletter-form {
+          flex-direction: column;
+        }
+      }
+
+      /* MOBILE */
+      .nav-hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--warm);
+        border-radius: 2px;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(10, 10, 10, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        flex-direction: column;
+        gap: 0;
+      }
+      .mobile-menu.open {
+        display: flex;
+      }
+      .mobile-menu a {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .mobile-menu a:last-child {
+        border-bottom: none;
+      }
+      .mobile-menu a:hover {
+        color: var(--gold);
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 20px;
+        }
+        nav ul {
+          display: none;
+        }
+        .nav-hamburger {
+          display: flex;
+        }
+        .upload-card {
+          padding: 32px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-back" href="index.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+        </svg>
+        Fathers &amp; Football
+      </a>
+      <ul>
+        <li><a href="community.html">Teams</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="sponsors.html">Become a Sponsor</a></li>
+      </ul>
+      <a href="sponsors.html" class="nav-cta">Become a Sponsor</a>
+      <button
+        class="nav-hamburger"
+        aria-label="Menu"
+        onclick="document.getElementById('mobileMenu').classList.toggle('open')"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a
+        href="community.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Teams</a
+      >
+      <a
+        href="events.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Events</a
+      >
+      <a
+        href="sponsors.html"
+        onclick="this.closest('#mobileMenu').classList.remove('open')"
+        >Become a Sponsor</a
+      >
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge">Player Evaluation</div>
+      <h1>EVALUATION <em>Video</em></h1>
+      <p class="hero-sub">
+        Upload evaluation video for player tryouts. Videos are reviewed by
+        coaches before any decisions are made -- this is a private submission.
+      </p>
+    </section>
+
+    <!-- UPLOAD FORM -->
+    <section
+      style="background: var(--dark-2); border-top: 1px solid var(--border)"
+    >
+      <div class="container">
+        <div class="upload-card">
+          <form id="uploadForm" onsubmit="return false;">
+            <!-- Passcode -->
+            <div class="form-group">
+              <label for="passcode">Team Passcode</label>
+              <input
+                type="password"
+                id="passcode"
+                name="passcode"
+                placeholder="Enter the team passcode"
+                required
+                autocomplete="off"
+              />
+              <p class="form-hint">
+                Ask a coach or team parent for the passcode.
+              </p>
+            </div>
+
+            <!-- File -->
+            <div class="form-group">
+              <label>Photo or Video</label>
+              <div
+                class="drop-zone"
+                id="dropZone"
+                onclick="document.getElementById('fileInput').click()"
+              >
+                <svg
+                  class="drop-zone-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M12 16V4m0 0l-4 4m4-4l4 4M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"
+                  />
+                </svg>
+                <p class="drop-zone-text">
+                  Drag and drop or <strong>browse</strong>
+                </p>
+                <p class="drop-zone-hint">
+                  Images (JPG, PNG, GIF, WebP, HEIC) or Videos (MP4, MOV, WebM)
+                  -- max 100 MB
+                </p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  name="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/x-msvideo,video/webm,video/x-matroska"
+                />
+              </div>
+              <div class="file-preview" id="filePreview">
+                <div class="file-preview-info">
+                  <div class="file-preview-name" id="fileName"></div>
+                  <div class="file-preview-size" id="fileSize"></div>
+                </div>
+                <button
+                  type="button"
+                  class="file-preview-remove"
+                  onclick="clearFile()"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- Player Name (required) -->
+            <div class="form-group">
+              <label for="playerName">Player Name</label>
+              <input
+                type="text"
+                id="playerName"
+                name="playerName"
+                placeholder="Full name of the player"
+                required
+                maxlength="200"
+              />
+            </div>
+
+            <!-- Position (optional) -->
+            <div class="form-group">
+              <label for="playerPosition">Position (optional)</label>
+              <input
+                type="text"
+                id="playerPosition"
+                name="playerPosition"
+                placeholder="e.g. QB, WR, RB, LB"
+                maxlength="100"
+              />
+            </div>
+
+            <!-- Parent/Guardian Name (optional) -->
+            <div class="form-group">
+              <label for="submitterName">Parent/Guardian Name (optional)</label>
+              <input
+                type="text"
+                id="submitterName"
+                name="name"
+                placeholder="So we know who sent it"
+                maxlength="100"
+              />
+            </div>
+
+            <!-- Notes (optional) -->
+            <div class="form-group">
+              <label for="caption">Notes (optional)</label>
+              <textarea
+                id="caption"
+                name="caption"
+                placeholder="Anything the coaches should know about this video?"
+                maxlength="500"
+              ></textarea>
+            </div>
+
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <button
+              type="button"
+              class="submit-btn"
+              id="submitBtn"
+              onclick="handleUpload()"
+              disabled
+            >
+              Upload Evaluation
+            </button>
+
+            <div class="status-msg" id="statusMsg"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-parent">
+        A <a href="index.html">Fathers and Football</a> Initiative
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <div class="newsletter-signup">
+        <p>Get updates from FAF</p>
+        <form
+          class="newsletter-form"
+          onsubmit="return handleNewsletterSignup(event);"
+        >
+          <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="Your email"
+            required
+            autocomplete="email"
+          />
+          <button type="submit" id="newsletterBtn">Subscribe</button>
+        </form>
+        <div class="newsletter-status" id="newsletterStatus"></div>
+      </div>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var MAX_FILE_SIZE = 100 * 1024 * 1024;
+      var selectedFile = null;
+
+      var dropZone = document.getElementById("dropZone");
+      var fileInput = document.getElementById("fileInput");
+      var filePreview = document.getElementById("filePreview");
+      var fileNameEl = document.getElementById("fileName");
+      var fileSizeEl = document.getElementById("fileSize");
+      var submitBtn = document.getElementById("submitBtn");
+      var progressBar = document.getElementById("progressBar");
+      var progressFill = document.getElementById("progressFill");
+      var statusMsg = document.getElementById("statusMsg");
+
+      // Drag and drop
+      dropZone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+      dropZone.addEventListener("dragleave", function () {
+        dropZone.classList.remove("dragover");
+      });
+      dropZone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        if (e.dataTransfer.files.length > 0) {
+          setFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+          setFile(fileInput.files[0]);
+        }
+      });
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      function setFile(file) {
+        if (file.size > MAX_FILE_SIZE) {
+          showStatus("File is too large. Maximum size is 100 MB.", "error");
+          return;
+        }
+        selectedFile = file;
+        fileNameEl.textContent = file.name;
+        fileSizeEl.textContent = formatSize(file.size);
+        filePreview.classList.add("visible");
+        dropZone.style.display = "none";
+        submitBtn.disabled = false;
+        hideStatus();
+      }
+
+      function clearFile() {
+        selectedFile = null;
+        fileInput.value = "";
+        filePreview.classList.remove("visible");
+        dropZone.style.display = "";
+        submitBtn.disabled = true;
+      }
+
+      function showStatus(msg, type) {
+        statusMsg.textContent = msg;
+        statusMsg.className = "status-msg visible " + type;
+      }
+
+      function hideStatus() {
+        statusMsg.className = "status-msg";
+      }
+
+      function handleUpload() {
+        var passcode = document.getElementById("passcode").value.trim();
+        if (!passcode) {
+          showStatus("Please enter the team passcode.", "error");
+          return;
+        }
+        if (!selectedFile) {
+          showStatus("Please select a file to upload.", "error");
+          return;
+        }
+        var playerName = document.getElementById("playerName").value.trim();
+        if (!playerName) {
+          showStatus("Please enter the player's name.", "error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "UPLOADING...";
+        progressBar.classList.add("visible");
+        progressFill.style.width = "0%";
+        hideStatus();
+
+        var formData = new FormData();
+        formData.append("passcode", passcode);
+        formData.append("file", selectedFile);
+        formData.append("playerName", playerName);
+        formData.append(
+          "playerPosition",
+          document.getElementById("playerPosition").value.trim(),
+        );
+        formData.append(
+          "name",
+          document.getElementById("submitterName").value.trim(),
+        );
+        formData.append(
+          "caption",
+          document.getElementById("caption").value.trim(),
+        );
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/evaluation-upload");
+
+        xhr.upload.addEventListener("progress", function (e) {
+          if (e.lengthComputable) {
+            var pct = Math.round((e.loaded / e.total) * 100);
+            progressFill.style.width = pct + "%";
+          }
+        });
+
+        xhr.addEventListener("load", function () {
+          progressFill.style.width = "100%";
+          try {
+            var resp = JSON.parse(xhr.responseText);
+            if (xhr.status === 200 && resp.success) {
+              showStatus(
+                resp.message ||
+                  "Upload received. Thank you! Coaches will review this evaluation video.",
+                "success",
+              );
+              clearFile();
+              document.getElementById("playerName").value = "";
+              document.getElementById("playerPosition").value = "";
+              document.getElementById("submitterName").value = "";
+              document.getElementById("caption").value = "";
+            } else {
+              showStatus(
+                resp.error || "Upload failed. Please try again.",
+                "error",
+              );
+            }
+          } catch {
+            showStatus("Upload failed. Please try again.", "error");
+          }
+          submitBtn.disabled = false;
+          submitBtn.textContent = "UPLOAD EVALUATION";
+          setTimeout(function () {
+            progressBar.classList.remove("visible");
+          }, 1500);
+        });
+
+        xhr.addEventListener("error", function () {
+          showStatus(
+            "Network error. Please check your connection and try again.",
+            "error",
+          );
+          submitBtn.disabled = false;
+          submitBtn.textContent = "UPLOAD EVALUATION";
+          progressBar.classList.remove("visible");
+        });
+
+        xhr.send(formData);
+      }
+    </script>
+    <script>
+      function handleNewsletterSignup(e) {
+        e.preventDefault();
+        var email = document.getElementById("newsletterEmail").value.trim();
+        var btn = document.getElementById("newsletterBtn");
+        var status = document.getElementById("newsletterStatus");
+        if (!email) return false;
+        btn.disabled = true;
+        btn.textContent = "...";
+        status.textContent = "";
+        status.className = "newsletter-status";
+        fetch("/api/newsletter-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (res) {
+            return res.json().then(function (d) {
+              return { ok: res.ok, data: d };
+            });
+          })
+          .then(function (r) {
+            if (r.ok && r.data.success) {
+              status.textContent = r.data.message || "You're subscribed!";
+              status.className = "newsletter-status success";
+              document.getElementById("newsletterEmail").value = "";
+            } else {
+              status.textContent = r.data.error || "Something went wrong.";
+              status.className = "newsletter-status error";
+            }
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          })
+          .catch(function () {
+            status.textContent = "Connection error. Try again.";
+            status.className = "newsletter-status error";
+            btn.disabled = false;
+            btn.textContent = "Subscribe";
+          });
+        return false;
+      }
+    </script>
+    <script src="feedback-widget.js" defer></script>
+    <script src="skills-clinic-banner.js" defer></script>
+  </body>
+</html>
