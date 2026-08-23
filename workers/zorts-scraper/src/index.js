@@ -16,6 +16,22 @@
 
 const ZORTS_BASE = "https://www.zortssports.com";
 
+// Workers have no DOM, so decode the small set of entities Zorts actually
+// emits in team/opponent names (numeric entities like &#39; for apostrophes,
+// plus the standard named ones) rather than pulling in a full HTML parser.
+function decodeHtmlEntities(str) {
+  return str
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(parseInt(dec, 10)))
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'");
+}
+
 const DEFAULT_CONFIG = {
   tournaments: [
     {
@@ -162,11 +178,13 @@ function parseCalendarHtml(html, teamName) {
     const hasLink = cells[0].match(/<a[^>]*>([\s\S]*?)<\/a>/i);
     if (!hasLink) continue;
 
-    const opponentRaw = hasLink[1].replace(/<[^>]+>/g, "").trim();
-    // Strip trailing division label (e.g. "Boy's 10U", "Girl's 12UG")
+    const opponentRaw = decodeHtmlEntities(
+      hasLink[1].replace(/<[^>]+>/g, "").trim(),
+    );
+    // Strip trailing division label (e.g. "Boy's 10U", "Girl's 12UG",
+    // or "Boy's 9u to 10u" -- Zorts uses both formats depending on view)
     const opponent = opponentRaw
-      .replace(/\s+(?:Boy|Girl)&#39;s\s+\d+U[G]?$/i, "")
-      .replace(/\s+(?:Boy|Girl)'s\s+\d+U[G]?$/i, "")
+      .replace(/\s+(?:Boy|Girl)'s\s+\d+u(?:\s+to\s+\d+u)?[G]?$/i, "")
       .trim();
     const isAway = /^\s*@/.test(cells[0]);
 
