@@ -1,0 +1,164 @@
+// Newsletter draft creation via Claude API.
+//
+// Generates a unique draft ID, calls Claude with a "what's new" summary,
+// stores the resulting subject + HTML body in FAF_KV as a pending draft,
+// then emails the rendered draft to the FAF approvers with approve/reject links.
+//
+// DEPENDENCIES:
+//   ANTHROPIC_API_KEY      -- Claude API key
+//   QBO_APPROVAL_SECRET    -- HMAC key for approval tokens
+//   ACS_CONNECTION_STRING  -- email transport
+//   FAF_KV                 -- draft storage
+
+import { createApprovalToken } from "./approval-tokens.js";
+import { sendViaACS } from "./acs-email.js";
+import { escapeHtml } from "./newsletter-send-core.js";
+
+// Same recipients as sponsor-approve and QBO approval notifications
+const APPROVER_RECIPIENTS = [
+  "justin@fathersandfootball.org",
+  "communications@fathersandfootball.org",
+];
+
+const CLAUDE_SYSTEM_PROMPT = `You are a newsletter writer for Fathers and Football (FAF), a 501(c)(3) youth football organization in the Dallas-Fort Worth area. FAF runs the Legacy 7 United and Frisco Elite travel ball programs, hosts skills clinics, and centers everything on fatherhood, mentorship, and community.
+
+Write a short newsletter email based only on the factual updates provided below. Your job is to summarize what actually changed on the website or in the organization -- nothing more.
+
+Rules you must follow:
+- Write in a warm, community-focused voice. Talk like a real person writing to families who care about their kids.
+- State only facts present in the input. Never invent scores, dates, names, sponsor details, or event specifics that aren't explicitly provided.
+- If the input is thin, write a shorter newsletter. Do not pad it out.
+- Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
+- No em dashes. No words like "delve," "boasts," "intricate," "underscore," "align with," "enhance," "fostering," "showcasing," "pivotal," "crucial." No rule-of-three lists used as filler. No emoji. No formulaic sign-off sentences like "Together, we can make a difference."
+- Use short paragraphs. Two to four sentences each.
+- Do not mention that you are AI or that this was generated.
+
+Respond with valid JSON only, no markdown fences:
+{"subject": "the email subject line", "bodyHtml": "<p>the HTML body</p>"}
+
+The bodyHtml should use simple HTML: <p> tags for paragraphs, <a> for links, <strong> for emphasis. No inline styles. Keep it clean.`;
+
+export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
+  const apiKey = env.ANTHROPIC_API_KEY;
+  const secret = env.QBO_APPROVAL_SECRET;
+  const kv = env.FAF_KV;
+
+  if (!apiKey) throw new Error("ANTHROPIC_API_KEY not configured");
+  if (!secret) throw new Error("QBO_APPROVAL_SECRET not configured");
+  if (!kv) throw new Error("FAF_KV not configured");
+
+  // Generate a unique draft ID
+  const draftId = crypto.randomUUID();
+
+  // Call Claude to generate the newsletter
+  const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1200,
+      system: CLAUDE_SYSTEM_PROMPT,
+      messages: [
+        {
+          role: "user",
+          content: `Here are the recent updates to summarize for the newsletter:\n\n${whatsNew}`,
+        },
+      ],
+    }),
+  });
+
+  if (!claudeResponse.ok) {
+    const errText = await claudeResponse.text();
+    throw new Error(`Claude API returned ${claudeResponse.status}: ${errText}`);
+  }
+
+  const claudeData = await claudeResponse.json();
+
+  // Extract the text content from Claude's response
+  const textBlock = claudeData.content?.find((b) => b.type === "text");
+  if (!textBlock?.text) {
+    throw new Error("Claude returned no text content");
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(textBlock.text);
+  } catch {
+    throw new Error(
+      `Claude returned invalid JSON: ${textBlock.text.slice(0, 200)}`,
+    );
+  }
+
+  const { subject, bodyHtml } = parsed;
+  if (!subject || !bodyHtml) {
+    throw new Error("Claude response missing subject or bodyHtml");
+  }
+
+  // Store draft in KV
+  const draft = {
+    id: draftId,
+    subject,
+    bodyHtml,
+    whatsNew,
+    status: "pending-approval",
+    createdAt: new Date().toISOString(),
+  };
+
+  // TTL of 30 days -- drafts older than that are stale
+  await kv.put(`newsletter:draft:${draftId}`, JSON.stringify(draft), {
+    expirationTtl: 30 * 24 * 60 * 60,
+  });
+
+  // Generate approve and reject tokens
+  const approveToken = await createApprovalToken(draftId, "approve", secret);
+  const rejectToken = await createApprovalToken(draftId, "reject", secret);
+
+  const approveUrl = `${siteUrl}/api/newsletter-draft-approve?token=${encodeURIComponent(approveToken)}`;
+  const rejectUrl = `${siteUrl}/api/newsletter-draft-approve?token=${encodeURIComponent(rejectToken)}`;
+
+  // Build the approval email with the rendered draft preview
+  const approvalHtml = `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+  <h2 style="color: #c8923c;">Newsletter Draft Ready for Review</h2>
+  <p>A new newsletter draft has been generated. Review the content below, then approve or reject it.</p>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 20px 0; background: #fafafa;">
+    <h3 style="margin-top: 0;">Subject: ${escapeHtml(subject)}</h3>
+    <hr style="border: none; border-top: 1px solid #eee;" />
+    ${bodyHtml}
+  </div>
+
+  <p style="margin: 24px 0;">
+    <a href="${escapeHtml(approveUrl)}" style="display: inline-block; padding: 12px 24px; background: #28a745; color: #fff; text-decoration: none; border-radius: 4px; margin-right: 12px;">Approve and Send</a>
+    <a href="${escapeHtml(rejectUrl)}" style="display: inline-block; padding: 12px 24px; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px;">Reject Draft</a>
+  </p>
+
+  <p style="font-size: 12px; color: #666;">
+    Approving will immediately send this newsletter to all active subscribers.
+    These links expire in 7 days. Draft ID: ${escapeHtml(draftId)}
+  </p>
+</div>`;
+
+  const emailResult = await sendViaACS(env, {
+    from: "communications@fathersandfootball.org",
+    to: APPROVER_RECIPIENTS,
+    subject: `[Newsletter Draft] ${subject}`,
+    html: approvalHtml,
+  });
+
+  if (!emailResult.ok && emailResult.status !== 202) {
+    console.error("Failed to send draft approval email:", emailResult.status);
+  }
+
+  return {
+    draftId,
+    subject,
+    approveUrl,
+    rejectUrl,
+    emailSent: emailResult.ok || emailResult.status === 202,
+  };
+}
