@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin-hub
+Disallow: /media-review
+Disallow: /newsletter-admin
+Disallow: /sms-opt-in
+Disallow: /evaluation-upload
+Disallow: /media-upload
+Disallow: /functions/
+Disallow: /api/
+
+Sitemap: https://fathersandfootball.org/sitemap.xml
