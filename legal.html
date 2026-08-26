@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Policies &amp; Legal — Fathers and Football</title>
+    <meta
+      name="description"
+      content="Fathers and Football policies: Code of Conduct, Abuse Prevention, Background Checks, 1-on-1 Interaction, Participant Waiver, and Photo/Media Release."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+      .doc-wrap {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 130px 24px 100px;
+      }
+      .doc-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--border);
+      }
+      .doc-header .org-name {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--warm);
+        margin-bottom: 6px;
+      }
+      .doc-header .org-meta {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .page-title {
+        font-size: clamp(26px, 4vw, 36px);
+        font-weight: 800;
+        color: var(--warm);
+        text-align: center;
+        margin: 32px 0 8px;
+      }
+      .page-subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 560px;
+        margin: 0 auto 48px;
+      }
+
+      /* ── Tab navigation ── */
+      .tab-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 40px;
+        list-style: none;
+      }
+      .tab-nav button {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 10px 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+      }
+      .tab-nav button:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .tab-nav button.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--dark);
+      }
+
+      /* ── Tab panels ── */
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      .panel-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--warm);
+        margin-bottom: 8px;
+      }
+      .panel-effective {
+        font-size: 12px;
+        color: var(--gold);
+        letter-spacing: 1px;
+        margin-bottom: 28px;
+      }
+      .panel-body h2 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--gold-lt);
+        margin: 28px 0 10px;
+      }
+      .panel-body p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--warm);
+        opacity: 0.9;
+        margin-bottom: 14px;
+      }
+      .panel-body ul {
+        margin: 0 0 14px 20px;
+        color: var(--warm);
+        opacity: 0.9;
+        font-size: 15px;
+        line-height: 1.8;
+      }
+      .panel-body li {
+        margin-bottom: 4px;
+      }
+      .panel-body strong {
+        color: var(--warm);
+        opacity: 1;
+      }
+      .panel-body a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .panel-body a:hover {
+        text-decoration: underline;
+      }
+
+      .pdf-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 12px 22px;
+        border: 1px solid var(--gold);
+        border-radius: 4px;
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all 0.2s;
+      }
+      .pdf-link:hover {
+        background: var(--gold);
+        color: var(--dark);
+        text-decoration: none;
+      }
+      .pdf-link svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      .doc-footer {
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .doc-footer a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+
+      @media (max-width: 640px) {
+        nav {
+          padding: 18px 20px;
+        }
+        .doc-wrap {
+          padding: 120px 20px 80px;
+        }
+        .tab-nav {
+          gap: 6px;
+        }
+        .tab-nav button {
+          font-size: 10px;
+          padding: 8px 12px;
+          letter-spacing: 0.5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-back" href="index.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+        </svg>
+        Fathers &amp; Football
+      </a>
+    </nav>
+
+    <div class="doc-wrap">
+      <div class="doc-header">
+        <div class="org-name">Fathers and Football</div>
+        <div class="org-meta">
+          McKinney, TX &nbsp;|&nbsp; fathersandfootball.org<br />
+          Texas Nonprofit File No. 0806562597 &nbsp;|&nbsp; EIN 42-1980182<br />
+          501(c)(3) public charity
+        </div>
+      </div>
+
+      <h1 class="page-title">Policies &amp; Legal</h1>
+      <p class="page-subtitle">
+        Summaries of each FAF policy are below. For the full legal text,
+        download the PDF linked at the bottom of each section.
+      </p>
+
+      <!-- ── Tab buttons ── -->
+      <ul class="tab-nav" role="tablist">
+        <li>
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-conduct"
+            id="tab-conduct"
+            class="active"
+          >
+            Code of Conduct
+          </button>
+        </li>
+        <li>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-abuse"
+            id="tab-abuse"
+          >
+            Abuse Prevention
+          </button>
+        </li>
+        <li>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-background"
+            id="tab-background"
+          >
+            Background Checks
+          </button>
+        </li>
+        <li>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-1on1"
+            id="tab-1on1"
+          >
+            1-on-1 Interaction
+          </button>
+        </li>
+        <li>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-waiver"
+            id="tab-waiver"
+          >
+            Participant Waiver
+          </button>
+        </li>
+        <li>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-media"
+            id="tab-media"
+          >
+            Photo/Media Release
+          </button>
+        </li>
+      </ul>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 1. CODE OF CONDUCT                        -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel active"
+        role="tabpanel"
+        id="panel-conduct"
+        aria-labelledby="tab-conduct"
+      >
+        <h2 class="panel-title">Code of Conduct</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            This Code of Conduct covers everyone involved in FAF activities:
+            players, parents, spectators, coaches, volunteers, and board
+            members. It applies at practices, games, tournaments, clinics,
+            travel, and all community events across every Frisco Elite division,
+            NFL FLAG league play, and TFFA/Zorts tournaments.
+          </p>
+
+          <h2>Players</h2>
+          <p>
+            Treat teammates, opponents, coaches, referees, and spectators with
+            respect. Accept officials' calls without argument. Win and lose with
+            dignity. No trash talk, no excessive celebration aimed at opponents.
+            Play by the rules and report injuries (including suspected
+            concussions) to a coach right away. No profanity, slurs, bullying,
+            fighting, threats, or substance use at any FAF activity.
+          </p>
+
+          <h2>Parents, guardians, and spectators</h2>
+          <p>
+            Cheer for your child and team. Don't yell at refs, opposing coaches,
+            or other parents. Don't enter the field during games. Follow the
+            24-hour rule: wait a day before raising concerns about coaching
+            decisions, and raise them privately with the coach or through
+            <a href="mailto:info@fathersandfootball.org"
+              >info@fathersandfootball.org</a
+            >, not on social media or in group chats. Supervise your
+            non-participating children at events. No substances, no physical
+            confrontations, no unauthorized recording.
+          </p>
+
+          <h2>Coaches, volunteers, and board members</h2>
+          <p>
+            Held to a higher standard. Prioritize player safety, development,
+            and enjoyment over winning. Instruction must be constructive;
+            yelling at or humiliating a player is never acceptable. Complete all
+            required background screening before interacting with players.
+            Follow the Abuse Prevention and 1-on-1 Interaction policies at all
+            times. Never be alone with a minor in a non-observable setting.
+            Never communicate privately with a minor without a parent copied. No
+            romantic or sexual relationship with any participant under 18 (zero
+            tolerance). No medication to players without prior written parent
+            authorization.
+          </p>
+
+          <h2>Enforcement</h2>
+          <p>
+            Report violations to any board member or
+            <a href="mailto:info@fathersandfootball.org"
+              >info@fathersandfootball.org</a
+            >. Consequences range from warnings to permanent removal depending
+            on severity. Serious violations (violence, threats, child safety,
+            substance use around minors) can result in immediate removal without
+            prior warning. Fees are not refundable for disciplinary removal.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_Code_of_Conduct_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 2. ABUSE PREVENTION POLICY                -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel"
+        role="tabpanel"
+        id="panel-abuse"
+        aria-labelledby="tab-abuse"
+      >
+        <h2 class="panel-title">Abuse Prevention Policy</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            FAF has a zero-tolerance policy for the abuse, neglect, or
+            exploitation of minors. This policy applies to all coaches,
+            volunteers, board members, and any other adult who interacts with
+            minors through FAF programs.
+          </p>
+
+          <h2>What is prohibited</h2>
+          <p>
+            Any sexual contact, sexually suggestive behavior, or showing
+            sexually explicit material to a minor. Any physical discipline
+            (hitting, grabbing, shaking). Physical contact that isn't related to
+            instruction, safety, or first aid. Persistent yelling at, demeaning,
+            or humiliating a child. Using authority to intimidate or isolate a
+            minor. Providing alcohol, drugs, gifts, or money to individual
+            minors without parental knowledge. Private electronic communication
+            with a minor. Sharing a sleeping area with a minor who is not your
+            own child.
+          </p>
+
+          <h2>Two-deep leadership</h2>
+          <p>
+            At least two unrelated adults must be present whenever minors are
+            being supervised during any FAF activity. If a second adult is not
+            available, the activity does not proceed. This applies at practices,
+            games, tournaments, overnight travel, and everywhere in between.
+          </p>
+
+          <h2>Screening</h2>
+          <p>
+            All coaches, volunteers, and other adults who work with minors must
+            complete background screening through National Sports ID (NSID) and
+            NFL FLAG before their first interaction with players. No exceptions.
+          </p>
+
+          <h2>Electronic communication</h2>
+          <p>
+            A parent or guardian must be copied on every electronic message
+            between an adult and a minor. No private one-on-one messaging. No
+            following or friending a minor's personal social media. Team group
+            chats are the preferred method, with at least one parent per player
+            included.
+          </p>
+
+          <h2>Mandatory reporting</h2>
+          <p>
+            Under Texas law (Family Code Chapter 261), anyone who suspects child
+            abuse or neglect must report it immediately. You don't need proof;
+            you need a reasonable suspicion. Failing to report is a Class A
+            misdemeanor.
+          </p>
+          <p>
+            <strong>If a child is in immediate danger, call 911.</strong> Then
+            report to the Texas DFPS Abuse Hotline at 1-800-252-5400 (24/7) and
+            notify FAF at
+            <a href="mailto:info@fathersandfootball.org"
+              >info@fathersandfootball.org</a
+            >.
+          </p>
+
+          <h2>FAF's response</h2>
+          <p>
+            The accused adult is immediately suspended from all FAF activities
+            pending investigation. FAF cooperates fully with law enforcement and
+            DFPS. FAF will not retaliate against anyone who reports a concern in
+            good faith.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_Abuse_Prevention_Policy_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 3. BACKGROUND CHECKS POLICY               -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel"
+        role="tabpanel"
+        id="panel-background"
+        aria-labelledby="tab-background"
+      >
+        <h2 class="panel-title">Background Checks Policy</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            FAF requires criminal background screening for all coaches,
+            assistant coaches, and volunteers who have regular or unsupervised
+            access to minors. No one may begin working with FAF players until
+            screening is complete and cleared.
+          </p>
+
+          <h2>Who must be screened</h2>
+          <ul>
+            <li>All head coaches and assistant coaches</li>
+            <li>
+              Team managers, coordinators, and other adults who help at
+              practices or games on a recurring basis
+            </li>
+            <li>
+              Board members who regularly interact with minor participants
+            </li>
+            <li>
+              Any adult who travels with a FAF team in a supervisory or
+              chaperone role
+            </li>
+          </ul>
+          <p>
+            Parents and spectators who attend games but don't serve in a
+            coaching or volunteer role are not required to be screened (but are
+            still subject to the Code of Conduct). One-time helpers who are
+            never left unsupervised with minors are generally exempt, but if
+            occasional involvement becomes regular, screening is required.
+          </p>
+
+          <h2>How it works</h2>
+          <p>
+            Two screening pathways, both required: a background check through
+            National Sports ID (NSID), which includes identity verification,
+            national criminal database search, sex offender registry search, and
+            county criminal records; and NFL FLAG's own background check through
+            the NFL FLAG registration system. Both must be cleared before a
+            coach or volunteer's first interaction with players.
+          </p>
+
+          <h2>What disqualifies someone</h2>
+          <p>
+            Automatic, no-exceptions disqualification for: any sexual offense,
+            any crime against a child, murder, manslaughter, kidnapping, or
+            current sex offender registry status. Presumptive disqualification
+            (board review required) for: any felony in the past 10 years, any
+            violent or drug-related misdemeanor in the past 7 years, or a
+            pattern of offenses that raises concern. The board makes the final
+            call after giving the individual a chance to provide context.
+          </p>
+
+          <h2>Ongoing obligation</h2>
+          <p>
+            After initial screening, all coaches and volunteers must notify FAF
+            board leadership within 72 hours of any arrest, charge, conviction,
+            CPS investigation, or protective order. Failure to disclose is
+            grounds for immediate and permanent removal.
+          </p>
+
+          <h2>Confidentiality</h2>
+          <p>
+            Background check results are limited to FAF board members with a
+            need to know. FAF does not retain copies of screening reports.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_Background_Checks_Policy_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 4. 1-ON-1 INTERACTION POLICY              -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel"
+        role="tabpanel"
+        id="panel-1on1"
+        aria-labelledby="tab-1on1"
+      >
+        <h2 class="panel-title">1-on-1 Interaction Policy</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            No coach, volunteer, or other adult in a FAF role may be alone with
+            a single minor in a non-observable setting at any time. This policy
+            protects children from potential harm and protects adults from false
+            accusations. It covers every FAF activity: practices, games,
+            tournaments, clinics, travel, and community events.
+          </p>
+
+          <h2>Practices and games</h2>
+          <p>
+            At least two unrelated adults must be present at every practice,
+            game, or event where minors are present. If the second adult hasn't
+            arrived, the activity doesn't start. Individual instruction is
+            allowed only in an open, observable setting with other adults
+            nearby. Closed-door private sessions are not permitted.
+          </p>
+
+          <h2>End-of-practice pickup</h2>
+          <p>
+            If a player hasn't been picked up and only one adult remains, stay
+            in a public, observable area and contact the player's parent or
+            guardian right away. Don't move to a car or private area. If the
+            parent asks you to bring the child home, follow the transportation
+            rules below.
+          </p>
+
+          <h2>Transportation</h2>
+          <p>
+            No coach or volunteer may transport a minor who isn't their own
+            child without express permission from the child's parent or
+            guardian. When possible, have a second person in the vehicle. When
+            transporting a player alone with parental permission, notify the
+            parent when you leave and when you arrive, and go directly to the
+            destination with no unplanned stops. Standing arrangements (e.g., a
+            coach who regularly drives a player home) must be reported to FAF
+            board leadership.
+          </p>
+
+          <h2>Electronic communication</h2>
+          <p>
+            A parent must be copied on every message between an adult and a
+            minor. Group chats are preferred over individual messages. No
+            following or friending a minor's personal social media. Keep
+            messages football-related, during reasonable hours (8 a.m. to 9
+            p.m.).
+          </p>
+
+          <h2>Medical situations</h2>
+          <p>
+            Provide first aid in an observable setting with other adults
+            present. No one may give medication (including over-the-counter) to
+            a minor without prior written authorization from the parent
+            specifying the medication, dosage, and circumstances.
+          </p>
+
+          <h2>Overnight travel</h2>
+          <p>
+            No adult may share a sleeping room or area with a minor who is not
+            their own child. Room assignments are made by parents, not coaches.
+            All team activities during overnight trips must follow two-deep
+            leadership.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_1on1_Interaction_Policy_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 5. PARTICIPANT WAIVER                     -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel"
+        role="tabpanel"
+        id="panel-waiver"
+        aria-labelledby="tab-waiver"
+      >
+        <h2 class="panel-title">Participant Waiver</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            All participants (and parents/guardians for minors) must sign this
+            waiver before taking part in any FAF activity. It covers practices,
+            games, tournaments, clinics, combines, camps, travel, and community
+            events across all divisions.
+          </p>
+
+          <h2>What you're acknowledging</h2>
+          <p>
+            Flag football, like all sports, carries physical risks that can't be
+            eliminated. Incidental contact between players is common. Heat and
+            weather in Texas create additional risk. Field conditions,
+            equipment, and the actions of other participants are unpredictable.
+            In rare cases, serious injury is possible.
+          </p>
+
+          <h2>Assumption of risk</h2>
+          <p>
+            By signing, you confirm the participant is physically able to
+            participate and that you've disclosed all known medical conditions,
+            allergies, and limitations in the registration. You voluntarily
+            accept the risks that come with the activity.
+          </p>
+
+          <h2>Release of liability</h2>
+          <p>
+            You release FAF, its coaches, volunteers, officers, NFL FLAG, TFFA,
+            tournament operators, and facility owners from claims arising out of
+            ordinary negligence. This release does not cover gross negligence or
+            willful misconduct. You also agree to indemnify the released parties
+            against claims brought by others.
+          </p>
+
+          <h2>Medical authorization</h2>
+          <p>
+            If the participant is injured and the parent isn't immediately
+            available, you authorize FAF to obtain emergency medical treatment.
+            You're responsible for all costs. FAF does not carry medical or
+            accident insurance for participants.
+          </p>
+
+          <h2>Electronic signatures</h2>
+          <p>
+            This waiver can be signed on paper or electronically through Zorts,
+            Accord, or another registration platform. Both formats are equally
+            binding under Texas and federal law.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_Participant_Waiver_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 6. PHOTO / MEDIA RELEASE                  -->
+      <!-- ══════════════════════════════════════════ -->
+      <div
+        class="tab-panel"
+        role="tabpanel"
+        id="panel-media"
+        aria-labelledby="tab-media"
+      >
+        <h2 class="panel-title">Photo, Video &amp; Media Release</h2>
+        <div class="panel-effective">Effective August 24, 2026</div>
+        <div class="panel-body">
+          <p>
+            FAF photographs, films, and records its programs and events. This
+            release governs how that media may be used. It is separate from the
+            Participant Waiver.
+          </p>
+
+          <h2>What you're granting</h2>
+          <p>
+            By signing, you give FAF a perpetual, royalty-free license to use
+            photos, video, and audio of the participant (or yourself, if you're
+            an adult signer) for any lawful nonprofit purpose: the FAF website,
+            social media, printed materials, newsletters, grant applications,
+            sponsor materials, recruiting videos, and press coverage. FAF will
+            not sell media to third parties. FAF may identify a minor by first
+            name, team, or jersey number, but will not publish a minor's last
+            name, address, school, phone number, or email without separate
+            written consent.
+          </p>
+
+          <h2>No compensation</h2>
+          <p>
+            Consent is voluntary. No payment or royalty is provided for the use
+            of media under this release.
+          </p>
+
+          <h2>Revoking consent</h2>
+          <p>
+            You can revoke consent at any time by emailing
+            <a href="mailto:info@fathersandfootball.org"
+              >info@fathersandfootball.org</a
+            >. FAF will stop using the participant's media in new materials
+            going forward, but revocation applies prospectively only. FAF is not
+            obligated to take down media that was already published, printed,
+            shared with sponsors, or otherwise distributed before receiving the
+            request.
+          </p>
+
+          <h2>Electronic signatures</h2>
+          <p>
+            This release can be signed on paper or electronically through Zorts,
+            Accord, or another registration platform. The full text is available
+            at
+            <a href="media-consent.html"
+              >fathersandfootball.org/media-consent.html</a
+            >.
+          </p>
+        </div>
+
+        <a
+          class="pdf-link"
+          href="legal/FAF_Photo_Media_Release_Waiver_DRAFT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Read the full policy (PDF)
+        </a>
+        <p style="margin-top: 12px">
+          <a
+            href="media-consent.html"
+            style="
+              color: var(--gold);
+              font-size: 13px;
+              text-decoration: none;
+              opacity: 0.8;
+            "
+            >View full text online (media-consent.html)</a
+          >
+        </p>
+      </div>
+
+      <div class="doc-footer">
+        Questions about any of these policies may be directed to
+        <a href="mailto:info@fathersandfootball.org"
+          >info@fathersandfootball.org</a
+        >.
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var tabs = document.querySelectorAll(".tab-nav button");
+        var panels = document.querySelectorAll(".tab-panel");
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            tabs.forEach(function (t) {
+              t.classList.remove("active");
+              t.setAttribute("aria-selected", "false");
+            });
+            panels.forEach(function (p) {
+              p.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+            tab.setAttribute("aria-selected", "true");
+            var target = document.getElementById(
+              tab.getAttribute("aria-controls"),
+            );
+            if (target) target.classList.add("active");
+
+            window.scrollTo({
+              top:
+                document.querySelector(".tab-nav").getBoundingClientRect().top +
+                window.pageYOffset -
+                80,
+              behavior: "smooth",
+            });
+          });
+        });
+
+        // handle direct links like legal.html#media
+        var defined = {
+          conduct: "tab-conduct",
+          abuse: "tab-abuse",
+          background: "tab-background",
+          "1on1": "tab-1on1",
+          waiver: "tab-waiver",
+          media: "tab-media",
+        };
+        var hash = window.location.hash.replace("#", "");
+        if (hash && defined[hash]) {
+          var btn = document.getElementById(defined[hash]);
+          if (btn) btn.click();
+        }
+      })();
+    </script>
+  </body>
+</html>
