@@ -11,6 +11,11 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
       rel="stylesheet"
     />
+    <!-- Quill WYSIWYG editor (MIT license, CDN) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+      rel="stylesheet"
+    />
     <style>
       *,
       *::before,
@@ -185,7 +190,205 @@
         color: var(--green);
       }
 
-      /* COMPOSE PANEL */
+      /* SECTION HEADERS */
+      .section-header {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-header em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* PIPELINE PANEL */
+      .pipeline-panel {
+        display: none;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 24px 40px;
+      }
+      .pipeline-panel.visible {
+        display: block;
+      }
+      .pipeline-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+
+      /* SCHEDULE INFO */
+      .schedule-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .schedule-item {
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .schedule-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .schedule-value {
+        font-size: 15px;
+        color: var(--warm);
+      }
+      .schedule-sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      /* DRAFT PREVIEW */
+      .draft-preview-frame {
+        width: 100%;
+        min-height: 300px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #ffffff;
+        margin-top: 16px;
+      }
+      .no-draft-msg {
+        color: var(--muted);
+        font-size: 14px;
+        padding: 24px 0;
+        text-align: center;
+      }
+      .draft-meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      /* QUILL OVERRIDES for dark theme */
+      .quill-wrapper {
+        margin-top: 16px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .quill-wrapper .ql-toolbar {
+        background: var(--dark-3);
+        border: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .quill-wrapper .ql-toolbar .ql-stroke {
+        stroke: var(--muted);
+      }
+      .quill-wrapper .ql-toolbar .ql-fill {
+        fill: var(--muted);
+      }
+      .quill-wrapper .ql-toolbar .ql-picker-label {
+        color: var(--muted);
+      }
+      .quill-wrapper .ql-toolbar button:hover .ql-stroke,
+      .quill-wrapper .ql-toolbar .ql-active .ql-stroke {
+        stroke: var(--gold);
+      }
+      .quill-wrapper .ql-toolbar button:hover .ql-fill,
+      .quill-wrapper .ql-toolbar .ql-active .ql-fill {
+        fill: var(--gold);
+      }
+      .quill-wrapper .ql-container {
+        border: none;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        min-height: 200px;
+      }
+      .quill-wrapper .ql-editor {
+        min-height: 200px;
+        color: #333;
+        background: #ffffff;
+      }
+      .quill-wrapper .ql-editor.ql-blank::before {
+        color: #999;
+      }
+
+      /* ACTION BUTTONS ROW */
+      .action-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        padding: 14px 24px;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          opacity 0.2s;
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-gold {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .btn-gold:hover:not(:disabled) {
+        background: var(--gold-lt);
+      }
+      .btn-green {
+        background: var(--green);
+        color: #fff;
+      }
+      .btn-green:hover:not(:disabled) {
+        background: #2ecc71;
+      }
+      .btn-red {
+        background: var(--red);
+        color: #fff;
+      }
+      .btn-red:hover:not(:disabled) {
+        background: #e74c3c;
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .btn-outline:hover:not(:disabled) {
+        color: var(--gold);
+        border-color: var(--gold);
+      }
+      .action-result {
+        margin-top: 12px;
+        font-size: 13px;
+        min-height: 20px;
+      }
+      .action-result.error {
+        color: var(--red);
+      }
+      .action-result.success {
+        color: var(--green);
+      }
+
+      /* COMPOSE PANEL (existing manual flow) */
       .compose-panel {
         display: none;
         max-width: 700px;
@@ -254,6 +457,21 @@
         color: var(--green);
       }
 
+      /* DIVIDER */
+      .section-divider {
+        max-width: 800px;
+        margin: 0 auto 40px;
+        padding: 0 24px;
+        display: none;
+      }
+      .section-divider.visible {
+        display: block;
+      }
+      .section-divider hr {
+        border: none;
+        border-top: 1px solid var(--border);
+      }
+
       footer {
         background: #050505;
         border-top: 1px solid var(--border);
@@ -270,8 +488,18 @@
           padding: 14px 20px;
         }
         .auth-card,
-        .compose-card {
+        .compose-card,
+        .pipeline-card {
           padding: 24px;
+        }
+        .schedule-grid {
+          grid-template-columns: 1fr;
+        }
+        .action-row {
+          flex-direction: column;
+        }
+        .btn {
+          min-width: unset;
         }
       }
     </style>
@@ -293,7 +521,7 @@
 
     <section class="hero">
       <div class="hero-badge">Admin</div>
-      <h1>Newsletter <em>Send</em></h1>
+      <h1>Newsletter <em>Command Center</em></h1>
     </section>
 
     <!-- AUTH GATE -->
@@ -324,12 +552,205 @@
       </div>
     </section>
 
-    <!-- COMPOSE PANEL (hidden until authenticated) -->
-    <section class="compose-panel" id="composePanel">
-      <div class="compose-card">
+    <!-- ============================================================ -->
+    <!-- PIPELINE CONTROLS (hidden until authenticated)               -->
+    <!-- ============================================================ -->
+
+    <!-- Schedule Info -->
+    <section class="pipeline-panel" id="schedulePanel">
+      <div class="pipeline-card">
+        <h2 class="section-header">Delivery <em>Schedule</em></h2>
         <div class="subscriber-count" id="subscriberCount">
           Loading subscriber count...
         </div>
+        <div class="schedule-grid" id="scheduleGrid">
+          <div class="schedule-item">
+            <div class="schedule-label">Last newsletter sent</div>
+            <div class="schedule-value" id="lastSentValue">Loading...</div>
+            <div class="schedule-sub" id="lastSentSubject"></div>
+          </div>
+          <div class="schedule-item">
+            <div class="schedule-label">Next automated check</div>
+            <div class="schedule-value" id="nextCheckValue">Loading...</div>
+            <div class="schedule-sub">
+              When the system checks for new content and may draft a newsletter.
+              Event-triggered drafts can also fire sooner if something
+              newsworthy lands.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pending Draft Preview + Edit + Actions -->
+    <section class="pipeline-panel" id="draftPanel">
+      <div class="pipeline-card">
+        <h2 class="section-header">Pending <em>Draft</em></h2>
+        <div id="draftContent">
+          <div class="no-draft-msg" id="noDraftMsg">
+            Checking for pending drafts...
+          </div>
+        </div>
+
+        <!-- Draft details (hidden when no draft) -->
+        <div id="draftDetails" style="display: none">
+          <div class="form-group">
+            <label for="draftSubject">Subject line</label>
+            <input
+              type="text"
+              id="draftSubject"
+              placeholder="Subject"
+              autocomplete="off"
+            />
+          </div>
+          <div class="draft-meta" id="draftMeta"></div>
+
+          <!-- Preview iframe -->
+          <label
+            style="
+              display: block;
+              font-size: 11px;
+              font-weight: 600;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+              color: var(--muted);
+              margin: 20px 0 8px;
+            "
+            >Preview</label
+          >
+          <iframe
+            id="draftPreviewFrame"
+            class="draft-preview-frame"
+            sandbox="allow-same-origin"
+            title="Draft preview"
+          ></iframe>
+
+          <!-- Quill editor -->
+          <label
+            style="
+              display: block;
+              font-size: 11px;
+              font-weight: 600;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+              color: var(--muted);
+              margin: 20px 0 8px;
+            "
+            >Edit body</label
+          >
+          <div class="quill-wrapper">
+            <div id="draftEditor"></div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="action-row">
+            <button
+              type="button"
+              class="btn btn-outline"
+              id="saveBtn"
+              onclick="saveDraft()"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-green"
+              id="sendDraftBtn"
+              onclick="sendDraft()"
+            >
+              Send Now
+            </button>
+            <button
+              type="button"
+              class="btn btn-red"
+              id="rejectDraftBtn"
+              onclick="rejectDraft()"
+            >
+              Discard
+            </button>
+          </div>
+          <div class="action-result" id="draftActionResult"></div>
+        </div>
+
+        <!-- Generate button (always visible) -->
+        <div
+          style="
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+          "
+        >
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px">
+            Trigger the AI drafting pipeline manually instead of waiting for the
+            daily cron or a content change.
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 12px;
+              align-items: flex-end;
+              flex-wrap: wrap;
+            "
+          >
+            <div style="flex: 1; min-width: 200px">
+              <label
+                for="generatePrompt"
+                style="
+                  display: block;
+                  font-size: 11px;
+                  font-weight: 600;
+                  letter-spacing: 2px;
+                  text-transform: uppercase;
+                  color: var(--muted);
+                  margin-bottom: 6px;
+                "
+                >Custom prompt (optional)</label
+              >
+              <input
+                type="text"
+                id="generatePrompt"
+                placeholder="Leave blank for default, or describe what the newsletter should cover"
+                autocomplete="off"
+                style="
+                  width: 100%;
+                  padding: 12px 14px;
+                  background: var(--dark-3);
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  color: var(--warm);
+                  font-family: Inter, sans-serif;
+                  font-size: 13px;
+                "
+              />
+            </div>
+            <button
+              type="button"
+              class="btn btn-gold"
+              id="generateBtn"
+              onclick="generateDraft()"
+              style="flex-shrink: 0"
+            >
+              Generate Draft Now
+            </button>
+          </div>
+          <div class="action-result" id="generateResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider between pipeline and manual compose -->
+    <div class="section-divider" id="sectionDivider">
+      <hr />
+    </div>
+
+    <!-- MANUAL COMPOSE PANEL (existing flow, kept as fallback) -->
+    <section class="compose-panel" id="composePanel">
+      <div class="compose-card">
+        <h2 class="section-header">Manual <em>Compose</em></h2>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 20px">
+          Write and send a newsletter from scratch. This bypasses the automated
+          pipeline entirely.
+        </p>
         <div class="form-group">
           <label for="emailSubject">Subject line</label>
           <input
@@ -369,8 +790,15 @@
       </p>
     </footer>
 
+    <!-- Quill JS (loaded before our script) -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
     <script>
       var adminPasscode = "";
+      var currentDraft = null;
+      var quillEditor = null;
+
+      // ---- Auth ----
 
       function showAuthStatus(msg, type) {
         var el = document.getElementById("authStatus");
@@ -388,9 +816,6 @@
         document.getElementById("authBtn").disabled = true;
         document.getElementById("authBtn").textContent = "CHECKING...";
 
-        // Validate passcode by attempting to load subscriber count
-        // via newsletter-send's auth (we use a lightweight GET check
-        // against the media-review endpoint since newsletter-send is POST-only)
         fetch(
           "/api/media-review?action=list&status=pending&passcode=" +
             encodeURIComponent(pc),
@@ -404,8 +829,7 @@
             if (result.status === 200) {
               adminPasscode = pc;
               document.getElementById("authGate").style.display = "none";
-              document.getElementById("composePanel").classList.add("visible");
-              loadSubscriberCount();
+              showPipelineControls();
             } else {
               showAuthStatus(
                 result.data.error || "Authentication failed.",
@@ -422,8 +846,35 @@
           });
       }
 
+      function showPipelineControls() {
+        document.getElementById("schedulePanel").classList.add("visible");
+        document.getElementById("draftPanel").classList.add("visible");
+        document.getElementById("sectionDivider").classList.add("visible");
+        document.getElementById("composePanel").classList.add("visible");
+
+        // Initialize Quill
+        quillEditor = new Quill("#draftEditor", {
+          theme: "snow",
+          placeholder: "No draft loaded...",
+          modules: {
+            toolbar: [
+              ["bold", "italic", "underline"],
+              ["link"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              ["clean"],
+            ],
+          },
+        });
+
+        // Load all data
+        loadSubscriberCount();
+        loadScheduleInfo();
+        loadPendingDraft();
+      }
+
+      // ---- Subscriber Count ----
+
       function loadSubscriberCount() {
-        // Fetch subscriber count from the newsletter-subscribers endpoint
         fetch(
           "/api/newsletter-subscribers?passcode=" +
             encodeURIComponent(adminPasscode),
@@ -446,6 +897,395 @@
           });
       }
 
+      // ---- Schedule Info ----
+
+      function formatDate(iso) {
+        if (!iso) return "Never";
+        var d = new Date(iso);
+        return d.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        });
+      }
+
+      function loadScheduleInfo() {
+        fetch(
+          "/api/newsletter-drafts?action=schedule-info&passcode=" +
+            encodeURIComponent(adminPasscode),
+        )
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            var lastVal = document.getElementById("lastSentValue");
+            var lastSub = document.getElementById("lastSentSubject");
+            var nextVal = document.getElementById("nextCheckValue");
+
+            if (data.lastSentAt) {
+              lastVal.textContent = formatDate(data.lastSentAt);
+              if (data.lastSentSubject) {
+                lastSub.textContent = '"' + data.lastSentSubject + '"';
+              }
+            } else {
+              lastVal.textContent = "No sends on record";
+            }
+
+            if (data.nextMonthlyCheck) {
+              nextVal.textContent = formatDate(data.nextMonthlyCheck);
+            } else {
+              nextVal.textContent =
+                "No monthly send on record (check may run anytime)";
+            }
+          })
+          .catch(function () {
+            document.getElementById("lastSentValue").textContent =
+              "Error loading";
+            document.getElementById("nextCheckValue").textContent =
+              "Error loading";
+          });
+      }
+
+      // ---- Pending Draft ----
+
+      function loadPendingDraft() {
+        fetch(
+          "/api/newsletter-drafts?action=pending-draft&passcode=" +
+            encodeURIComponent(adminPasscode),
+        )
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            if (data.found && data.draft) {
+              currentDraft = data.draft;
+              showDraft(data.draft);
+            } else {
+              currentDraft = null;
+              document.getElementById("noDraftMsg").textContent =
+                "No pending draft. Use Generate Draft Now to create one, or write one manually below.";
+              document.getElementById("draftDetails").style.display = "none";
+              document.getElementById("noDraftMsg").style.display = "block";
+            }
+          })
+          .catch(function () {
+            document.getElementById("noDraftMsg").textContent =
+              "Error loading draft status.";
+          });
+      }
+
+      function showDraft(draft) {
+        document.getElementById("noDraftMsg").style.display = "none";
+        document.getElementById("draftDetails").style.display = "block";
+
+        // Subject
+        document.getElementById("draftSubject").value = draft.subject;
+
+        // Meta
+        document.getElementById("draftMeta").textContent =
+          "Draft created " + formatDate(draft.createdAt) + " | ID: " + draft.id;
+
+        // Preview iframe
+        var iframe = document.getElementById("draftPreviewFrame");
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(
+          '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:16px;color:#333;font-size:14px;line-height:1.6;margin:0}a{color:#c8923c}p{margin:0 0 12px}</style></head><body>' +
+            draft.bodyHtml +
+            "</body></html>",
+        );
+        doc.close();
+
+        // Auto-resize iframe
+        setTimeout(function () {
+          try {
+            var h = doc.body.scrollHeight + 32;
+            iframe.style.height = Math.max(h, 200) + "px";
+          } catch (e) {
+            // cross-origin fallback
+          }
+        }, 100);
+
+        // Load into Quill
+        if (quillEditor) {
+          quillEditor.clipboard.dangerouslyPasteHTML(draft.bodyHtml);
+        }
+
+        clearActionResult();
+      }
+
+      // ---- Draft Actions ----
+
+      function clearActionResult() {
+        var el = document.getElementById("draftActionResult");
+        el.textContent = "";
+        el.className = "action-result";
+      }
+
+      function showActionResult(msg, type) {
+        var el = document.getElementById("draftActionResult");
+        el.textContent = msg;
+        el.className = "action-result " + (type || "");
+      }
+
+      function saveDraft() {
+        if (!currentDraft) return;
+
+        var subject = document.getElementById("draftSubject").value.trim();
+        if (!subject) {
+          showActionResult("Subject is required.", "error");
+          return;
+        }
+
+        var bodyHtml = quillEditor ? quillEditor.root.innerHTML : "";
+        if (!bodyHtml || bodyHtml === "<p><br></p>") {
+          showActionResult("Body cannot be empty.", "error");
+          return;
+        }
+
+        var btn = document.getElementById("saveBtn");
+        btn.disabled = true;
+        btn.textContent = "SAVING...";
+
+        fetch("/api/newsletter-drafts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "update-draft",
+            passcode: adminPasscode,
+            draftId: currentDraft.id,
+            subject: subject,
+            bodyHtml: bodyHtml,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showActionResult("Draft saved.", "success");
+              // Update the preview iframe
+              currentDraft.subject = subject;
+              currentDraft.bodyHtml = bodyHtml;
+              var iframe = document.getElementById("draftPreviewFrame");
+              var doc = iframe.contentDocument || iframe.contentWindow.document;
+              doc.open();
+              doc.write(
+                '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:16px;color:#333;font-size:14px;line-height:1.6;margin:0}a{color:#c8923c}p{margin:0 0 12px}</style></head><body>' +
+                  bodyHtml +
+                  "</body></html>",
+              );
+              doc.close();
+            } else {
+              showActionResult(result.data.error || "Save failed.", "error");
+            }
+            btn.disabled = false;
+            btn.textContent = "SAVE CHANGES";
+          })
+          .catch(function () {
+            showActionResult("Connection error.", "error");
+            btn.disabled = false;
+            btn.textContent = "SAVE CHANGES";
+          });
+      }
+
+      function sendDraft() {
+        if (!currentDraft) return;
+
+        if (
+          !confirm("Send this newsletter to all active subscribers right now?")
+        ) {
+          return;
+        }
+
+        var btn = document.getElementById("sendDraftBtn");
+        btn.disabled = true;
+        btn.textContent = "SENDING...";
+
+        // Save any edits first, then send
+        var subject = document.getElementById("draftSubject").value.trim();
+        var bodyHtml = quillEditor ? quillEditor.root.innerHTML : "";
+
+        var saveFirst =
+          subject !== currentDraft.subject ||
+          bodyHtml !== currentDraft.bodyHtml;
+
+        var chain = saveFirst
+          ? fetch("/api/newsletter-drafts", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "update-draft",
+                passcode: adminPasscode,
+                draftId: currentDraft.id,
+                subject: subject,
+                bodyHtml: bodyHtml,
+              }),
+            })
+          : Promise.resolve(null);
+
+        chain
+          .then(function () {
+            return fetch("/api/newsletter-drafts", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "send-draft",
+                passcode: adminPasscode,
+                draftId: currentDraft.id,
+              }),
+            });
+          })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              var msg = "Sent to " + result.data.sent + " subscribers.";
+              if (result.data.failed > 0) {
+                msg += " " + result.data.failed + " failed.";
+              }
+              showActionResult(msg, "success");
+              currentDraft = null;
+              // Hide draft details, show "no draft" message
+              setTimeout(function () {
+                document.getElementById("draftDetails").style.display = "none";
+                document.getElementById("noDraftMsg").textContent =
+                  "Draft sent. No pending draft.";
+                document.getElementById("noDraftMsg").style.display = "block";
+              }, 2000);
+              // Refresh schedule
+              loadScheduleInfo();
+            } else {
+              showActionResult(result.data.error || "Send failed.", "error");
+            }
+            btn.disabled = false;
+            btn.textContent = "SEND NOW";
+          })
+          .catch(function () {
+            showActionResult("Connection error.", "error");
+            btn.disabled = false;
+            btn.textContent = "SEND NOW";
+          });
+      }
+
+      function rejectDraft() {
+        if (!currentDraft) return;
+
+        if (!confirm("Discard this draft? It will not be sent.")) {
+          return;
+        }
+
+        var btn = document.getElementById("rejectDraftBtn");
+        btn.disabled = true;
+        btn.textContent = "DISCARDING...";
+
+        fetch("/api/newsletter-drafts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "reject-draft",
+            passcode: adminPasscode,
+            draftId: currentDraft.id,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showActionResult("Draft discarded.", "success");
+              currentDraft = null;
+              setTimeout(function () {
+                document.getElementById("draftDetails").style.display = "none";
+                document.getElementById("noDraftMsg").textContent =
+                  "Draft discarded. No pending draft.";
+                document.getElementById("noDraftMsg").style.display = "block";
+              }, 1500);
+            } else {
+              showActionResult(result.data.error || "Discard failed.", "error");
+            }
+            btn.disabled = false;
+            btn.textContent = "DISCARD";
+          })
+          .catch(function () {
+            showActionResult("Connection error.", "error");
+            btn.disabled = false;
+            btn.textContent = "DISCARD";
+          });
+      }
+
+      function generateDraft() {
+        var btn = document.getElementById("generateBtn");
+        var resultEl = document.getElementById("generateResult");
+
+        if (currentDraft) {
+          if (
+            !confirm(
+              "A pending draft already exists. Generating a new one will not remove the old one. Continue?",
+            )
+          ) {
+            return;
+          }
+        }
+
+        btn.disabled = true;
+        btn.textContent = "GENERATING...";
+        resultEl.textContent = "";
+        resultEl.className = "action-result";
+
+        var customPrompt = document
+          .getElementById("generatePrompt")
+          .value.trim();
+
+        fetch("/api/newsletter-drafts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "generate-draft",
+            passcode: adminPasscode,
+            whatsNew: customPrompt || undefined,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              resultEl.textContent =
+                'Draft generated: "' +
+                result.data.subject +
+                '". Loading preview...';
+              resultEl.className = "action-result success";
+              // Reload the pending draft
+              setTimeout(loadPendingDraft, 500);
+            } else {
+              resultEl.textContent = result.data.error || "Generation failed.";
+              resultEl.className = "action-result error";
+            }
+            btn.disabled = false;
+            btn.textContent = "GENERATE DRAFT NOW";
+          })
+          .catch(function () {
+            resultEl.textContent = "Connection error.";
+            resultEl.className = "action-result error";
+            btn.disabled = false;
+            btn.textContent = "GENERATE DRAFT NOW";
+          });
+      }
+
+      // ---- Manual Compose (existing flow, unchanged) ----
+
       function sendNewsletter() {
         var subject = document.getElementById("emailSubject").value.trim();
         var body = document.getElementById("emailBody").value.trim();
@@ -463,7 +1303,6 @@
           return;
         }
 
-        // Confirm before sending
         if (!confirm("Send this newsletter to all active subscribers?")) {
           return;
         }
@@ -496,6 +1335,7 @@
               }
               resultEl.textContent = msg;
               resultEl.className = "send-result success";
+              loadScheduleInfo();
             } else {
               resultEl.textContent = result.data.error || "Send failed.";
               resultEl.className = "send-result error";
