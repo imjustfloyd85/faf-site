@@ -624,6 +624,11 @@
             sandbox="allow-same-origin"
             title="Draft preview"
           ></iframe>
+          <p style="font-size: 11px; color: var(--muted); margin: 4px 0 0">
+            Preview shows the full email as subscribers will receive it. The
+            unsubscribe link is a placeholder -- each subscriber gets their own
+            personalized link at send time.
+          </p>
 
           <!-- Quill editor -->
           <label
@@ -976,6 +981,54 @@
           });
       }
 
+      // Build the full email preview HTML, mirroring buildNewsletterEmail()
+      // from functions/lib/newsletter-send-core.js. Uses placeholder values
+      // for subscriber-specific fields (email, unsubscribe link).
+      function buildPreviewEmail(bodyHtml, subject) {
+        var escaped = String(subject || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+        return (
+          '<div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #333;">' +
+          '<h2 style="color: #c8923c;">Fathers and Football</h2>' +
+          "<h3>" +
+          escaped +
+          "</h3>" +
+          bodyHtml +
+          '<hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />' +
+          '<p style="font-size: 11px; color: #999;">' +
+          "Fathers and Football | 501(c)(3) | EIN 42-1980182<br/>" +
+          "This email was sent to you@example.com.<br/>" +
+          '<a href="#preview-unsubscribe-link" style="color: #c8923c;">Unsubscribe</a>' +
+          "</p>" +
+          "</div>"
+        );
+      }
+
+      function writePreviewIframe(bodyHtml, subject) {
+        var iframe = document.getElementById("draftPreviewFrame");
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(
+          '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:16px;color:#333;font-size:14px;line-height:1.6;margin:0}a{color:#c8923c}p{margin:0 0 12px}</style></head><body>' +
+            buildPreviewEmail(bodyHtml, subject) +
+            "</body></html>",
+        );
+        doc.close();
+        // Auto-resize iframe
+        setTimeout(function () {
+          try {
+            var h = doc.body.scrollHeight + 32;
+            iframe.style.height = Math.max(h, 200) + "px";
+          } catch (e) {
+            // cross-origin fallback
+          }
+        }, 100);
+      }
+
       function showDraft(draft) {
         document.getElementById("noDraftMsg").style.display = "none";
         document.getElementById("draftDetails").style.display = "block";
@@ -987,26 +1040,8 @@
         document.getElementById("draftMeta").textContent =
           "Draft created " + formatDate(draft.createdAt) + " | ID: " + draft.id;
 
-        // Preview iframe
-        var iframe = document.getElementById("draftPreviewFrame");
-        var doc = iframe.contentDocument || iframe.contentWindow.document;
-        doc.open();
-        doc.write(
-          '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;padding:16px;color:#333;font-size:14px;line-height:1.6;margin:0}a{color:#c8923c}p{margin:0 0 12px}</style></head><body>' +
-            draft.bodyHtml +
-            "</body></html>",
-        );
-        doc.close();
-
-        // Auto-resize iframe
-        setTimeout(function () {
-          try {
-            var h = doc.body.scrollHeight + 32;
-            iframe.style.height = Math.max(h, 200) + "px";
-          } catch (e) {
-            // cross-origin fallback
-          }
-        }, 100);
+        // Preview iframe -- show full email as it will be sent
+        writePreviewIframe(draft.bodyHtml, draft.subject);
 
         // Load into Quill
         if (quillEditor) {
