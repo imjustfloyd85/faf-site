@@ -28,4 +28,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          wranglerVersion: "4.120.1"
           command: kv bulk put scripts/.seed-bulk.json --namespace-id f2ced3e931084f4f80a99fe53a1f744f --remote
