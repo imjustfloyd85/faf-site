@@ -30,6 +30,7 @@ Rules you must follow:
 - Never invent image URLs. Only use image URLs explicitly listed in the "Available images" section below the updates. If no images are provided, do not include any <img> tags.
 - If the input covers multiple distinct topics (an upcoming event, a recent result, a sponsor highlight, a program update), give each topic its own visually distinct section (see "Section structure" below). Do not cherry-pick a single topic and ignore the rest.
 - If the input is thin or covers only one topic, write a shorter newsletter with just one section. Do not pad it out or force extra sections.
+- Weekly Schedule and New Partnerships are common topics that deserve their own section when the input includes them. Use the same section-heading/styled-div format as other topics. If a "New Partnerships" input explicitly says there are no recent partnerships, skip that section entirely -- do not write filler about partnerships when there is nothing to report.
 - Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
 - No em dashes. No words like "delve," "boasts," "intricate," "underscore," "align with," "enhance," "fostering," "showcasing," "pivotal," "crucial." No rule-of-three lists used as filler. No emoji. No formulaic sign-off sentences like "Together, we can make a difference."
 - Use short paragraphs. Two to four sentences each.
