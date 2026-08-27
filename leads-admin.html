@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sponsor Leads -- Fathers and Football</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+        --blue: #2980b9;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+
+      .hero {
+        padding: 120px 24px 32px;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        padding: 6px 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(28px, 5vw, 48px);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .hero h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* AUTH GATE */
+      .auth-gate {
+        display: flex;
+        justify-content: center;
+        padding: 0 24px 64px;
+      }
+      .auth-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 420px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .form-group select option {
+        background: var(--dark-3);
+        color: var(--warm);
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .submit-btn:hover {
+        background: var(--gold-lt);
+      }
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status-msg {
+        margin-top: 16px;
+        font-size: 13px;
+        text-align: center;
+        min-height: 20px;
+      }
+      .status-msg.error {
+        color: var(--red);
+      }
+      .status-msg.success {
+        color: var(--green);
+      }
+
+      /* PANELS */
+      .panel {
+        display: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 40px;
+      }
+      .panel.visible {
+        display: block;
+      }
+      .panel-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+      .section-header {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-header em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* COLLAPSIBLE SCRIPT */
+      .script-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        user-select: none;
+      }
+      .script-toggle .toggle-arrow {
+        font-size: 14px;
+        color: var(--muted);
+        transition: transform 0.2s;
+      }
+      .script-toggle.open .toggle-arrow {
+        transform: rotate(180deg);
+      }
+      .script-body {
+        display: none;
+        margin-top: 20px;
+      }
+      .script-body.open {
+        display: block;
+      }
+      .script-body h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 24px 0 10px;
+      }
+      .script-body h3:first-child {
+        margin-top: 0;
+      }
+      .script-body p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+      .script-body .quote {
+        background: var(--dark-3);
+        border-left: 3px solid var(--gold);
+        padding: 16px 20px;
+        margin: 12px 0;
+        border-radius: 0 8px 8px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+        font-style: italic;
+      }
+      .script-body ul {
+        margin: 8px 0 12px 20px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+      }
+      .script-body ul li {
+        margin-bottom: 4px;
+      }
+      .script-body .aside {
+        font-size: 13px;
+        color: var(--muted);
+        font-style: italic;
+        margin: 8px 0 12px;
+      }
+
+      /* LEADS TABLE */
+      .leads-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .leads-table th {
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 10px 10px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      .leads-table td {
+        padding: 10px 10px;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+        vertical-align: top;
+      }
+      .leads-table tr:hover td {
+        background: rgba(200, 146, 60, 0.04);
+      }
+
+      /* STATUS BADGES */
+      .status-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+      }
+      .status-badge.new {
+        background: rgba(41, 128, 185, 0.15);
+        color: var(--blue);
+      }
+      .status-badge.contacted {
+        background: rgba(200, 146, 60, 0.15);
+        color: var(--gold);
+      }
+      .status-badge.interested {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--green);
+      }
+      .status-badge.declined {
+        background: rgba(192, 57, 43, 0.15);
+        color: var(--red);
+      }
+      .status-badge.removed {
+        background: rgba(125, 122, 119, 0.15);
+        color: var(--muted);
+      }
+      .status-badge.closed {
+        background: rgba(39, 174, 96, 0.25);
+        color: var(--green);
+      }
+
+      /* PROMISING INDICATOR */
+      .promising-select {
+        padding: 4px 8px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+      }
+      .promising-select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .promising-select option {
+        background: var(--dark-3);
+        color: var(--warm);
+      }
+
+      /* INLINE SELECTS */
+      .inline-select {
+        padding: 4px 8px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+      }
+      .inline-select:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .inline-select option {
+        background: var(--dark-3);
+        color: var(--warm);
+      }
+
+      /* NOTES SECTION */
+      .notes-toggle {
+        font-size: 11px;
+        color: var(--gold);
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0;
+      }
+      .notes-toggle:hover {
+        color: var(--gold-lt);
+      }
+      .notes-section {
+        display: none;
+        margin-top: 8px;
+      }
+      .notes-section.open {
+        display: block;
+      }
+      .note-entry {
+        font-size: 12px;
+        color: var(--warm);
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.06);
+        line-height: 1.5;
+      }
+      .note-entry .note-time {
+        font-size: 10px;
+        color: var(--muted);
+        margin-right: 8px;
+      }
+      .note-input-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .note-input-row input {
+        flex: 1;
+        padding: 8px 10px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+      }
+      .note-input-row input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      /* BUTTONS */
+      .btn-sm {
+        padding: 6px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          opacity 0.2s;
+      }
+      .btn-sm:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-sm.btn-gold {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .btn-sm.btn-gold:hover:not(:disabled) {
+        background: var(--gold-lt);
+      }
+      .btn-sm.btn-red {
+        background: var(--red);
+        color: #fff;
+      }
+      .btn-sm.btn-red:hover:not(:disabled) {
+        background: #e74c3c;
+      }
+      .btn-sm.btn-green {
+        background: var(--green);
+        color: #fff;
+      }
+      .btn-sm.btn-green:hover:not(:disabled) {
+        background: #2ecc71;
+      }
+      .btn-sm.btn-outline {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .btn-sm.btn-outline:hover:not(:disabled) {
+        color: var(--gold);
+        border-color: var(--gold);
+      }
+      .lead-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .action-result {
+        margin-top: 12px;
+        font-size: 13px;
+        min-height: 20px;
+      }
+      .action-result.error {
+        color: var(--red);
+      }
+      .action-result.success {
+        color: var(--green);
+      }
+
+      /* ADD LEAD FORM */
+      .add-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .add-form-grid .form-group {
+        margin-bottom: 0;
+      }
+      .add-form-full {
+        grid-column: 1 / -1;
+      }
+      .add-form-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 8px;
+      }
+
+      /* SUMMARY */
+      .leads-summary {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+
+      .no-leads-msg {
+        color: var(--muted);
+        font-size: 14px;
+        padding: 24px 0;
+        text-align: center;
+      }
+
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .panel-card {
+          padding: 20px;
+        }
+        .add-form-grid {
+          grid-template-columns: 1fr;
+        }
+        .leads-table {
+          font-size: 12px;
+        }
+        .leads-table th,
+        .leads-table td {
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="admin-hub.html" class="nav-back">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Admin Hub
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">Admin</div>
+      <h1>Sponsor <em>Leads</em></h1>
+    </section>
+
+    <!-- AUTH GATE -->
+    <section class="auth-gate" id="authGate">
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="adminPasscode">Admin Passcode</label>
+          <input
+            type="password"
+            id="adminPasscode"
+            placeholder="Enter admin passcode"
+            required
+            autocomplete="off"
+          />
+          <p class="form-hint">
+            Same passcode as the media review admin panel.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="submit-btn"
+          id="authBtn"
+          onclick="authenticate()"
+        >
+          Sign In
+        </button>
+        <div class="status-msg" id="authStatus"></div>
+      </div>
+    </section>
+
+    <!-- COLD CALL SCRIPT (collapsible) -->
+    <section class="panel" id="scriptPanel">
+      <div class="panel-card">
+        <div class="script-toggle" id="scriptToggle" onclick="toggleScript()">
+          <h2
+            class="section-header"
+            style="margin-bottom: 0; padding-bottom: 0; border: none"
+          >
+            Cold Call <em>Script</em>
+          </h2>
+          <span class="toggle-arrow">&#9660;</span>
+        </div>
+        <div class="script-body" id="scriptBody">
+          <h3>Opener</h3>
+          <div class="quote">
+            "Hi, this is Justin/Coach Floyd calling from Fathers and Football,
+            we run a youth flag football program based here in
+            [Frisco/McKinney/Allen] &mdash; our travel team Frisco Elite just
+            came off a strong season, we were 2025 Dallas Cowboys Regional
+            Champions and we've actually been invited to play in the Battle
+            Brand Texas Regional this coming March. Do you have two minutes? I'm
+            calling around to a few local businesses about a partnership for
+            this season."
+          </div>
+          <p class="aside">
+            If they say no or seem busy: "No worries at all &mdash; is there a
+            better time I could call back, or is there someone else on your team
+            who handles community sponsorships?"
+          </p>
+
+          <h3>The hook (why this matters, keep it short)</h3>
+          <div class="quote">
+            "We're a registered 501(c)(3), and everything we do is about giving
+            kids in this area a real, positive experience playing football
+            &mdash; good coaching, real competition, and a program parents
+            trust. We've got kids going to national-level tournaments this year,
+            and the community support is a big part of how we get there."
+          </div>
+
+          <h3>The actual ask</h3>
+          <div class="quote">
+            "What we're raising money for this season is pretty specific &mdash;
+            it's not just 'help us out.' We need it for:
+            <ul>
+              <li>
+                Player evaluation and tracking data, so we can actually show
+                kids and parents real development over the season
+              </li>
+              <li>
+                Group training sessions with real coaching, not just practice
+                reps
+              </li>
+              <li>Liability insurance, which isn't optional for us</li>
+              <li>
+                Cameras so we can film games and practices for film study and
+                highlight reels
+              </li>
+              <li>Uniforms and game equipment &mdash; balls, etc.</li>
+            </ul>
+            That's real, concrete stuff, not overhead. A sponsorship gets your
+            name in front of the families in this program, on our site, and at
+            our events &mdash; depending on the level, that's jerseys, banners,
+            site placement, that kind of thing."
+          </div>
+
+          <h3>If they're interested</h3>
+          <div class="quote">
+            "That's great to hear. What I'd love to do is send you over
+            something in writing &mdash; a quick one-pager on the tiers and what
+            each one includes &mdash; and then we can find 10-15 minutes to
+            actually talk through what makes sense for you. What's the best
+            email for that?"
+          </div>
+
+          <h3>If they want to think about it / aren't sure</h3>
+          <div class="quote">
+            "Totally fair, no pressure at all. Would it help if I sent over some
+            information first, so you can look at it whenever works for you?
+            Even if a full sponsorship isn't the right fit right now, we're
+            always open to whatever level makes sense &mdash; some folks do a
+            smaller boost, some do a full season partnership."
+          </div>
+
+          <h3>If they say partner instead of sponsor</h3>
+          <p>
+            Note the distinction for your own tracking, not necessarily for the
+            call itself:
+          </p>
+          <ul>
+            <li>
+              <strong>Sponsor</strong> = they're giving money/product in
+              exchange for visibility (logo, banner, jersey, site placement)
+              &mdash; a transactional relationship.
+            </li>
+            <li>
+              <strong>Partner</strong> = a deeper relationship &mdash; providing
+              a facility, ongoing services, co-hosted events, something beyond a
+              one-time or seasonal payment (this is what Athlete Training and
+              Health is to FAF).
+            </li>
+          </ul>
+          <p class="aside">
+            If a business seems more interested in an ongoing relationship than
+            a line-item sponsorship, mark them as a potential partner lead, not
+            sponsor, in your notes.
+          </p>
+
+          <h3>Close, regardless of outcome</h3>
+          <div class="quote">
+            "I really appreciate you taking the time. Even if this isn't the
+            right season for it, I'd love to keep you in mind for next year, or
+            if you ever want to just come check out a game. Thanks again."
+          </div>
+
+          <h3>Reminders for yourself mid-call</h3>
+          <ul>
+            <li>
+              Note anything specific they mention (a kid of theirs who plays, a
+              past sponsorship they've done, a specific concern) &mdash; write
+              it down right after the call while it's fresh.
+            </li>
+            <li>
+              Rate how promising it felt honestly, not optimistically. A "maybe,
+              call back in a month" is more useful data than an inflated "yes"
+              that never closes.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD NEW LEAD FORM -->
+    <section class="panel" id="addLeadPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Add <em>New Lead</em></h2>
+        <div class="add-form-grid">
+          <div class="form-group">
+            <label for="addBizName">Business name</label>
+            <input
+              type="text"
+              id="addBizName"
+              placeholder="e.g. Main Street Pizza"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="addCategory">Category</label>
+            <input
+              type="text"
+              id="addCategory"
+              placeholder="e.g. Restaurant, Auto Shop"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="addCity">City</label>
+            <input
+              type="text"
+              id="addCity"
+              placeholder="e.g. Frisco"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="addContact">Contact info</label>
+            <input
+              type="text"
+              id="addContact"
+              placeholder="Phone, email, or both"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group add-form-full">
+            <label for="addSource">Source</label>
+            <input
+              type="text"
+              id="addSource"
+              placeholder="e.g. Google search, referral from John"
+              autocomplete="off"
+            />
+          </div>
+          <div class="add-form-actions">
+            <button
+              type="button"
+              class="btn-sm btn-gold"
+              id="addLeadBtn"
+              onclick="addLead()"
+            >
+              Add Lead
+            </button>
+            <span class="action-result" id="addLeadResult"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS LIST -->
+    <section class="panel" id="leadsPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Lead <em>Tracker</em></h2>
+        <div class="leads-summary" id="leadsSummary"></div>
+        <div id="leadsContent">
+          <p class="no-leads-msg" id="leadsLoadingMsg">Loading leads...</p>
+        </div>
+        <div id="leadsReady" style="display: none">
+          <div style="overflow-x: auto">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Business</th>
+                  <th>Category</th>
+                  <th>City</th>
+                  <th>Contact</th>
+                  <th>Status</th>
+                  <th>Temp</th>
+                  <th>Type</th>
+                  <th>Notes</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody"></tbody>
+            </table>
+          </div>
+          <div class="action-result" id="leadsActionResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var adminPasscode = "";
+      var leadsList = [];
+
+      // ---- Auth ----
+
+      function showAuthStatus(msg, type) {
+        var el = document.getElementById("authStatus");
+        el.textContent = msg;
+        el.className = "status-msg " + (type || "");
+      }
+
+      function authenticate() {
+        var pc = document.getElementById("adminPasscode").value.trim();
+        if (!pc) {
+          showAuthStatus("Enter the admin passcode.", "error");
+          return;
+        }
+
+        document.getElementById("authBtn").disabled = true;
+        document.getElementById("authBtn").textContent = "CHECKING...";
+
+        fetch(
+          "/api/media-review?action=list&status=pending&passcode=" +
+            encodeURIComponent(pc),
+        )
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              adminPasscode = pc;
+              document.getElementById("authGate").style.display = "none";
+              showAdminPanels();
+            } else {
+              showAuthStatus(
+                result.data.error || "Authentication failed.",
+                "error",
+              );
+              document.getElementById("authBtn").disabled = false;
+              document.getElementById("authBtn").textContent = "SIGN IN";
+            }
+          })
+          .catch(function () {
+            showAuthStatus("Connection error. Try again.", "error");
+            document.getElementById("authBtn").disabled = false;
+            document.getElementById("authBtn").textContent = "SIGN IN";
+          });
+      }
+
+      function showAdminPanels() {
+        document.getElementById("scriptPanel").classList.add("visible");
+        document.getElementById("addLeadPanel").classList.add("visible");
+        document.getElementById("leadsPanel").classList.add("visible");
+        loadLeads();
+      }
+
+      // ---- Script toggle ----
+
+      function toggleScript() {
+        var toggle = document.getElementById("scriptToggle");
+        var body = document.getElementById("scriptBody");
+        toggle.classList.toggle("open");
+        body.classList.toggle("open");
+      }
+
+      // ---- Helpers ----
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        var div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function formatShortDate(iso) {
+        if (!iso) return "";
+        var d = new Date(iso);
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        });
+      }
+
+      function statusBadgeClass(status) {
+        var map = {
+          new: "status-badge new",
+          contacted: "status-badge contacted",
+          interested: "status-badge interested",
+          declined: "status-badge declined",
+          removed: "status-badge removed",
+          closed: "status-badge closed",
+        };
+        return map[status] || "status-badge new";
+      }
+
+      function showLeadsResult(msg, type) {
+        var el = document.getElementById("leadsActionResult");
+        el.textContent = msg;
+        el.className = "action-result " + (type || "");
+      }
+
+      // ---- Load leads ----
+
+      function loadLeads() {
+        fetch(
+          "/api/sponsor-leads?action=list&passcode=" +
+            encodeURIComponent(adminPasscode),
+        )
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            if (data.leads) {
+              leadsList = data.leads;
+              document.getElementById("leadsLoadingMsg").style.display = "none";
+              document.getElementById("leadsReady").style.display = "block";
+              renderLeads();
+            } else {
+              document.getElementById("leadsLoadingMsg").textContent =
+                "Could not load leads.";
+            }
+          })
+          .catch(function () {
+            document.getElementById("leadsLoadingMsg").textContent =
+              "Error loading leads.";
+          });
+      }
+
+      function renderLeads() {
+        var tbody = document.getElementById("leadsTableBody");
+        tbody.innerHTML = "";
+
+        var active = leadsList.filter(function (l) {
+          return l.status !== "removed";
+        });
+        var removed = leadsList.length - active.length;
+
+        document.getElementById("leadsSummary").textContent =
+          active.length +
+          " active lead" +
+          (active.length !== 1 ? "s" : "") +
+          (removed > 0 ? ", " + removed + " removed" : "");
+
+        if (active.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px 0;">No leads yet. Add one above.</td></tr>';
+          return;
+        }
+
+        for (var i = 0; i < active.length; i++) {
+          var lead = active[i];
+          var tr = document.createElement("tr");
+          tr.id = "lead-row-" + lead.id;
+
+          // Business name
+          var tdBiz = document.createElement("td");
+          tdBiz.style.fontWeight = "600";
+          tdBiz.textContent = lead.businessName;
+          tr.appendChild(tdBiz);
+
+          // Category
+          var tdCat = document.createElement("td");
+          tdCat.textContent = lead.category;
+          tr.appendChild(tdCat);
+
+          // City
+          var tdCity = document.createElement("td");
+          tdCity.textContent = lead.city;
+          tr.appendChild(tdCity);
+
+          // Contact
+          var tdContact = document.createElement("td");
+          tdContact.style.fontSize = "12px";
+          tdContact.textContent = lead.contactInfo;
+          tr.appendChild(tdContact);
+
+          // Status
+          var tdStatus = document.createElement("td");
+          var statusSelect = document.createElement("select");
+          statusSelect.className = "inline-select";
+          statusSelect.setAttribute("data-id", lead.id);
+          statusSelect.setAttribute("data-field", "status");
+          var statuses = [
+            "new",
+            "contacted",
+            "interested",
+            "declined",
+            "closed",
+          ];
+          for (var s = 0; s < statuses.length; s++) {
+            var opt = document.createElement("option");
+            opt.value = statuses[s];
+            opt.textContent =
+              statuses[s].charAt(0).toUpperCase() + statuses[s].slice(1);
+            if (statuses[s] === lead.status) opt.selected = true;
+            statusSelect.appendChild(opt);
+          }
+          tdStatus.appendChild(statusSelect);
+          tr.appendChild(tdStatus);
+
+          // Promising (temperature)
+          var tdPromi = document.createElement("td");
+          var promiSelect = document.createElement("select");
+          promiSelect.className = "promising-select";
+          promiSelect.setAttribute("data-id", lead.id);
+          promiSelect.setAttribute("data-field", "promising");
+          var temps = [
+            { val: "", label: "--" },
+            { val: "hot", label: "Hot" },
+            { val: "warm", label: "Warm" },
+            { val: "cold", label: "Cold" },
+          ];
+          for (var t = 0; t < temps.length; t++) {
+            var topt = document.createElement("option");
+            topt.value = temps[t].val;
+            topt.textContent = temps[t].label;
+            if (temps[t].val === (lead.promising || "")) topt.selected = true;
+            promiSelect.appendChild(topt);
+          }
+          tdPromi.appendChild(promiSelect);
+          tr.appendChild(tdPromi);
+
+          // Relationship type
+          var tdRel = document.createElement("td");
+          var relSelect = document.createElement("select");
+          relSelect.className = "inline-select";
+          relSelect.setAttribute("data-id", lead.id);
+          relSelect.setAttribute("data-field", "relationshipType");
+          var rels = ["undecided", "sponsor", "partner"];
+          for (var r = 0; r < rels.length; r++) {
+            var ropt = document.createElement("option");
+            ropt.value = rels[r];
+            ropt.textContent =
+              rels[r].charAt(0).toUpperCase() + rels[r].slice(1);
+            if (rels[r] === (lead.relationshipType || "undecided"))
+              ropt.selected = true;
+            relSelect.appendChild(ropt);
+          }
+          tdRel.appendChild(relSelect);
+          tr.appendChild(tdRel);
+
+          // Notes
+          var tdNotes = document.createElement("td");
+          tdNotes.style.minWidth = "200px";
+          var noteCount = Array.isArray(lead.notes) ? lead.notes.length : 0;
+
+          var noteToggle = document.createElement("button");
+          noteToggle.className = "notes-toggle";
+          noteToggle.textContent =
+            noteCount > 0
+              ? noteCount + " note" + (noteCount !== 1 ? "s" : "")
+              : "Add note";
+          noteToggle.setAttribute("data-id", lead.id);
+          noteToggle.onclick = (function (id) {
+            return function () {
+              var sec = document.getElementById("notes-" + id);
+              sec.classList.toggle("open");
+            };
+          })(lead.id);
+          tdNotes.appendChild(noteToggle);
+
+          var noteSec = document.createElement("div");
+          noteSec.className = "notes-section";
+          noteSec.id = "notes-" + lead.id;
+
+          // Existing notes
+          if (Array.isArray(lead.notes)) {
+            for (var n = 0; n < lead.notes.length; n++) {
+              var noteDiv = document.createElement("div");
+              noteDiv.className = "note-entry";
+              noteDiv.innerHTML =
+                '<span class="note-time">' +
+                escapeHtml(formatShortDate(lead.notes[n].timestamp)) +
+                "</span>" +
+                escapeHtml(lead.notes[n].text);
+              noteSec.appendChild(noteDiv);
+            }
+          }
+
+          // Add note input
+          var noteRow = document.createElement("div");
+          noteRow.className = "note-input-row";
+          var noteInput = document.createElement("input");
+          noteInput.type = "text";
+          noteInput.placeholder = "Add a note...";
+          noteInput.id = "note-input-" + lead.id;
+          noteInput.addEventListener(
+            "keydown",
+            (function (id) {
+              return function (e) {
+                if (e.key === "Enter") addNote(id);
+              };
+            })(lead.id),
+          );
+          noteRow.appendChild(noteInput);
+          var noteAddBtn = document.createElement("button");
+          noteAddBtn.className = "btn-sm btn-outline";
+          noteAddBtn.textContent = "ADD";
+          noteAddBtn.onclick = (function (id) {
+            return function () {
+              addNote(id);
+            };
+          })(lead.id);
+          noteRow.appendChild(noteAddBtn);
+          noteSec.appendChild(noteRow);
+
+          tdNotes.appendChild(noteSec);
+          tr.appendChild(tdNotes);
+
+          // Actions (Save + Remove)
+          var tdActions = document.createElement("td");
+          var actDiv = document.createElement("div");
+          actDiv.className = "lead-actions";
+
+          var saveBtn = document.createElement("button");
+          saveBtn.className = "btn-sm btn-gold";
+          saveBtn.textContent = "SAVE";
+          saveBtn.id = "save-btn-" + lead.id;
+          saveBtn.onclick = (function (id) {
+            return function () {
+              saveLead(id);
+            };
+          })(lead.id);
+          actDiv.appendChild(saveBtn);
+
+          var removeBtn = document.createElement("button");
+          removeBtn.className = "btn-sm btn-red";
+          removeBtn.textContent = "REMOVE";
+          removeBtn.onclick = (function (id, name) {
+            return function () {
+              removeLead(id, name);
+            };
+          })(lead.id, lead.businessName);
+          actDiv.appendChild(removeBtn);
+
+          tdActions.appendChild(actDiv);
+          tr.appendChild(tdActions);
+
+          tbody.appendChild(tr);
+        }
+      }
+
+      // ---- Add lead ----
+
+      function addLead() {
+        var bizName = document.getElementById("addBizName").value.trim();
+        var category = document.getElementById("addCategory").value.trim();
+        var city = document.getElementById("addCity").value.trim();
+        var contact = document.getElementById("addContact").value.trim();
+        var source = document.getElementById("addSource").value.trim();
+        var resultEl = document.getElementById("addLeadResult");
+
+        if (!bizName || !category || !city || !contact || !source) {
+          resultEl.textContent = "All fields are required.";
+          resultEl.className = "action-result error";
+          return;
+        }
+
+        var btn = document.getElementById("addLeadBtn");
+        btn.disabled = true;
+        btn.textContent = "ADDING...";
+        resultEl.textContent = "";
+        resultEl.className = "action-result";
+
+        fetch("/api/sponsor-leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "add-lead",
+            passcode: adminPasscode,
+            businessName: bizName,
+            category: category,
+            city: city,
+            contactInfo: contact,
+            source: source,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              resultEl.textContent =
+                "Added " + result.data.lead.businessName + ".";
+              resultEl.className = "action-result success";
+              // Clear form
+              document.getElementById("addBizName").value = "";
+              document.getElementById("addCategory").value = "";
+              document.getElementById("addCity").value = "";
+              document.getElementById("addContact").value = "";
+              document.getElementById("addSource").value = "";
+              // Reload list
+              loadLeads();
+            } else {
+              resultEl.textContent = result.data.error || "Add failed.";
+              resultEl.className = "action-result error";
+            }
+            btn.disabled = false;
+            btn.textContent = "ADD LEAD";
+          })
+          .catch(function () {
+            resultEl.textContent = "Connection error.";
+            resultEl.className = "action-result error";
+            btn.disabled = false;
+            btn.textContent = "ADD LEAD";
+          });
+      }
+
+      // ---- Save lead (status, promising, relationshipType from inline selects) ----
+
+      function saveLead(id) {
+        var row = document.getElementById("lead-row-" + id);
+        if (!row) return;
+
+        var statusSel = row.querySelector('select[data-field="status"]');
+        var promiSel = row.querySelector('select[data-field="promising"]');
+        var relSel = row.querySelector('select[data-field="relationshipType"]');
+
+        var btn = document.getElementById("save-btn-" + id);
+        btn.disabled = true;
+        btn.textContent = "...";
+
+        fetch("/api/sponsor-leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "update-lead",
+            passcode: adminPasscode,
+            id: id,
+            status: statusSel ? statusSel.value : undefined,
+            promising: promiSel ? promiSel.value || null : undefined,
+            relationshipType: relSel ? relSel.value : undefined,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showLeadsResult(
+                "Saved " + result.data.lead.businessName + ".",
+                "success",
+              );
+              // Update local data
+              for (var i = 0; i < leadsList.length; i++) {
+                if (leadsList[i].id === id) {
+                  leadsList[i] = result.data.lead;
+                  break;
+                }
+              }
+            } else {
+              showLeadsResult(result.data.error || "Save failed.", "error");
+            }
+            btn.disabled = false;
+            btn.textContent = "SAVE";
+          })
+          .catch(function () {
+            showLeadsResult("Connection error.", "error");
+            btn.disabled = false;
+            btn.textContent = "SAVE";
+          });
+      }
+
+      // ---- Add note ----
+
+      function addNote(id) {
+        var input = document.getElementById("note-input-" + id);
+        var text = input.value.trim();
+        if (!text) return;
+
+        input.disabled = true;
+
+        fetch("/api/sponsor-leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "update-lead",
+            passcode: adminPasscode,
+            id: id,
+            note: text,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              // Update local data and re-render
+              for (var i = 0; i < leadsList.length; i++) {
+                if (leadsList[i].id === id) {
+                  leadsList[i] = result.data.lead;
+                  break;
+                }
+              }
+              renderLeads();
+              // Re-open the notes section
+              var sec = document.getElementById("notes-" + id);
+              if (sec) sec.classList.add("open");
+              showLeadsResult("Note added.", "success");
+            } else {
+              showLeadsResult(
+                result.data.error || "Failed to add note.",
+                "error",
+              );
+              input.disabled = false;
+            }
+          })
+          .catch(function () {
+            showLeadsResult("Connection error.", "error");
+            input.disabled = false;
+          });
+      }
+
+      // ---- Remove lead ----
+
+      function removeLead(id, name) {
+        if (
+          !confirm(
+            "Remove " +
+              name +
+              "? This is a soft-delete; the lead will be hidden from the list.",
+          )
+        ) {
+          return;
+        }
+
+        fetch("/api/sponsor-leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "remove-lead",
+            passcode: adminPasscode,
+            id: id,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showLeadsResult(
+                result.data.businessName + " removed.",
+                "success",
+              );
+              // Update local data
+              for (var i = 0; i < leadsList.length; i++) {
+                if (leadsList[i].id === id) {
+                  leadsList[i].status = "removed";
+                  break;
+                }
+              }
+              renderLeads();
+            } else {
+              showLeadsResult(result.data.error || "Remove failed.", "error");
+            }
+          })
+          .catch(function () {
+            showLeadsResult("Connection error.", "error");
+          });
+      }
+
+      // Enter key on passcode field
+      document
+        .getElementById("adminPasscode")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") authenticate();
+        });
+    </script>
+    <script src="chat-widget.js" defer></script>
+  </body>
+</html>
