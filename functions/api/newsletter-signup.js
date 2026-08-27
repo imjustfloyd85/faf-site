@@ -17,6 +17,11 @@
 
 import { createUnsubscribeToken } from "../lib/approval-tokens.js";
 import { sendViaACS } from "../lib/acs-email.js";
+import {
+  buildNewsletterEmail,
+  FROM_ADDRESS as NL_FROM,
+  REPLY_TO as NL_REPLY_TO,
+} from "../lib/newsletter-send-core.js";
 
 const FROM_ADDRESS = "DoNotReply@fathersandfootball.org";
 const REPLY_TO = "info@fathersandfootball.org";
@@ -177,6 +182,20 @@ export async function onRequestPost(context) {
           console.error("Resubscribe confirmation email failed:", emailErr);
         }
 
+        // Best-effort welcome newsletter for resubscribers too
+        const resubWelcomePromise = sendWelcomeNewsletter({
+          kv,
+          env: context.env,
+          email: normalizedEmail,
+          unsubUrl,
+        }).catch((err) =>
+          console.error("Welcome newsletter (resub) failed:", err),
+        );
+
+        if (context.waitUntil) {
+          context.waitUntil(resubWelcomePromise);
+        }
+
         return new Response(
           JSON.stringify({ success: true, message: GENERIC_SIGNUP_MESSAGE }),
           { status: 200, headers },
@@ -217,6 +236,19 @@ export async function onRequestPost(context) {
       console.error("Confirmation email failed:", emailErr);
     }
 
+    // Best-effort: send the most recent newsletter so the new subscriber
+    // gets content right away instead of waiting for the next send.
+    const welcomePromise = sendWelcomeNewsletter({
+      kv,
+      env: context.env,
+      email: normalizedEmail,
+      unsubUrl,
+    }).catch((err) => console.error("Welcome newsletter failed:", err));
+
+    if (context.waitUntil) {
+      context.waitUntil(welcomePromise);
+    }
+
     return new Response(
       JSON.stringify({ success: true, message: GENERIC_SIGNUP_MESSAGE }),
       { status: 200, headers },
@@ -232,6 +264,48 @@ export async function onRequestPost(context) {
 
 export async function onRequestGet() {
   return new Response("Method not allowed", { status: 405 });
+}
+
+// Best-effort: find the most recent sent newsletter draft in KV and
+// send it to the new subscriber so they don't wait weeks for content.
+// Returns silently on any failure -- this is a nice-to-have, not critical.
+async function sendWelcomeNewsletter({ kv, env, email, unsubUrl }) {
+  const listed = await kv.list({ prefix: "newsletter:draft:" });
+  if (!listed.keys || listed.keys.length === 0) return;
+
+  let mostRecent = null;
+
+  for (const key of listed.keys) {
+    const raw = await kv.get(key.name);
+    if (!raw) continue;
+    let draft;
+    try {
+      draft = JSON.parse(raw);
+    } catch {
+      continue;
+    }
+    if (draft.status !== "sent" || !draft.sentAt) continue;
+    if (!mostRecent || draft.sentAt > mostRecent.sentAt) {
+      mostRecent = draft;
+    }
+  }
+
+  if (!mostRecent) return;
+
+  const emailHtml = buildNewsletterEmail(
+    mostRecent.bodyHtml,
+    escapeHtml(mostRecent.subject),
+    escapeHtml(email),
+    unsubUrl,
+  );
+
+  await sendViaACS(env, {
+    from: NL_FROM,
+    to: email,
+    replyTo: NL_REPLY_TO,
+    subject: mostRecent.subject,
+    html: emailHtml,
+  });
 }
 
 // Maintain a JSON array of subscriber hashes for efficient enumeration
