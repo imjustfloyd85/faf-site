@@ -84,13 +84,19 @@ export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
     throw new Error("Claude returned no text content");
   }
 
+  // Claude sometimes wraps JSON in ```json ... ``` despite the system prompt.
+  // Strip markdown code fences before parsing.
+  let rawText = textBlock.text.trim();
+  const fenceMatch = rawText.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
+  if (fenceMatch) {
+    rawText = fenceMatch[1].trim();
+  }
+
   let parsed;
   try {
-    parsed = JSON.parse(textBlock.text);
+    parsed = JSON.parse(rawText);
   } catch {
-    throw new Error(
-      `Claude returned invalid JSON: ${textBlock.text.slice(0, 200)}`,
-    );
+    throw new Error(`Claude returned invalid JSON: ${rawText.slice(0, 200)}`);
   }
 
   const { subject, bodyHtml } = parsed;
