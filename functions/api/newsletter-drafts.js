@@ -224,10 +224,13 @@ async function fetchWeeklySchedule(siteOrigin) {
     if (!res.ok) return null;
     const html = await res.text();
 
+    // Pull just the <section id="schedule"> ... </section> block.
     const startMatch = html.match(/<section[^>]*id=["']schedule["'][^>]*>/i);
     if (!startMatch) return null;
 
     const startIdx = startMatch.index;
+    // Find the matching </section> after the opening tag.
+    // Walk through nested <section>...</section> to find the right close.
     let depth = 1;
     let cursor = startIdx + startMatch[0].length;
     const openRe = /<section[\s>]/gi;
@@ -238,7 +241,9 @@ async function fetchWeeklySchedule(siteOrigin) {
       closeRe.lastIndex = cursor;
       const nextOpen = openRe.exec(html);
       const nextClose = closeRe.exec(html);
-      if (!nextClose) break;
+
+      if (!nextClose) break; // malformed HTML, bail
+
       if (nextOpen && nextOpen.index < nextClose.index) {
         depth++;
         cursor = nextOpen.index + nextOpen[0].length;
@@ -249,6 +254,9 @@ async function fetchWeeklySchedule(siteOrigin) {
     }
 
     const scheduleHtml = html.slice(startIdx, cursor);
+
+    // Strip tags and collapse whitespace -- same as extractText but no word cap
+    // since the schedule section is already scoped and short.
     const text = scheduleHtml
       .replace(/<[^>]+>/g, " ")
       .replace(/&nbsp;/gi, " ")
@@ -306,6 +314,7 @@ async function gatherLiveSiteContent(siteOrigin) {
   // Labels whose text should be date-filtered (events and schedule content)
   const DATE_FILTERED_LABELS = ["Upcoming Events", "Weekly Schedule"];
 
+  // Kick off all fetches in parallel: page scrapes + targeted extractions.
   const pageFetches = CONTENT_PAGES.map(async ({ label, path }) => {
     try {
       const res = await fetch(`${siteOrigin}${path}`, {
