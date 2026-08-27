@@ -20,24 +20,101 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function formatDateline() {
+  const d = new Date();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
 function buildNewsletterEmail(
   bodyHtml,
   escapedSubject,
   escapedEmail,
   unsubUrl,
 ) {
+  const dateline = formatDateline();
   return `
-<div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #333;">
-  <h2 style="color: #c8923c;">Fathers and Football</h2>
-  <h3>${escapedSubject}</h3>
-  ${bodyHtml}
-  <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
-  <p style="font-size: 11px; color: #999;">
-    Fathers and Football | 501(c)(3) | EIN 42-1980182<br/>
-    This email was sent to ${escapedEmail}.<br/>
-    <a href="${escapeHtml(unsubUrl)}" style="color: #c8923c;">Unsubscribe</a>
-  </p>
-</div>`;
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f5f0e8; margin: 0; padding: 0;">
+  <tr>
+    <td align="center" style="padding: 24px 12px;">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border: 1px solid #d6cdb8; max-width: 600px;">
+        <!-- Masthead -->
+        <tr>
+          <td style="padding: 28px 32px 0 32px; text-align: center;">
+            <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 30px; font-weight: 700; color: #c8923c; margin: 0; padding: 0; letter-spacing: 3px; text-transform: uppercase;">Fathers and Football</h1>
+          </td>
+        </tr>
+        <!-- Double rule: thin, then thick -->
+        <tr>
+          <td style="padding: 10px 32px 0 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="border-top: 1px solid #1b2a4a; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr>
+              <tr><td style="height: 3px; font-size: 0; line-height: 0;">&nbsp;</td></tr>
+              <tr><td style="border-top: 3px solid #1b2a4a; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Dateline -->
+        <tr>
+          <td style="padding: 8px 32px 16px 32px; text-align: center;">
+            <span style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 12px; color: #8a7e6b; font-style: italic;">${dateline}</span>
+          </td>
+        </tr>
+        <!-- Subject / Edition Headline -->
+        <tr>
+          <td style="padding: 0 32px 8px 32px; text-align: center;">
+            <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 22px; font-weight: 700; color: #1b2a4a; margin: 0; padding: 0;">${escapedSubject}</h2>
+          </td>
+        </tr>
+        <!-- Thin accent rule below headline -->
+        <tr>
+          <td style="padding: 4px 32px 20px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="border-top: 1px solid #c8923c; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Body content -->
+        <tr>
+          <td style="padding: 0 32px 24px 32px; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 15px; line-height: 1.65; color: #2a2a2a;">
+            ${bodyHtml}
+          </td>
+        </tr>
+        <!-- Footer rule: thin-thick like masthead -->
+        <tr>
+          <td style="padding: 0 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="border-top: 3px solid #1b2a4a; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr>
+              <tr><td style="height: 3px; font-size: 0; line-height: 0;">&nbsp;</td></tr>
+              <tr><td style="border-top: 1px solid #1b2a4a; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Footer content -->
+        <tr>
+          <td style="padding: 16px 32px 24px 32px; text-align: center; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 11px; color: #8a7e6b; line-height: 1.6;">
+            Fathers and Football&nbsp;&nbsp;|&nbsp;&nbsp;501(c)(3)&nbsp;&nbsp;|&nbsp;&nbsp;EIN 42-1980182<br/>
+            This email was sent to ${escapedEmail}.<br/>
+            <a href="${escapeHtml(unsubUrl)}" style="color: #c8923c; text-decoration: underline;">Unsubscribe</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`;
 }
 
 // Send a newsletter to all active subscribers.

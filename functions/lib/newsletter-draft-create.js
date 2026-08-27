@@ -41,32 +41,34 @@ Rules you must follow:
 - GroupMe reminder (include in every newsletter): FAF / Frisco Elite uses GroupMe for team communication. Near the end of the newsletter, include a short standalone section or line reminding parents that team updates and coordination happen through GroupMe, and to contact their coach directly for an invite if they haven't joined yet. Keep it to two or three sentences. This is a standing item, not tied to any specific event.
 
 Section structure (each distinct topic gets its own section):
-- Wrap each topic in a <div> with a gold left-border accent and padding:
-  <div style="border-left: 3px solid #c8923c; padding: 4px 0 4px 16px; margin-bottom: 24px;">
-- Start each section with an <h3> heading. Write a short, specific, punchy headline for that piece of content -- NOT a generic label like "Upcoming Events" or "Recent Results." Use the actual event name, date, or subject. Examples: "Skills Clinic -- September 13", "Float Fest Results Are In", "Thank You to Our Sponsors".
-  <h3 style="margin: 0 0 8px; color: #1a1a1a; font-size: 18px;">Your Headline Here</h3>
+The outer email wrapper is a newspaper-style template with a serif masthead, cream background, and navy/gold accents. Your bodyHtml goes inside a table cell that already sets font-family to Georgia/serif, 15px, color #2a2a2a. Do not re-set the base font on inner elements.
+
+- Separate each section with a horizontal rule styled as a thin gold divider:
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0;"><tr><td style="border-top: 1px solid #c8923c; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr></table>
+- Start each section with an <h3> heading in bold serif, navy color. Write a short, specific, punchy headline for that piece of content -- NOT a generic label like "Upcoming Events" or "Recent Results." Use the actual event name, date, or subject. Examples: "Skills Clinic -- September 13", "Float Fest Results Are In", "Thank You to Our Sponsors".
+  <h3 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; font-weight: 700; color: #1b2a4a; margin: 0 0 8px; padding: 0;">Your Headline Here</h3>
 - Follow the heading with <p> tags for the body text:
-  <p style="margin: 0 0 10px; line-height: 1.6;">Paragraph content...</p>
-- Place any relevant <img> inside the same section div, near the paragraph it relates to.
-- Close the section </div> before starting the next topic's div.
+  <p style="margin: 0 0 12px; line-height: 1.65;">Paragraph content...</p>
+- Do NOT use the old gold left-border div wrapper. Use the horizontal-rule dividers between sections instead.
 
 Image rules (only when images are provided):
 - Include an image only when it is directly relevant to the section being written. Do not add images for decoration or filler.
 - Use the exact URL from the provided list. Never modify or guess a URL.
 - You do not have to use every image. Skip any that do not fit naturally.
-- Place each <img> inside the section div it relates to, not clustered together.
+- Place each <img> near the paragraph it relates to, not clustered together.
 - Every <img> tag must use these inline styles: style="max-width: 100%; height: auto; display: block; margin: 12px 0;"
 - Include the alt attribute from the provided image data. If alt is empty, write a brief descriptive alt based on the section context.
 
 Style rules:
 - Use inline styles on every element (email clients ignore <style> blocks and external CSS).
-- Keep styles minimal and email-safe. Stick to the site palette: gold accent #c8923c, dark text #1a1a1a or #333, white/light backgrounds.
-- Font is inherited from the outer wrapper (Arial, sans-serif) -- do not set font-family on inner elements.
+- Keep styles minimal and email-safe. Color palette: gold accent #c8923c, deep navy #1b2a4a for headlines and strong rules, body text #2a2a2a, muted #8a7e6b for secondary text. The outer wrapper provides a warm cream (#f5f0e8) background with a white content card -- do not add background colors in your body content.
+- Font is inherited from the outer wrapper (Georgia, serif at 15px) -- do not set font-family on <p> or body text elements. Only set font-family on <h3> headings to make sure they get the serif treatment even if a client resets inheritance.
+- Links should use color #c8923c with text-decoration: underline.
 
 Respond with valid JSON only, no markdown fences:
-{"subject": "the email subject line", "bodyHtml": "<div style=\\"border-left: 3px solid #c8923c; ...\\">...</div>"}
+{"subject": "the email subject line", "bodyHtml": "<h3 style=\\"font-family: Georgia, ...; color: #1b2a4a; ...\\">...</h3><p ...>...</p>"}
 
-The bodyHtml should use: <div> section wrappers (styled as above), <h3> for section headings, <p> for paragraphs, <a> for links, <strong> for emphasis, <img> for provided images. All elements use inline styles as described above.`;
+The bodyHtml should use: <h3> for section headings (bold serif, navy), gold <table>-based horizontal rules between sections, <p> for paragraphs, <a> for links, <strong> for emphasis, <img> for provided images. All elements use inline styles as described above.`;
 
 export async function createNewsletterDraft({
   whatsNew,
