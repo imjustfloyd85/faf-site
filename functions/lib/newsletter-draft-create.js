@@ -27,6 +27,7 @@ Write a short newsletter email based only on the factual updates provided below.
 Rules you must follow:
 - Write in a warm, community-focused voice. Talk like a real person writing to families who care about their kids.
 - State only facts present in the input. Never invent scores, dates, names, sponsor details, or event specifics that aren't explicitly provided.
+- Never invent image URLs. Only use image URLs explicitly listed in the "Available images" section below the updates. If no images are provided, do not include any <img> tags.
 - If the input covers multiple distinct topics (an upcoming event, a recent result, a sponsor highlight, a program update), address each one in its own short paragraph. Do not cherry-pick a single topic and ignore the rest.
 - If the input is thin or covers only one topic, write a shorter newsletter. Do not pad it out.
 - Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
@@ -34,12 +35,25 @@ Rules you must follow:
 - Use short paragraphs. Two to four sentences each.
 - Do not mention that you are AI or that this was generated.
 
+Image rules (only when images are provided):
+- Include an image only when it is directly relevant to the paragraph being written. Do not add images for decoration or filler.
+- Use the exact URL from the provided list. Never modify or guess a URL.
+- You do not have to use every image. Skip any that do not fit naturally.
+- Place each <img> near its related paragraph, not clustered together.
+- Every <img> tag must use these inline styles: style="max-width: 100%; height: auto; display: block; margin: 12px 0;"
+- Include the alt attribute from the provided image data. If alt is empty, write a brief descriptive alt based on the section context.
+
 Respond with valid JSON only, no markdown fences:
 {"subject": "the email subject line", "bodyHtml": "<p>the HTML body</p>"}
 
-The bodyHtml should use simple HTML: <p> tags for paragraphs, <a> for links, <strong> for emphasis. No inline styles. Keep it clean.`;
+The bodyHtml should use simple HTML: <p> tags for paragraphs, <a> for links, <strong> for emphasis, <img> for provided images (with inline styles as described above). No other inline styles. Keep it clean.`;
 
-export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
+export async function createNewsletterDraft({
+  whatsNew,
+  siteImages = [],
+  siteUrl,
+  env,
+}) {
   const apiKey = env.ANTHROPIC_API_KEY;
   const secret = env.QBO_APPROVAL_SECRET;
   const kv = env.FAF_KV;
@@ -51,6 +65,16 @@ export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
   // Generate a unique draft ID
   const draftId = crypto.randomUUID();
 
+  // Build the user message: text updates + optional image list
+  let userContent = `Here are the recent updates to summarize for the newsletter:\n\n${whatsNew}`;
+
+  if (siteImages.length > 0) {
+    const imageLines = siteImages.map(
+      (img) => `- [${img.section}] ${img.url}${img.alt ? ` (${img.alt})` : ""}`,
+    );
+    userContent += `\n\nAvailable images (use only these exact URLs, only where relevant):\n${imageLines.join("\n")}`;
+  }
+
   // Call Claude to generate the newsletter
   const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -61,12 +85,12 @@ export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 1200,
+      max_tokens: 1800,
       system: CLAUDE_SYSTEM_PROMPT,
       messages: [
         {
           role: "user",
-          content: `Here are the recent updates to summarize for the newsletter:\n\n${whatsNew}`,
+          content: userContent,
         },
       ],
     }),

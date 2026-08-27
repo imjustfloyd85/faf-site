@@ -37,15 +37,21 @@ const CONTENT_PAGES = [
   { label: "Frisco Elite", path: "/frisco-elite.html" },
 ];
 
-// Strip HTML tags, scripts, style blocks, and collapse whitespace.
-// Returns plain text capped at maxWords.
-function extractText(html, maxWords = 300) {
-  let text = html
+// Remove site chrome (scripts, styles, nav, footer, header) from raw HTML
+// so both text and image extraction focus on main content only.
+function stripChrome(html) {
+  return html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<nav[\s\S]*?<\/nav>/gi, " ")
     .replace(/<footer[\s\S]*?<\/footer>/gi, " ")
-    .replace(/<header[\s\S]*?<\/header>/gi, " ")
+    .replace(/<header[\s\S]*?<\/header>/gi, " ");
+}
+
+// Strip HTML tags, scripts, style blocks, and collapse whitespace.
+// Returns plain text capped at maxWords.
+function extractText(html, maxWords = 300) {
+  let text = stripChrome(html)
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/gi, " ")
     .replace(/&amp;/g, "&")
@@ -62,10 +68,56 @@ function extractText(html, maxWords = 300) {
   return text;
 }
 
+// Pull content images from main-content HTML, skipping decorative/nav/icon images.
+// Returns an array of { url, alt, section } capped at maxPerPage per page.
+function extractImages(html, siteOrigin, sectionLabel, maxPerPage = 3) {
+  const cleaned = stripChrome(html);
+  const images = [];
+  const imgTagRegex = /<img\b[^>]+>/gi;
+  let tagMatch;
+
+  while ((tagMatch = imgTagRegex.exec(cleaned)) !== null) {
+    const tag = tagMatch[0];
+
+    const srcMatch = tag.match(/\bsrc=["']([^"']+)["']/i);
+    if (!srcMatch) continue;
+    let src = srcMatch[1];
+
+    // Skip data URIs, SVGs, and tracking pixels
+    if (src.startsWith("data:") || src.endsWith(".svg")) continue;
+
+    // Skip likely icons, logos, favicons, spacers
+    if (/favicon|icon|sprite|spacer|pixel|tracking|badge/i.test(src)) continue;
+
+    // Skip tiny images (explicit dimension attributes under 50px)
+    const widthAttr = tag.match(/\bwidth=["']?(\d+)/i);
+    const heightAttr = tag.match(/\bheight=["']?(\d+)/i);
+    if (widthAttr && parseInt(widthAttr[1], 10) < 50) continue;
+    if (heightAttr && parseInt(heightAttr[1], 10) < 50) continue;
+
+    // Resolve relative paths to absolute
+    if (src.startsWith("/")) {
+      src = `${siteOrigin}${src}`;
+    } else if (!src.startsWith("http")) {
+      src = `${siteOrigin}/${src}`;
+    }
+
+    const altMatch = tag.match(/\balt=["']([^"']*)["']/i);
+    const alt = altMatch ? altMatch[1] : "";
+
+    images.push({ url: src, alt, section: sectionLabel });
+    if (images.length >= maxPerPage) break;
+  }
+
+  return images;
+}
+
 // Fetch key pages from the live site and assemble a structured whatsNew blob.
 // Each page gets its own labeled section so Claude sees multiple distinct topics.
+// Returns { text, images } where images is an array of { url, alt, section }.
 async function gatherLiveSiteContent(siteOrigin) {
   const sections = [];
+  const allImages = [];
 
   const fetches = CONTENT_PAGES.map(async ({ label, path }) => {
     try {
@@ -75,8 +127,9 @@ async function gatherLiveSiteContent(siteOrigin) {
       if (!res.ok) return null;
       const html = await res.text();
       const text = extractText(html);
+      const images = extractImages(html, siteOrigin, label);
       if (text.length > 50) {
-        return { label, text };
+        return { label, text, images };
       }
       return null;
     } catch {
@@ -86,14 +139,24 @@ async function gatherLiveSiteContent(siteOrigin) {
 
   const results = await Promise.all(fetches);
   for (const r of results) {
-    if (r) sections.push(r);
+    if (r) {
+      sections.push(r);
+      allImages.push(...r.images);
+    }
   }
 
   if (sections.length === 0) {
     return null;
   }
 
-  return sections.map((s) => `=== ${s.label} ===\n${s.text}`).join("\n\n");
+  const text = sections
+    .map((s) => `=== ${s.label} ===\n${s.text}`)
+    .join("\n\n");
+
+  // Cap total images across all pages at 6
+  const images = allImages.slice(0, 6);
+
+  return { text, images };
 }
 
 // Scan KV for newsletter drafts matching a given status.
@@ -422,16 +485,19 @@ export async function onRequestPost(context) {
       // Otherwise, scrape real content from the live site so Claude gets
       // multiple distinct topics instead of a vague placeholder.
       let whatsNew = body.whatsNew || null;
+      let siteImages = [];
       if (!whatsNew) {
         const liveContent = await gatherLiveSiteContent(siteUrl);
         whatsNew =
-          liveContent ||
+          liveContent?.text ||
           "Manual newsletter trigger from admin panel. Write a brief update newsletter for Fathers and Football families.";
+        siteImages = liveContent?.images || [];
       }
 
       try {
         const result = await createNewsletterDraft({
           whatsNew,
+          siteImages,
           siteUrl,
           env: context.env,
         });
