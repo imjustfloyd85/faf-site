@@ -35,6 +35,16 @@ const CONTENT_PAGES = [
   { label: "Skills Clinic", path: "/skills-clinic.html" },
   { label: "Sponsors", path: "/sponsors.html" },
   { label: "Frisco Elite", path: "/frisco-elite.html" },
+  // Coach letters: add new pages here as they're published.
+  // Each gets its own labeled section in the newsletter input.
+  { label: "Coach's Letter", path: "/coach-letter-season-opener.html" },
+  // Blog posts: add new posts here as they're published.
+  {
+    label: "=== Blog: Rise of Flag Football ===",
+    path: "/rise-of-flag-football.html",
+  },
+  // Community / rec league content (Neighborhood Sports NFL Flag, etc.)
+  { label: "Community / Neighborhood Sports", path: "/community.html" },
 ];
 
 // Remove site chrome (scripts, styles, nav, footer, header) from raw HTML
@@ -66,6 +76,98 @@ function extractText(html, maxWords = 300) {
     text = words.slice(0, maxWords).join(" ") + " ...";
   }
   return text;
+}
+
+// Try to parse a date string like "Aug 23", "Sep 20", "August 8", "October 10, 2026",
+// "September 26 - 27, 2026", "Mar 2027" etc. Returns a Date or null if unparseable.
+// When no year is provided, assumes the current year (or next year if the month
+// has already passed and the text is clearly future-looking).
+function tryParseEventDate(dateStr, now) {
+  if (!dateStr || typeof dateStr !== "string") return null;
+
+  // Clean up HTML entities and extra whitespace
+  const cleaned = dateStr
+    .replace(/&ndash;/g, "-")
+    .replace(/&mdash;/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const MONTHS = {
+    jan: 0,
+    january: 0,
+    feb: 1,
+    february: 1,
+    mar: 2,
+    march: 2,
+    apr: 3,
+    april: 3,
+    may: 4,
+    jun: 5,
+    june: 5,
+    jul: 6,
+    july: 6,
+    aug: 7,
+    august: 7,
+    sep: 8,
+    september: 8,
+    oct: 9,
+    october: 9,
+    nov: 10,
+    november: 10,
+    dec: 11,
+    december: 11,
+  };
+
+  // Pattern: "Month Day" or "Month Day, Year" or "Month Day - Day" or "Month Year"
+  const m = cleaned.match(
+    /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|january|february|march|april|june|july|august|september|october|november|december)\s+(\d{1,2})?(?:\s*[-–]\s*\d{1,2})?(?:[,\s]+(\d{4}))?/i,
+  );
+  if (!m) return null;
+
+  const monthIdx = MONTHS[m[1].toLowerCase()];
+  if (monthIdx === undefined) return null;
+
+  const day = m[2] ? parseInt(m[2], 10) : 1;
+  let year = m[3] ? parseInt(m[3], 10) : now.getFullYear();
+
+  // If no year was given and the month is already far past, assume next year
+  if (!m[3]) {
+    const candidate = new Date(year, monthIdx, day);
+    if (candidate.getTime() < now.getTime() - 180 * 24 * 60 * 60 * 1000) {
+      year++;
+    }
+  }
+
+  return new Date(year, monthIdx, day);
+}
+
+// Words/phrases that indicate recap or result content. When a past event's
+// text contains any of these, the event is worth keeping because it has real
+// outcome data, not just an expired date.
+const RECAP_INDICATORS =
+  /\b(recap|result|championship|semifinal|finals?|won|lost|defeated|record|W-L|\d+W[- ]?\d+L|overtime|quarter.?final|bracket|eliminated|advanced|placed|runner.?up|undefeated|champion)\b/i;
+
+// Filter lines from extracted text, dropping events more than 14 days in the past
+// UNLESS the line contains recap/result content worth referencing.
+// Lines that don't contain a parseable date are kept (safe default).
+function filterOldEvents(text, now) {
+  const cutoff = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const lines = text.split("\n");
+  const kept = [];
+
+  for (const line of lines) {
+    const parsed = tryParseEventDate(line.trim(), now);
+    if (parsed && parsed < cutoff) {
+      // Keep the line anyway if it has real recap/result content
+      if (RECAP_INDICATORS.test(line)) {
+        kept.push(line);
+      }
+      continue;
+    }
+    kept.push(line);
+  }
+
+  return kept.join("\n");
 }
 
 // Pull content images from main-content HTML, skipping decorative/nav/icon images.
@@ -147,11 +249,7 @@ async function fetchWeeklySchedule(siteOrigin) {
         cursor = nextOpen.index + nextOpen[0].length;
       } else {
         depth--;
-        if (depth === 0) {
-          cursor = nextClose.index + nextClose[0].length;
-        } else {
-          cursor = nextClose.index + nextClose[0].length;
-        }
+        cursor = nextClose.index + nextClose[0].length;
       }
     }
 
@@ -206,10 +304,15 @@ async function fetchNewPartnerships(siteOrigin) {
 
 // Fetch key pages from the live site and assemble a structured whatsNew blob.
 // Each page gets its own labeled section so Claude sees multiple distinct topics.
+// Applies date filtering to event/schedule content to drop anything > 14 days old.
 // Returns { text, images } where images is an array of { url, alt, section }.
 async function gatherLiveSiteContent(siteOrigin) {
+  const now = new Date();
   const sections = [];
   const allImages = [];
+
+  // Labels whose text should be date-filtered (events and schedule content)
+  const DATE_FILTERED_LABELS = ["Upcoming Events", "Weekly Schedule"];
 
   // Kick off all fetches in parallel: page scrapes + targeted extractions.
   const pageFetches = CONTENT_PAGES.map(async ({ label, path }) => {
@@ -219,8 +322,14 @@ async function gatherLiveSiteContent(siteOrigin) {
       });
       if (!res.ok) return null;
       const html = await res.text();
-      const text = extractText(html);
+      let text = extractText(html);
       const images = extractImages(html, siteOrigin, label);
+
+      // Filter old events from event-related pages
+      if (DATE_FILTERED_LABELS.includes(label)) {
+        text = filterOldEvents(text, now);
+      }
+
       if (text.length > 50) {
         return { label, text, images };
       }
@@ -246,7 +355,10 @@ async function gatherLiveSiteContent(siteOrigin) {
   // Append dedicated Weekly Schedule section (extracted from #schedule only,
   // not diluted into the generic Frisco Elite page text).
   if (scheduleText) {
-    sections.push({ label: "Weekly Schedule", text: scheduleText, images: [] });
+    const filtered = filterOldEvents(scheduleText, now);
+    if (filtered.length > 30) {
+      sections.push({ label: "Weekly Schedule", text: filtered, images: [] });
+    }
   }
 
   // Append dedicated New Partnerships section from the approved-sponsors API.
