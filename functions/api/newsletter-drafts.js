@@ -28,6 +28,74 @@ import {
 import { sendNewsletterToAll } from "../lib/newsletter-send-core.js";
 import { createNewsletterDraft } from "../lib/newsletter-draft-create.js";
 
+// Pages to scrape for live site content when no whatsNew is provided.
+// Each entry maps a section label to a path on the same origin.
+const CONTENT_PAGES = [
+  { label: "Upcoming Events", path: "/events.html" },
+  { label: "Skills Clinic", path: "/skills-clinic.html" },
+  { label: "Sponsors", path: "/sponsors.html" },
+  { label: "Frisco Elite", path: "/frisco-elite.html" },
+];
+
+// Strip HTML tags, scripts, style blocks, and collapse whitespace.
+// Returns plain text capped at maxWords.
+function extractText(html, maxWords = 300) {
+  let text = html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<nav[\s\S]*?<\/nav>/gi, " ")
+    .replace(/<footer[\s\S]*?<\/footer>/gi, " ")
+    .replace(/<header[\s\S]*?<\/header>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#?\w+;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const words = text.split(" ");
+  if (words.length > maxWords) {
+    text = words.slice(0, maxWords).join(" ") + " ...";
+  }
+  return text;
+}
+
+// Fetch key pages from the live site and assemble a structured whatsNew blob.
+// Each page gets its own labeled section so Claude sees multiple distinct topics.
+async function gatherLiveSiteContent(siteOrigin) {
+  const sections = [];
+
+  const fetches = CONTENT_PAGES.map(async ({ label, path }) => {
+    try {
+      const res = await fetch(`${siteOrigin}${path}`, {
+        headers: { Accept: "text/html" },
+      });
+      if (!res.ok) return null;
+      const html = await res.text();
+      const text = extractText(html);
+      if (text.length > 50) {
+        return { label, text };
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  });
+
+  const results = await Promise.all(fetches);
+  for (const r of results) {
+    if (r) sections.push(r);
+  }
+
+  if (sections.length === 0) {
+    return null;
+  }
+
+  return sections.map((s) => `=== ${s.label} ===\n${s.text}`).join("\n\n");
+}
+
 // Scan KV for newsletter drafts matching a given status.
 // Returns an array sorted by createdAt descending (most recent first).
 async function findDraftsByStatus(kv, status) {
@@ -349,9 +417,17 @@ export async function onRequestPost(context) {
     // --- GENERATE DRAFT ---
     if (action === "generate-draft") {
       const siteUrl = new URL(context.request.url).origin;
-      const whatsNew =
-        body.whatsNew ||
-        "Manual newsletter trigger from admin panel. Write a brief update newsletter for Fathers and Football families.";
+
+      // Use caller-supplied whatsNew when provided (e.g. from the cron worker).
+      // Otherwise, scrape real content from the live site so Claude gets
+      // multiple distinct topics instead of a vague placeholder.
+      let whatsNew = body.whatsNew || null;
+      if (!whatsNew) {
+        const liveContent = await gatherLiveSiteContent(siteUrl);
+        whatsNew =
+          liveContent ||
+          "Manual newsletter trigger from admin panel. Write a brief update newsletter for Fathers and Football families.";
+      }
 
       try {
         const result = await createNewsletterDraft({

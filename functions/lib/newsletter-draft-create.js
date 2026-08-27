@@ -27,7 +27,8 @@ Write a short newsletter email based only on the factual updates provided below.
 Rules you must follow:
 - Write in a warm, community-focused voice. Talk like a real person writing to families who care about their kids.
 - State only facts present in the input. Never invent scores, dates, names, sponsor details, or event specifics that aren't explicitly provided.
-- If the input is thin, write a shorter newsletter. Do not pad it out.
+- If the input covers multiple distinct topics (an upcoming event, a recent result, a sponsor highlight, a program update), address each one in its own short paragraph. Do not cherry-pick a single topic and ignore the rest.
+- If the input is thin or covers only one topic, write a shorter newsletter. Do not pad it out.
 - Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
 - No em dashes. No words like "delve," "boasts," "intricate," "underscore," "align with," "enhance," "fostering," "showcasing," "pivotal," "crucial." No rule-of-three lists used as filler. No emoji. No formulaic sign-off sentences like "Together, we can make a difference."
 - Use short paragraphs. Two to four sentences each.
