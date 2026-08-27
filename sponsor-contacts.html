@@ -1,0 +1,2279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sponsor Contacts -- Fathers and Football</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+
+      .hero {
+        padding: 120px 24px 32px;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        padding: 6px 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(28px, 5vw, 48px);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .hero h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* AUTH GATE */
+      .auth-gate {
+        display: flex;
+        justify-content: center;
+        padding: 0 24px 64px;
+      }
+      .auth-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 420px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .submit-btn:hover {
+        background: var(--gold-lt);
+      }
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status-msg {
+        margin-top: 16px;
+        font-size: 13px;
+        text-align: center;
+        min-height: 20px;
+      }
+      .status-msg.error {
+        color: var(--red);
+      }
+      .status-msg.success {
+        color: var(--green);
+      }
+
+      /* PANELS */
+      .panel {
+        display: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 40px;
+      }
+      .panel.visible {
+        display: block;
+      }
+      .panel-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+      .section-header {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-header em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* CONTENT TYPOGRAPHY */
+      .panel-card h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 24px 0 10px;
+      }
+      .panel-card h3:first-child {
+        margin-top: 0;
+      }
+      .panel-card h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--warm);
+        margin: 20px 0 8px;
+      }
+      .panel-card p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+      .panel-card ul,
+      .panel-card ol {
+        margin: 8px 0 12px 20px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+      }
+      .panel-card ul li,
+      .panel-card ol li {
+        margin-bottom: 4px;
+      }
+      .panel-card a {
+        color: var(--gold);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .panel-card a:hover {
+        color: var(--gold-lt);
+      }
+      .panel-card .detail-label {
+        font-weight: 600;
+        color: var(--gold-lt);
+      }
+      .panel-card .aside {
+        font-size: 13px;
+        color: var(--muted);
+        font-style: italic;
+        margin: 8px 0 12px;
+      }
+      .panel-card .callout {
+        background: var(--dark-3);
+        border-left: 3px solid var(--gold);
+        padding: 16px 20px;
+        margin: 12px 0;
+        border-radius: 0 8px 8px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+      }
+      .panel-card .status-update {
+        background: rgba(200, 146, 60, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 12px 0;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .panel-card .entry-block {
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+      .panel-card .entry-block:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      .star-target {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--gold);
+        background: rgba(200, 146, 60, 0.12);
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+
+      /* LEADS TABLE */
+      .leads-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .leads-table th {
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      .leads-table td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+        vertical-align: top;
+      }
+      .leads-table tr:hover td {
+        background: rgba(200, 146, 60, 0.04);
+      }
+
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .panel-card {
+          padding: 20px;
+        }
+        .leads-table {
+          font-size: 12px;
+        }
+        .leads-table th,
+        .leads-table td {
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="admin-hub.html" class="nav-back">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Admin Hub
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">Admin</div>
+      <h1>Sponsor <em>Contacts</em></h1>
+    </section>
+
+    <!-- AUTH GATE -->
+    <section class="auth-gate" id="authGate">
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="adminPasscode">Admin Passcode</label>
+          <input
+            type="password"
+            id="adminPasscode"
+            placeholder="Enter admin passcode"
+            required
+            autocomplete="off"
+          />
+          <p class="form-hint">
+            Same passcode as the media review admin panel.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="submit-btn"
+          id="authBtn"
+          onclick="authenticate()"
+        >
+          Sign In
+        </button>
+        <div class="status-msg" id="authStatus"></div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="panel" id="introPanel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          FAF Sponsorship Contacts &mdash; <em>Verified Research</em>
+        </h2>
+        <p><span class="detail-label">Research date:</span> 2026-04-23</p>
+        <p>
+          <span class="detail-label">Scope:</span> Tier 2 Frisco/DFW Corporate
+          HQs + Tier 4 National/Corporate Foundations (22 targets)
+        </p>
+        <p>
+          <span class="detail-label">Rule:</span> No fabricated contacts. If a
+          name/email/phone is not publicly available, the entry says so and
+          lists the real intake channel instead.
+        </p>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO-LEVEL BLOCKER -->
+    <section class="panel" id="blockerPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Portfolio-Level <em>Blocker</em></h2>
+        <p>
+          <strong>FAF is 501(c)(3) <em>pending</em>.</strong> Most foundations
+          below require an active determination letter before accepting grant
+          applications. Several grants also require 2+ years of active nonprofit
+          history (e.g., Dallas Mavericks Foundation).
+          <strong
+            >Getting the IRS determination letter is the single most valuable
+            parallel track to sponsor outreach.</strong
+          >
+          Until it lands, focus on:
+        </p>
+        <ol>
+          <li>
+            Corporate sponsorship paths (deductible as marketing expense, no
+            501(c)(3) required)
+          </li>
+          <li>In-kind requests (auction items, ticket nights, equipment)</li>
+          <li>
+            Relationship-building with foundations for when FAF does have the
+            letter
+          </li>
+          <li>Pledge commitments (see MONEY-HANDLING.md)</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TOP 5 ACTIONS -->
+    <section class="panel" id="top5Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Top 5 Actions Rob Can Take <em>This Week</em>
+        </h2>
+        <ol>
+          <li>
+            <strong>FC Dallas Foundation</strong> &mdash; email
+            <a
+              href="mailto:foundation@fcdallas.com"
+              target="_blank"
+              rel="noopener"
+              >foundation@fcdallas.com</a
+            >
+            to ask to be notified when the 2026 Community Action Grant cycle
+            opens. $5K, Frisco-local, explicit fit.
+          </li>
+          <li>
+            <strong>Frisco RoughRiders</strong> &mdash; call 972-731-9200 or
+            972-334-1978. Rolling donation requests + Community Ticket Program.
+          </li>
+          <li>
+            <strong>Dallas Cowboys (in-kind)</strong> &mdash; submit via
+            <a
+              href="https://my.donationmatch.com/companies/129670"
+              target="_blank"
+              rel="noopener"
+              >https://my.donationmatch.com/companies/129670</a
+            >
+            for an auction item. Allow 8 weeks. Gets FAF on Charlotte Jones
+            Anderson's radar.
+          </li>
+          <li>
+            <strong>Microsoft Philanthropies</strong> &mdash; Rob's internal
+            access is the whole game. Submit FAF through MS employee giving +
+            software grants portal (rolling post-501(c)(3)).
+          </li>
+          <li>
+            <strong>RTX (Raytheon)</strong> &mdash; application window opens
+            <strong>June 1, 2026</strong>. Prepare now. Military angle via Rob's
+            Navy background.
+            <a href="https://rtx.versaic.com/" target="_blank" rel="noopener"
+              >https://rtx.versaic.com/</a
+            >
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TIER 2 -->
+    <section class="panel" id="tier2Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 2 &mdash; Frisco/DFW Corporate <em>HQs</em>
+        </h2>
+
+        <!-- 1. Dallas Cowboys -->
+        <div class="entry-block">
+          <h3>1. Dallas Cowboys / Gene and Jerry Jones Family Foundation</h3>
+          <div class="status-update">
+            <strong>STATUS UPDATE (2026-08-04):</strong> FAF already received a
+            <strong>$2,500 cash grant</strong> from this Foundation (April/May
+            2026), used to cover team hotel/travel for the NFL Flag National
+            Championship Tournament in Indianapolis (July 23-26, 2026). This
+            contradicts the "cash grants are invitation-only" line below &mdash;
+            either the intake path changed, or it came through a
+            channel/relationship not yet documented here.
+            <strong
+              >The specific staff contact/channel that approved this grant is
+              unconfirmed</strong
+            >
+            &mdash; Floyd needs to check FAF's own records (award letter, email
+            thread, DonationMatch account) to identify who to route the
+            thank-you letter and future asks to. Update this entry once that's
+            known.
+          </div>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> Charlotte Jones
+              Anderson, President (Jones Family Charities) / Chief Brand Officer
+              (Cowboys). Public role; not confirmed as the intake contact for
+              the grant already received.
+            </li>
+            <li>
+              <span class="detail-label">Email:</span>
+              <a
+                href="mailto:community@dallascowboys.net"
+                target="_blank"
+                rel="noopener"
+                >community@dallascowboys.net</a
+              >
+              for general requests
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 972-497-4000 (The Star
+              main)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://my.donationmatch.com/companies/129670"
+                target="_blank"
+                rel="noopener"
+                >https://my.donationmatch.com/companies/129670</a
+              >
+              &mdash; documented as <strong>in-kind only</strong> (auction
+              items, stadium tours), but does not match the cash grant FAF
+              already received &mdash; reconcile before relying on this
+              description.
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Previously assessed as
+              invitation-only for cash; now an
+              <strong>active funder with a proven cash relationship</strong>.
+              Highest-leverage next step: identify the actual contact behind the
+              Nationals grant and follow the stewardship letter with a direct
+              conversation about gear/program tie-in/visibility, rather than
+              cold-starting through the general DonationMatch/community inbox.
+              Jones Anderson still chairs both the Jones Family Foundation and
+              NFL Foundation &mdash; relevant if the direct contact is
+              unreachable.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> 8-week notice
+              previously documented for in-kind requests; unknown whether this
+              applies to the cash channel actually used.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              dallascowboys.com/community/donations, Inside Philanthropy
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. PGA of America -->
+        <div class="entry-block">
+          <h3>2. PGA of America / PGA REACH</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash; use
+              contact form (<a
+                href="https://www.pgareach.org/about/contact-us"
+                target="_blank"
+                rel="noopener"
+                >https://www.pgareach.org/about/contact-us</a
+              >)
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 800-474-2776 (PGA HQ
+              switchboard)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.pgareach.org/northern-texas"
+                target="_blank"
+                rel="noopener"
+                >https://www.pgareach.org/northern-texas</a
+              >
+              (Northern Texas section grants)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Weak &mdash; PGA REACH
+              pillars are Youth Player Development, Military, DEI. Football
+              isn't a direct fit. Best angle is military (PGA HOPE) via Rob's
+              Navy background, or introductory relationship through Northern
+              Texas PGA Section (physically neighbors of Frisco Elite).
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> Section
+              Growth-of-the-Game grants $500-$2,500, varies
+            </li>
+            <li><span class="detail-label">Sources:</span> pgareach.org</li>
+          </ul>
+        </div>
+
+        <!-- 3. FC Dallas -->
+        <div class="entry-block">
+          <h3>
+            3. FC Dallas / FC Dallas Foundation<span class="star-target"
+              >star target</span
+            >
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> Brooke Leverette,
+              Senior Director, FC Dallas Foundation &amp; Community Relations
+              (public title). Supporting staff: Ashley Molnar, Kenny Cooper.
+            </li>
+            <li>
+              <span class="detail-label">Email:</span>
+              <a
+                href="mailto:foundation@fcdallas.com"
+                target="_blank"
+                rel="noopener"
+                >foundation@fcdallas.com</a
+              >
+              (verified)
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 214-705-6700 (Toyota
+              Stadium main)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.fcdallas.com/community/grants"
+                target="_blank"
+                rel="noopener"
+                >https://www.fcdallas.com/community/grants</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Strong.</strong> Community Action Grant funds 501(c)(3)s
+              in "healthy activity and/or education" for underserved North Texas
+              kids. $5K per recipient. Frisco-local.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> 2026 cycle not yet
+              open &mdash; email to get on notification list now
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              fcdallas.com/community/grants
+            </li>
+          </ul>
+        </div>
+
+        <!-- 4. Frisco RoughRiders -->
+        <div class="entry-block">
+          <h3>
+            4. Frisco RoughRiders<span class="star-target">star target</span>
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> Breon Dennis
+              associated with RoughRiders Foundation (verify current title
+              before outreach)
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not reliably public
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 972-731-9200 (main) |
+              972-334-1978 (Foundation grants)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.milb.com/frisco/community/donations"
+                target="_blank"
+                rel="noopener"
+                >https://www.milb.com/frisco/community/donations</a
+              >
+              (donations) |
+              <a
+                href="https://www.milb.com/frisco/community/grants"
+                target="_blank"
+                rel="noopener"
+                >https://www.milb.com/frisco/community/grants</a
+              >
+              (Foundation)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Strong in-kind + tickets.</strong> Community Ticket
+              Program serves Frisco-area 501(c)(3) youth orgs. Foundation grants
+              available. Physical neighbors.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> Rolling (allow 4-5
+              weeks)
+            </li>
+            <li><span class="detail-label">Sources:</span> milb.com/frisco</li>
+          </ul>
+        </div>
+
+        <!-- 5. T-Mobile -->
+        <div class="entry-block">
+          <h3>5. T-Mobile / T-Mobile Foundation (Hometown Grants)</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash; use
+              application portal
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 425-378-4000 (HQ
+              switchboard)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.t-mobile.com/brand/hometown-grants"
+                target="_blank"
+                rel="noopener"
+                >https://www.t-mobile.com/brand/hometown-grants</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Poor.</strong> Hometown Grants fund physical builds in
+              towns &lt;50K population. Frisco is ~230K. Also 2026 final cycle
+              closed March 31, 2026.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              t-mobile.com/brand/hometown-grants
+            </li>
+          </ul>
+        </div>
+
+        <!-- 6. Toyota -->
+        <div class="entry-block">
+          <h3>6. Toyota Motor North America / Toyota USA Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> Michael Medalla
+              (verify title before outreach)
+            </li>
+            <li>
+              <span class="detail-label">Email:</span>
+              <a
+                href="mailto:SDDOperations@toyota.com"
+                target="_blank"
+                rel="noopener"
+                >SDDOperations@toyota.com</a
+              >
+              (questions)
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 469-292-4616 (Foundation
+              main per Inside Philanthropy)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://toyotadonation.versaic.com/login"
+                target="_blank"
+                rel="noopener"
+                >https://toyotadonation.versaic.com/login</a
+              >
+              (invitation code required)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Skip.</strong> Athletic/sports teams explicitly
+              ineligible. Foundation funds STEM only. Invitation-only.
+            </li>
+            <li><span class="detail-label">Sources:</span> toyotaeffect.com</li>
+          </ul>
+        </div>
+
+        <!-- 7. JPMorgan Chase -->
+        <div class="entry-block">
+          <h3>7. JPMorgan Chase Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li><span class="detail-label">Email:</span> not public</li>
+            <li>
+              <span class="detail-label">Intake:</span> JPMC does
+              <strong>not accept unsolicited proposals</strong>
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> <strong>Poor.</strong> Four
+              priorities: Jobs &amp; Skills, Small Business, Financial Health,
+              Neighborhood Revitalization. None are youth sports.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Instrumentl JPMC guide
+            </li>
+          </ul>
+        </div>
+
+        <!-- 8. Liberty Mutual -->
+        <div class="entry-block">
+          <h3>8. Liberty Mutual Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash; use
+              online submission
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 800-290-8711 (main, not
+              Foundation)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.libertymutualgroup.com/about-lm/giving-back/apply-grant-liberty-mutual-foundation"
+                target="_blank"
+                rel="noopener"
+                >https://www.libertymutualgroup.com/about-lm/giving-back/apply-grant-liberty-mutual-foundation</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Moderate.</strong> Funds "educational opportunities for
+              children and youth in poverty." Frame FAF's fatherhood mission for
+              this. Discretionary Fund rolling.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> Rolling; 12-week
+              review
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> libertymutualgroup.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 9. FedEx -->
+        <div class="entry-block">
+          <h3>9. FedEx Office / FedEx Cares</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash;
+              <strong>invitation only</strong>
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 972-673-4000 (Plano HQ
+              main)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://fedexcares.com/nonprofit-funding"
+                target="_blank"
+                rel="noopener"
+                >https://fedexcares.com/nonprofit-funding</a
+              >
+              &mdash; "by invitation only" + requires FedEx employee champion
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Rob should search Microsoft
+              and Navy networks for FedEx team members first.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> Two cycles: June
+              1-30, January 1-31 (invited orgs only)
+            </li>
+            <li><span class="detail-label">Sources:</span> fedexcares.com</li>
+          </ul>
+        </div>
+
+        <!-- 10. Keurig Dr Pepper -->
+        <div class="entry-block">
+          <h3>10. Keurig Dr Pepper</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> n/a &mdash;
+              corporate-level donation requests not accepted
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 972-673-7000 (Plano main)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span> Route through partners:
+              <ul>
+                <li>
+                  <strong>Good Sports</strong> (sports equipment grants):
+                  <a
+                    href="https://www.goodsports.org/apply-for-equipment/"
+                    target="_blank"
+                    rel="noopener"
+                    >https://www.goodsports.org/apply-for-equipment/</a
+                  >
+                  <span class="star-target">star</span>
+                </li>
+                <li>
+                  <strong>KaBOOM!</strong> (playground construction):
+                  <a href="https://kaboom.org/" target="_blank" rel="noopener"
+                    >https://kaboom.org/</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Strong via Good Sports</strong> for equipment grants.
+              Direct KDP path closed.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> keurigdrpepper.com
+              charitable policy
+            </li>
+          </ul>
+        </div>
+
+        <!-- 11. Frito-Lay -->
+        <div class="entry-block">
+          <h3>11. Frito-Lay / PepsiCo Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 800-352-4477 (consumer
+              line, not philanthropy)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span> Direct path closed.
+              Frito-Lay routes community sports through
+              <strong>GENYOUth</strong> (<a
+                href="https://www.genyouth.org/"
+                target="_blank"
+                rel="noopener"
+                >https://www.genyouth.org/</a
+              >) and U.S. Soccer Foundation.
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Moderate via GENYOUth.</strong> GENYOUth distributes NFL
+              FLAG-In-School kits funded by Frito-Lay. Frisco Elite's Cowboys
+              Regional Championship gives FAF NFL-adjacent credibility.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Frito-Lay donations FAQ
+            </li>
+          </ul>
+        </div>
+
+        <!-- 12. RTX -->
+        <div class="entry-block">
+          <h3>
+            12. RTX / Raytheon<span class="star-target">star target</span>
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed for community grants
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash; use
+              portal
+            </li>
+            <li>
+              <span class="detail-label">Phone:</span> 781-522-3000 (Arlington
+              VA HQ)
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a href="https://rtx.versaic.com/" target="_blank" rel="noopener"
+                >https://rtx.versaic.com/</a
+              >
+              (open to new partners)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Moderate-to-strong.</strong> Three funding pillars:
+              math/science education, <strong>armed services</strong>, local
+              communities. Military angle via Rob's Navy. McKinney plant =
+              local. Youth football fit weaker than STEM, but the veteran angle
+              is real.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span>
+              <strong>Open June 1 - July 31 annually</strong> for new partners
+              (plan now)
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> RTX Corporate
+              Responsibility, rtx.versaic.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 13. Fidelity -->
+        <div class="entry-block">
+          <h3>13. Fidelity Investments (Westlake)</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> not publicly
+              listed
+            </li>
+            <li>
+              <span class="detail-label">Intake &mdash; two paths:</span>
+              <ul>
+                <li>
+                  <strong>Corporate sponsorship:</strong>
+                  <a
+                    href="https://fidelity.versaic.com/Login.aspx"
+                    target="_blank"
+                    rel="noopener"
+                    >https://fidelity.versaic.com/Login.aspx</a
+                  >
+                  (event/program sponsorship, 501(c)(3) required, 90 days
+                  pre-event)
+                </li>
+                <li>
+                  <strong>Foundation grants:</strong>
+                  <a
+                    href="https://www.fidelityfoundation.org/applying-and-reporting/letter-of-inquiry/"
+                    target="_blank"
+                    rel="noopener"
+                    >https://www.fidelityfoundation.org/applying-and-reporting/letter-of-inquiry/</a
+                  >
+                  &mdash; <strong>requires $1M+ operating budget</strong> (FAF
+                  is too small)
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Corporate sponsorship is the realistic path.</strong>
+              Foundation blocked by budget threshold.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> Corporate rolling,
+              60-day response, 90 days pre-event
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              about.fidelity.com/corporate-sponsorship
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 4 -->
+    <section class="panel" id="tier4Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 4 &mdash; National / Corporate <em>Foundations</em>
+        </h2>
+
+        <!-- 14. Gene and Jerry Jones -->
+        <div class="entry-block">
+          <h3>14. Gene and Jerry Jones Family Foundation</h3>
+          <p>
+            Same as #1. Cash grants invitation-only. In-kind only via
+            DonationMatch.
+          </p>
+        </div>
+
+        <!-- 15. PGA REACH -->
+        <div class="entry-block">
+          <h3>15. PGA REACH</h3>
+          <p>
+            Same as #2. Weak football fit. Northern Texas section in Frisco
+            &mdash; cultivate for relationship.
+          </p>
+        </div>
+
+        <!-- 16. Dick's Sporting Goods -->
+        <div class="entry-block">
+          <h3>16. Dick's Sporting Goods Foundation / Sports Matter</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Email:</span> not public &mdash; join
+              Sports Matter Community
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.sportsmatter.org/s/grant-eligibility"
+                target="_blank"
+                rel="noopener"
+                >https://www.sportsmatter.org/s/grant-eligibility</a
+              >
+              |
+              <a
+                href="https://www.sportsmatter.org/s/apply-for-funding"
+                target="_blank"
+                rel="noopener"
+                >https://www.sportsmatter.org/s/apply-for-funding</a
+              >
+              (invitation-only)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Strong program fit, blocked by eligibility.</strong>
+              Requires &gt;=15% poverty-rate zip OR school with &gt;=50%
+              free/reduced lunch. Frisco's core zips don't meet threshold.
+              <strong
+                >If FAF can document service to kids from qualifying zips
+                (Dallas/DeSoto/Irving), it can still qualify.</strong
+              >
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              sportsmatter.org/eligibility
+            </li>
+          </ul>
+        </div>
+
+        <!-- 17. Nike -->
+        <div class="entry-block">
+          <h3>17. Nike Community Impact Fund</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://oregoncf.org/grants-and-scholarships/grants/nike-community-impact-fund-program"
+                target="_blank"
+                rel="noopener"
+                >https://oregoncf.org/grants-and-scholarships/grants/nike-community-impact-fund-program</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Geographically disqualified.</strong> Limited to
+              Portland/Willamette Valley/SW Washington. Nike general donations:
+              no unsolicited requests.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> oregoncf.org/NCIF
+            </li>
+          </ul>
+        </div>
+
+        <!-- 18. USAA -->
+        <div class="entry-block">
+          <h3>18. USAA Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Intake:</span> No public portal &mdash;
+              <strong>unsolicited requests explicitly rejected</strong>
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong
+                >Strong mission (military/veteran families + Dallas in 100-mi
+                footprint), weak intake.</strong
+              >
+              Must route via USAA employee champion through USAA Serves /
+              Benevity. Rob should search Navy network for USAA employees.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Inside Philanthropy
+              USAA
+            </li>
+          </ul>
+        </div>
+
+        <!-- 19. Microsoft -->
+        <div class="entry-block">
+          <h3>
+            19. Microsoft Philanthropies<span class="star-target"
+              >triple star &mdash; highest priority</span
+            >
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://nonprofit.microsoft.com/"
+                target="_blank"
+                rel="noopener"
+                >https://nonprofit.microsoft.com/</a
+              >
+              (software grants &mdash; rolling post-501(c)(3)). Cash grants via
+              <a
+                href="https://nonprofits.tsi.microsoft.com/"
+                target="_blank"
+                rel="noopener"
+                >https://nonprofits.tsi.microsoft.com/</a
+              >
+              are invitation-only.
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> <strong>Huge.</strong> Rob
+              has direct access as an MS Executive Sales Leader. Employee giving
+              + matching + YouthSpark internal referral. Software grants (M365,
+              Teams, Azure) available to any 501(c)(3) once FAF has
+              determination letter &mdash; this covers FAF's ops infrastructure
+              at near-zero cost.
+              <strong
+                >The highest-leverage single path in the entire list.</strong
+              >
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> nonprofit.microsoft.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 20. Toyota USA Foundation -->
+        <div class="entry-block">
+          <h3>20. Toyota USA Foundation</h3>
+          <p>Same as #6. Skip (sports ineligible).</p>
+        </div>
+
+        <!-- 21. NFL Foundation -->
+        <div class="entry-block">
+          <h3>
+            21. NFL Foundation / NFL FLAG Grants<span class="star-target"
+              >star target</span
+            >
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Named contact:</span> Charlotte Jones
+              Anderson chairs NFL Foundation (same person as #1). The single
+              bridge between Cowboys and NFL Foundation.
+            </li>
+            <li>
+              <span class="detail-label">Email:</span> Grassroots partner LISC:
+              <a
+                href="mailto:Sportsandyouthdevelopment@lisc.org"
+                target="_blank"
+                rel="noopener"
+                >Sportsandyouthdevelopment@lisc.org</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <ul>
+                <li>
+                  <strong>Grassroots Field Grant</strong> (up to $250K for
+                  fields):
+                  <a
+                    href="https://www.lisc.org/our-initiatives/sports-recreation/nfl-foundation-grassroots-program/"
+                    target="_blank"
+                    rel="noopener"
+                    >https://www.lisc.org/our-initiatives/sports-recreation/nfl-foundation-grassroots-program/</a
+                  >
+                </li>
+                <li>
+                  <strong
+                    >Player Matching Youth &amp; HS Football Grants</strong
+                  >
+                  (up to $5K):
+                  <a
+                    href="https://www.nflfoundation.org/applications/grant_programs/view/8"
+                    target="_blank"
+                    rel="noopener"
+                    >https://www.nflfoundation.org/applications/grant_programs/view/8</a
+                  >
+                  &mdash; <strong>NFL players apply on behalf of orgs</strong>,
+                  FAF cannot apply directly
+                </li>
+                <li>
+                  <strong>NFL FLAG grants:</strong>
+                  <a
+                    href="https://www.nflfoundation.org/youth-football"
+                    target="_blank"
+                    rel="noopener"
+                    >https://www.nflfoundation.org/youth-football</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Top-tier strategic fit.</strong> Youth football is the NFL
+              Foundation's core mission. Frisco Elite's Cowboys Regional
+              Championship is credibility here. For Player Matching, identify
+              any former NFL players in Rob's or parent-family network who would
+              apply on FAF's behalf.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> 2025 Grassroots
+              closed March 30, 2026. Player Matching currently closed. Watch for
+              2026/27 reopening.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              nflfoundation.org/youth-football, LISC Grassroots
+            </li>
+          </ul>
+        </div>
+
+        <!-- 22. Dallas Mavericks -->
+        <div class="entry-block">
+          <h3>22. Dallas Mavericks Foundation</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Email:</span>
+              <a
+                href="mailto:mavsfoundation@dallasmavs.com"
+                target="_blank"
+                rel="noopener"
+                >mavsfoundation@dallasmavs.com</a
+              >
+              (verified)
+            </li>
+            <li><span class="detail-label">Phone:</span> 214-747-6287</li>
+            <li>
+              <span class="detail-label">Intake:</span>
+              <a
+                href="https://www.mavs.com/community/dallas-mavericks-foundation/grants/"
+                target="_blank"
+                rel="noopener"
+                >https://www.mavs.com/community/dallas-mavericks-foundation/grants/</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span>
+              <strong>Strong &mdash; BUT blocked.</strong> Funds 501(c)(3)s
+              within 75 miles of American Airlines Center (Frisco qualifies),
+              North Texas children/women/families. Up to $50K operational
+              support.
+              <strong>BLOCKER: requires 501(c)(3) active &gt;=2 years.</strong>
+              Verify FAF's timeline against this rule.
+            </li>
+            <li>
+              <span class="detail-label">Deadlines:</span> 2026-27 cycle
+              upcoming; sign up at mavs.com/community for notification
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> mavs.com/community
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY MATRIX -->
+    <section class="panel" id="matrixPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Summary <em>Matrix</em></h2>
+        <div style="overflow-x: auto">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Target</th>
+                <th>Open Intake?</th>
+                <th>Fit</th>
+                <th>Act When</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Dallas Cowboys (in-kind)</td>
+                <td>Yes</td>
+                <td>Medium</td>
+                <td>Now</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>PGA REACH</td>
+                <td>Yes (form)</td>
+                <td>Weak</td>
+                <td>Relationship only</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>FC Dallas Foundation</td>
+                <td>Yes (email)</td>
+                <td>Strong</td>
+                <td><strong>Now &mdash; get on list</strong></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Frisco RoughRiders</td>
+                <td>Yes (phone)</td>
+                <td>Strong</td>
+                <td><strong>Now</strong></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>T-Mobile Hometown</td>
+                <td>No &mdash; closed + disqualified</td>
+                <td>Poor</td>
+                <td>Skip</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Toyota USA Foundation</td>
+                <td>No &mdash; invite</td>
+                <td>None (sports ineligible)</td>
+                <td>Skip</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>JPMC Foundation</td>
+                <td>No &mdash; no unsolicited</td>
+                <td>Poor</td>
+                <td>Skip</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Liberty Mutual</td>
+                <td>Yes</td>
+                <td>Moderate</td>
+                <td>Post-501(c)(3)</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>FedEx Cares</td>
+                <td>No &mdash; invite + employee champion</td>
+                <td>Moderate</td>
+                <td>Find employee first</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Keurig Dr Pepper to Good Sports</td>
+                <td>Yes (via Good Sports)</td>
+                <td>Strong for equipment</td>
+                <td>Now</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>Frito-Lay to GENYOUth</td>
+                <td>Via partner</td>
+                <td>Moderate</td>
+                <td>Post-501(c)(3)</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>RTX</td>
+                <td>Yes</td>
+                <td>Moderate-strong (military)</td>
+                <td><strong>June 1-July 31 window</strong></td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>Fidelity Corporate</td>
+                <td>Yes</td>
+                <td>Moderate</td>
+                <td>Post-501(c)(3)</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>Dick's Sports Matter</td>
+                <td>No &mdash; invite + poverty zip</td>
+                <td>Strong if qualifying zip</td>
+                <td>Document service area</td>
+              </tr>
+              <tr>
+                <td>17</td>
+                <td>Nike NCIF</td>
+                <td>No &mdash; geography</td>
+                <td>None</td>
+                <td>Skip</td>
+              </tr>
+              <tr>
+                <td>18</td>
+                <td>USAA</td>
+                <td>No &mdash; no unsolicited</td>
+                <td>Strong (veteran)</td>
+                <td>Find USAA employee</td>
+              </tr>
+              <tr>
+                <td>19</td>
+                <td>Microsoft Philanthropies</td>
+                <td>Internal (Rob)</td>
+                <td><strong>Huge</strong></td>
+                <td><strong>Rob's #1 priority</strong></td>
+              </tr>
+              <tr>
+                <td>21</td>
+                <td>NFL Foundation</td>
+                <td>No &mdash; cycles closed</td>
+                <td><strong>Top</strong></td>
+                <td>Find NFL player + reopen</td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td>Dallas Mavs Foundation</td>
+                <td>Yes</td>
+                <td>Strong</td>
+                <td><strong>Post-2yr threshold</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 3 -->
+    <section class="panel" id="tier3Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 3 &mdash; Frisco/McKinney/Allen Local <em>Small Business</em>
+        </h2>
+        <p><span class="detail-label">Research date:</span> 2026-08-27</p>
+        <p>
+          <span class="detail-label">Rule:</span> Same as above &mdash; no
+          fabricated contacts. Verified via live web search. Call ahead to
+          confirm current staff/hours before relying on any single detail;
+          small-business info drifts.
+        </p>
+        <div class="callout">
+          <strong>Honesty note:</strong> Could not verify a single local
+          business already sponsoring a youth <strong>football</strong> (flag or
+          tackle) team specifically in this tri-city area &mdash; most entries
+          below have a documented youth-sports or community-giving history in an
+          <em>adjacent</em> sport (soccer, hockey) or a generic local-giving
+          program, not football. Frame the pitch as "you already do this for
+          other sports, here's flag football" rather than assuming they already
+          get it. Sporting-goods retail and restaurants were the weakest
+          categories &mdash; dominated by national chains with no local sponsor
+          contact, or no confirmed football-sponsor precedent. Included anyway,
+          flagged as colder leads, rather than padded with invented names.
+        </div>
+
+        <!-- 23. Frisco Sports Center -->
+        <div class="entry-block">
+          <h3>23. Frisco Sports Center</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sporting goods /
+              custom uniforms
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 10150 Legacy Dr Ste
+              200A, Frisco TX 75033. (972) 335-3630,
+              <a
+                href="mailto:info@friscosportstx.com"
+                target="_blank"
+                rel="noopener"
+                >info@friscosportstx.com</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Strong. Own site states it
+              supports school fundraisers, scholarship foundations, and
+              charitable orgs in North Texas.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> friscosportstx.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 24. Play It Again Sports -->
+        <div class="entry-block">
+          <h3>24. Play It Again Sports &mdash; McKinney</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sporting goods
+              (resale)
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 1434 N Central Expy Ste
+              109, McKinney TX 75070. (469) 424-1715
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Weak-moderate. No confirmed
+              sponsorship history; fits an equipment-donation ask (used gear)
+              rather than cash.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Yelp,
+              playitagainsports.com locator
+            </li>
+          </ul>
+        </div>
+
+        <!-- 25. Fabiola Sears -->
+        <div class="entry-block">
+          <h3>25. Fabiola Sears &mdash; State Farm</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Insurance</li>
+            <li>
+              <span class="detail-label">Contact:</span> 4645 Wyndham Ln Ste
+              280, Frisco TX 75033. (469) 306-9700
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good. Documented community
+              involvement with Destino, a Latino youth college-access org
+              &mdash; an owner who already gives locally.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> fabinsures.com,
+              statefarm.com agent bio
+            </li>
+          </ul>
+        </div>
+
+        <!-- 26. Fabio Fernandez -->
+        <div class="entry-block">
+          <h3>26. Fabio Fernandez &mdash; State Farm</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Insurance</li>
+            <li>
+              <span class="detail-label">Contact:</span> Frisco, serves
+              Frisco/Prosper/Colony/Little Elm/McKinney/Allen.
+              <a
+                href="https://friscoagentfabio.com"
+                target="_blank"
+                rel="noopener"
+                >friscoagentfabio.com</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good &mdash; agency
+              explicitly covers the whole FAF service area.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> friscoagentfabio.com,
+              statefarm.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 27. Gene Wolfgram -->
+        <div class="entry-block">
+          <h3>27. Gene Wolfgram &mdash; State Farm</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Insurance</li>
+            <li>
+              <span class="detail-label">Contact:</span> Frisco. (972) 335-9731
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Cold lead &mdash; no
+              specific community-giving detail found.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> statefarm.com agent
+              page
+            </li>
+          </ul>
+        </div>
+
+        <!-- 28. Jennifer Kasallis -->
+        <div class="entry-block">
+          <h3>28. Jennifer Kasallis &mdash; Farmers Insurance</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Insurance</li>
+            <li>
+              <span class="detail-label">Contact:</span> 100 Allentown Pkwy Ste
+              206, Allen TX 75002. (469) 804-0696
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good. Runs "Quotes for a
+              Cause," monthly donations tied to local nonprofits &mdash; strong
+              opening angle.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> agents.farmers.com bio
+            </li>
+          </ul>
+        </div>
+
+        <!-- 29. Sunni Josey -->
+        <div class="entry-block">
+          <h3>29. Sunni Josey &mdash; Farmers Insurance</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Insurance</li>
+            <li>
+              <span class="detail-label">Contact:</span> Allen. Directory
+              listing only, no phone captured.
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Weak &mdash; no giving
+              history found. Backup only.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> agents.farmers.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 30. Frisco Family & Sports Chiropractic -->
+        <div class="entry-block">
+          <h3>30. Frisco Family &amp; Sports Chiropractic</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sports medicine /
+              chiropractic
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 8501 Wade Blvd Ste 420,
+              Frisco TX 75034. (972) 294-5534
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Strong. Dr. Stutz is team
+              chiropractor for FC Dallas (MLS) since 2016 &mdash; real athletic
+              credibility to open with.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site, Yelp</li>
+          </ul>
+        </div>
+
+        <!-- 31. Venn Chiropractic -->
+        <div class="entry-block">
+          <h3>31. Venn Chiropractic and Wellness Center</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sports medicine /
+              chiropractic
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 2840 Legacy Dr Ste 410,
+              Frisco TX 75034. (972) 668-9200
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate. Serves youth
+              athletes per own site/Instagram; community involvement mentioned
+              but not itemized.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Own site, Instagram
+            </li>
+          </ul>
+        </div>
+
+        <!-- 32. Starwood Chiropractic -->
+        <div class="entry-block">
+          <h3>32. Starwood Chiropractic</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sports medicine /
+              chiropractic
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 4851 Legacy Dr Ste 307,
+              Frisco TX 75034. (972) 377-3909
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate. Dr. Allison is a
+              Certified Chiropractic Sports Practitioner, sports-injury focus.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              starwoodchiropractic.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 33. Dynamic Sports Medicine -->
+        <div class="entry-block">
+          <h3>33. Dynamic Sports Medicine &mdash; McKinney</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sports medicine /
+              chiropractic
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 8701 W University Dr,
+              McKinney TX 75071. (214) 884-5158
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good. Own site explicitly
+              names serving youth teams.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 34. The Craft Chiropractic -->
+        <div class="entry-block">
+          <h3>34. The Craft Chiropractic</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Sports medicine /
+              chiropractic
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> Frisco.
+              <a
+                href="https://thecraftchiropractic.com"
+                target="_blank"
+                rel="noopener"
+                >thecraftchiropractic.com</a
+              >
+              &mdash; pull direct phone from site before calling.
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate. Own site notes
+              work with "youth competitors building foundational strength."
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              thecraftchiropractic.com
+            </li>
+          </ul>
+        </div>
+
+        <!-- 35. Chick-fil-A -->
+        <div class="entry-block">
+          <h3>35. Chick-fil-A &mdash; Preston Rd &amp; Gary Burns</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Restaurant</li>
+            <li>
+              <span class="detail-label">Contact:</span> Frisco. Owner/operator:
+              Frieda Marroquin.
+              <a
+                href="https://chick-fil-a.com/locations/tx/preston-road-and-gary-burns"
+                target="_blank"
+                rel="noopener"
+                >chick-fil-a.com/locations/tx/preston-road-and-gary-burns</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Cold but plausible &mdash;
+              local owner-operators control their own community giving, no
+              FAF-specific history confirmed.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Chick-fil-A location
+              page
+            </li>
+          </ul>
+        </div>
+
+        <!-- 36. Mountain Mike's Pizza -->
+        <div class="entry-block">
+          <h3>36. Mountain Mike's Pizza &mdash; McKinney (W University Dr)</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Restaurant</li>
+            <li>
+              <span class="detail-label">Contact:</span>
+              <a
+                href="https://mountainmikespizza.com/locations/mckinney-w-university-dr"
+                target="_blank"
+                rel="noopener"
+                >mountainmikespizza.com/locations/mckinney-w-university-dr</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate. Own site runs
+              fundraising programs for youth sports (soccer, baseball,
+              basketball named) &mdash; no football precedent, but the
+              fundraiser mechanism already exists.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 37. Mr Jim's Pizza -->
+        <div class="entry-block">
+          <h3>37. Mr Jim's Pizza &mdash; McKinney</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Restaurant</li>
+            <li>
+              <span class="detail-label">Contact:</span> 1920 Eldorado Pkwy
+              #850, McKinney TX 75069. (972) 200-9929
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Cold. Locally
+              owned/operated per aggregator listings (owner name unconfirmed on
+              a primary source &mdash; verify when calling). No sponsorship
+              history found.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Business directory
+              listings
+            </li>
+          </ul>
+        </div>
+
+        <!-- 38. Honda Cars of McKinney -->
+        <div class="entry-block">
+          <h3>
+            38. Honda Cars of McKinney<span class="star-target"
+              >star target</span
+            >
+          </h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Auto dealership</li>
+            <li>
+              <span class="detail-label">Contact:</span>
+              <a
+                href="https://hondacarsofmckinney.com/psa.htm"
+                target="_blank"
+                rel="noopener"
+                >hondacarsofmckinney.com/psa.htm</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Strong &mdash; dedicated
+              webpage confirms it's "a proud sponsor of PSA McKinney," the
+              area's largest youth flag/tackle football + sports league. Already
+              sponsors football-adjacent youth programming.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 39. Sam Pack's Five Star Ford -->
+        <div class="entry-block">
+          <h3>39. Sam Pack's Five Star Ford &mdash; McKinney</h3>
+          <ul>
+            <li><span class="detail-label">Category:</span> Auto dealership</li>
+            <li>
+              <span class="detail-label">Contact:</span>
+              <a
+                href="https://5starford.com/locations-mckinney-tx"
+                target="_blank"
+                rel="noopener"
+                >5starford.com/locations-mckinney-tx</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate-good. Dealer group
+              runs "Sam Pack Cares" (scholarships, local causes) &mdash; not
+              football-specific, but an active local-giving program with a
+              McKinney storefront.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              fivestorforddallas.com/sampackcares
+            </li>
+          </ul>
+        </div>
+
+        <!-- 40. Texans Credit Union -->
+        <div class="entry-block">
+          <h3>
+            40. Texans Credit Union<span class="star-target">star target</span>
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Bank / credit union
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> McKinney.
+              <a href="https://texanscu.org/misd" target="_blank" rel="noopener"
+                >texanscu.org/misd</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Strong. States it's
+              "committed to McKinney ISD athletics," and is a 10-year signature
+              partner of the Frisco Soccer &amp; Entertainment Center.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> Own site, mlssoccer.com
+              press release
+            </li>
+          </ul>
+        </div>
+
+        <!-- 41. Credit Union of Texas -->
+        <div class="entry-block">
+          <h3>41. Credit Union of Texas</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Bank / credit union
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> Allen.
+              <a
+                href="https://cutx.org/community"
+                target="_blank"
+                rel="noopener"
+                >cutx.org/community</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good. Sponsors Allen Jr.
+              Americans youth hockey, holds naming rights to the Allen event
+              center. Confirmed youth-sports sponsor, just not football yet
+              &mdash; pitch as "you already do this for hockey."
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 42. Prosperity Bank -->
+        <div class="entry-block">
+          <h3>42. Prosperity Bank</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Bank / credit union
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 3+ branches across
+              Frisco/Allen/McKinney (bankbranchlocator.com)
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Weakest in category &mdash;
+              no confirmed youth-sports sponsorship found, generic community
+              bank presence only.
+            </li>
+            <li><span class="detail-label">Sources:</span> Branch locator</li>
+          </ul>
+        </div>
+
+        <!-- 43. Redline Athletics -->
+        <div class="entry-block">
+          <h3>43. Redline Athletics &mdash; Frisco</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Youth athletic
+              training (ATH-comparable, not partnered)
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> 145 Rose Lane, Frisco
+              TX.
+              <a
+                href="mailto:frisco@redlineathletics.com"
+                target="_blank"
+                rel="noopener"
+                >frisco@redlineathletics.com</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Direct competitor-category
+              to ATH &mdash; speed/agility/strength training ages 8-18.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span> redlineathletics.com,
+              @RLAFrisco
+            </li>
+          </ul>
+        </div>
+
+        <!-- 44. Real Superior Athletics -->
+        <div class="entry-block">
+          <h3>
+            44. Real Superior Athletics (RSA)<span class="star-target"
+              >star target</span
+            >
+          </h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Youth athletic
+              training
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> Founder Ronnie "Real
+              Truth" Braxton, (214) 263-7180; Track Club director Brandy
+              Braxton, (214) 407-0355
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Best "ask for" lead in this
+              whole batch &mdash; named individual contacts, founded 2008 in
+              Allen, now based at The PIT Performance Indoor Training in Frisco.
+            </li>
+            <li>
+              <span class="detail-label">Sources:</span>
+              realsuperiorathletics.com, LinkedIn
+            </li>
+          </ul>
+        </div>
+
+        <!-- 45. Sports Academy -->
+        <div class="entry-block">
+          <h3>45. Sports Academy &mdash; Frisco</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Youth athletic
+              training
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span>
+              <a
+                href="https://sportsacademy.us/pages/athletic-training-frisco"
+                target="_blank"
+                rel="noopener"
+                >sportsacademy.us/pages/athletic-training-frisco</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate.
+              Jump/Power/Speed/Strength School programs for youth athletes.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 46. D1 Training -->
+        <div class="entry-block">
+          <h3>46. D1 Training &mdash; Frisco</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Youth athletic
+              training
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span>
+              <a
+                href="https://d1training.com/facility/frisco"
+                target="_blank"
+                rel="noopener"
+                >d1training.com/facility/frisco</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Moderate. National
+              franchise, locally operated facility, youth + adult training.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+
+        <!-- 47. Reed Athletic Performance -->
+        <div class="entry-block">
+          <h3>47. Reed Athletic Performance</h3>
+          <ul>
+            <li>
+              <span class="detail-label">Category:</span> Youth athletic
+              training
+            </li>
+            <li>
+              <span class="detail-label">Contact:</span> Serves
+              Plano/Allen/Frisco/McKinney.
+              <a href="https://kreedspeed.com" target="_blank" rel="noopener"
+                >kreedspeed.com</a
+              >
+            </li>
+            <li>
+              <span class="detail-label">Fit:</span> Good &mdash; explicitly
+              serves all four target cities with private/group speed &amp;
+              agility training.
+            </li>
+            <li><span class="detail-label">Sources:</span> Own site</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT RESEARCH BATCHES -->
+    <section class="panel" id="nextPanel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Next Research <em>Batches</em> (If Wanted)
+        </h2>
+        <p>
+          Tier 3 batch (dealerships, restaurants, banks,
+          insurance/medical/fitness, training facilities) is now done &mdash;
+          see above, 25 verified targets. Remaining:
+        </p>
+        <ul>
+          <li>
+            <strong>Tier 1 Warm Network</strong> &mdash; personal relationships,
+            no research needed, just outreach
+          </li>
+          <li>
+            <strong>Indoor turf/practice facility partners</strong> &mdash;
+            in-kind facility need (practice space), not a money ask. Separate
+            research batch, in progress as of 2026-08-27.
+          </li>
+        </ul>
+        <p>Say the word and we'll run the next batch.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      // ---- Auth ----
+
+      function showAuthStatus(msg, type) {
+        var el = document.getElementById("authStatus");
+        el.textContent = msg;
+        el.className = "status-msg " + (type || "");
+      }
+
+      function authenticate() {
+        var pc = document.getElementById("adminPasscode").value.trim();
+        if (!pc) {
+          showAuthStatus("Enter the admin passcode.", "error");
+          return;
+        }
+
+        document.getElementById("authBtn").disabled = true;
+        document.getElementById("authBtn").textContent = "CHECKING...";
+
+        fetch(
+          "/api/media-review?action=list&status=pending&passcode=" +
+            encodeURIComponent(pc),
+        )
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              document.getElementById("authGate").style.display = "none";
+              showAdminPanels();
+            } else {
+              showAuthStatus(
+                result.data.error || "Authentication failed.",
+                "error",
+              );
+              document.getElementById("authBtn").disabled = false;
+              document.getElementById("authBtn").textContent = "SIGN IN";
+            }
+          })
+          .catch(function () {
+            showAuthStatus("Connection error. Try again.", "error");
+            document.getElementById("authBtn").disabled = false;
+            document.getElementById("authBtn").textContent = "SIGN IN";
+          });
+      }
+
+      function showAdminPanels() {
+        var panels = document.querySelectorAll(".panel");
+        for (var i = 0; i < panels.length; i++) {
+          panels[i].classList.add("visible");
+        }
+      }
+
+      // Enter key on passcode field
+      document
+        .getElementById("adminPasscode")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") authenticate();
+        });
+    </script>
+    <script src="chat-widget.js" defer></script>
+  </body>
+</html>

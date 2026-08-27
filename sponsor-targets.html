@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sponsor Targets -- Fathers and Football</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #c8923c;
+        --gold-lt: #e0b06a;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #181818;
+        --warm: #f5f0eb;
+        --muted: #7d7a77;
+        --border: rgba(200, 146, 60, 0.2);
+        --red: #c0392b;
+        --green: #27ae60;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--warm);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--gold);
+      }
+      .nav-back svg {
+        width: 14px;
+        flex-shrink: 0;
+      }
+
+      .hero {
+        padding: 120px 24px 32px;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        padding: 6px 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(28px, 5vw, 48px);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .hero h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* AUTH GATE */
+      .auth-gate {
+        display: flex;
+        justify-content: center;
+        padding: 0 24px 64px;
+      }
+      .auth-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 420px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark-3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--warm);
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        transition: border-color 0.2s;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .form-hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .submit-btn:hover {
+        background: var(--gold-lt);
+      }
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status-msg {
+        margin-top: 16px;
+        font-size: 13px;
+        text-align: center;
+        min-height: 20px;
+      }
+      .status-msg.error {
+        color: var(--red);
+      }
+      .status-msg.success {
+        color: var(--green);
+      }
+
+      /* PANELS */
+      .panel {
+        display: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 40px;
+      }
+      .panel.visible {
+        display: block;
+      }
+      .panel-card {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+      .section-header {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-header em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      /* CONTENT PROSE */
+      .prose p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+        margin-bottom: 12px;
+      }
+      .prose strong {
+        color: var(--warm);
+        font-weight: 700;
+      }
+      .prose em {
+        color: var(--gold);
+      }
+      .prose ol,
+      .prose ul {
+        margin: 8px 0 16px 20px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+      }
+      .prose ol li,
+      .prose ul li {
+        margin-bottom: 6px;
+      }
+      .prose h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 24px 0 10px;
+      }
+      .prose h3:first-child {
+        margin-top: 0;
+      }
+      .prose code {
+        background: var(--dark-3);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 13px;
+        color: var(--gold-lt);
+      }
+      .prose .callout {
+        background: var(--dark-3);
+        border-left: 3px solid var(--gold);
+        padding: 16px 20px;
+        margin: 12px 0;
+        border-radius: 0 8px 8px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--warm);
+      }
+      .prose .callout p {
+        margin-bottom: 6px;
+      }
+      .prose .callout p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* LEADS TABLE */
+      .leads-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .leads-table th {
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      .leads-table td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+        vertical-align: top;
+      }
+      .leads-table tr:hover td {
+        background: rgba(200, 146, 60, 0.04);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin-bottom: 16px;
+      }
+
+      footer {
+        background: #050505;
+        border-top: 1px solid var(--border);
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(125, 122, 119, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .panel-card {
+          padding: 20px;
+        }
+        .leads-table {
+          font-size: 12px;
+        }
+        .leads-table th,
+        .leads-table td {
+          padding: 8px 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="admin-hub.html" class="nav-back">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Admin Hub
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">Admin</div>
+      <h1>Sponsor <em>Targets</em></h1>
+    </section>
+
+    <!-- AUTH GATE -->
+    <section class="auth-gate" id="authGate">
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="adminPasscode">Admin Passcode</label>
+          <input
+            type="password"
+            id="adminPasscode"
+            placeholder="Enter admin passcode"
+            required
+            autocomplete="off"
+          />
+          <p class="form-hint">
+            Same passcode as the media review admin panel.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="submit-btn"
+          id="authBtn"
+          onclick="authenticate()"
+        >
+          Sign In
+        </button>
+        <div class="status-msg" id="authStatus"></div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="panel" id="introPanel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Frisco Sponsorship <em>Target List</em> -- Internal
+        </h2>
+        <div class="prose">
+          <p>
+            <strong>For Rob.</strong> This is the outreach playbook, not a
+            polished handout. Verify contact names and addresses before reaching
+            out -- titles and decision-makers change. Start with the warmest
+            relationships first.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO USE -->
+    <section class="panel" id="howToPanel">
+      <div class="panel-card">
+        <h2 class="section-header">How to Use <em>This List</em></h2>
+        <div class="prose">
+          <ol>
+            <li>
+              <strong>Start warm.</strong> Anyone Rob or Kellie already knows
+              through Microsoft, MMA, church, school, or Frisco Elite family
+              networks goes first. Warm leads close 10x better than cold.
+            </li>
+            <li>
+              <strong>Tier the ask.</strong> Don't lead with Gold ($2,500) for a
+              small business. Match the ask to the business size -- a local
+              restaurant gets a Bronze or Silver ask, a car dealership or
+              corporate office gets a Gold ask.
+            </li>
+            <li>
+              <strong>Ask for the decision-maker.</strong> At small businesses,
+              it's the owner. At chains, it's the local manager + corporate
+              community relations. At corporates, it's community affairs, CSR,
+              or employee-giving program lead.
+            </li>
+            <li>
+              <strong>Track every touch.</strong> Use the outreach tracker
+              below. Follow up in 3 business days. A "no" now is often a "yes"
+              next season.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 1 -->
+    <section class="panel" id="tier1Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 1 -- Warm Network <em>(Highest Priority)</em>
+        </h2>
+        <div class="prose">
+          <p>
+            These are the people/companies with an existing connection to Rob,
+            Kellie, Justin, or Frisco Elite families. Close these first.
+          </p>
+          <div class="table-wrap">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Target</th>
+                  <th>Why</th>
+                  <th>Ask Tier</th>
+                  <th>Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600">Microsoft (via Rob's role)</td>
+                  <td>Employee giving match + Philanthropies grant</td>
+                  <td>Corporate match + Gold</td>
+                  <td>Rob</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Microsoft colleagues (individual)
+                  </td>
+                  <td>Personal donations, word-of-mouth</td>
+                  <td>Bronze / Community</td>
+                  <td>Rob</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Frisco Elite parent businesses
+                  </td>
+                  <td>Already invested in the team</td>
+                  <td>Match to their size</td>
+                  <td>Rob</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Rob's MMA / veteran network</td>
+                  <td>Fatherhood + veteran angle resonates</td>
+                  <td>Silver</td>
+                  <td>Rob</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Rob's church</td>
+                  <td>Fatherhood mission, community tithe</td>
+                  <td>Silver + in-kind</td>
+                  <td>Rob</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Kellie's professional network
+                  </td>
+                  <td>Second-degree connections</td>
+                  <td>Bronze</td>
+                  <td>Kellie</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Justin's Loudoun network (for dual-state sponsors)
+                  </td>
+                  <td>Cross-geography brands</td>
+                  <td>Silver</td>
+                  <td>Justin</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 2 -->
+    <section class="panel" id="tier2Panel">
+      <div class="panel-card">
+        <h2 class="section-header">Tier 2 -- Frisco <em>Corporate HQs</em></h2>
+        <div class="prose">
+          <p>
+            Frisco is one of the most corporate-dense suburbs in America. These
+            companies have real community-giving budgets and often look for
+            local causes specifically.
+          </p>
+          <div class="table-wrap">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>HQ / Presence</th>
+                  <th>Why They Fit</th>
+                  <th>Entry Point</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600">Dallas Cowboys (The Star)</td>
+                  <td>Cowboys HQ, Frisco</td>
+                  <td>
+                    Youth football mission alignment, NFL FLAG affiliation
+                  </td>
+                  <td>
+                    Cowboys Community Relations / Gene and Jerry Jones Family
+                    Foundation
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">PGA of America</td>
+                  <td>HQ Frisco (Fields Ranch)</td>
+                  <td>Youth sports, family engagement</td>
+                  <td>PGA REACH (youth foundation arm)</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">FC Dallas / Toyota Stadium</td>
+                  <td>Frisco</td>
+                  <td>Youth sports infrastructure, community events</td>
+                  <td>FC Dallas Foundation</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Frisco RoughRiders (Rangers AA)
+                  </td>
+                  <td>Riders Field, Frisco</td>
+                  <td>Youth community programs, already run kids' clinics</td>
+                  <td>Riders community relations</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">T-Mobile</td>
+                  <td>HQ Frisco</td>
+                  <td>Strong CSR + youth sports history</td>
+                  <td>T-Mobile Foundation / local community affairs</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Toyota North America</td>
+                  <td>HQ Plano (adjacent)</td>
+                  <td>Massive CSR budget, youth programs focus</td>
+                  <td>Toyota USA Foundation</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">JPMorgan Chase</td>
+                  <td>Plano tech campus</td>
+                  <td>Community giving, youth mentorship</td>
+                  <td>Chase community reinvestment</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Liberty Mutual</td>
+                  <td>Plano presence</td>
+                  <td>Youth sports sponsorship regulars</td>
+                  <td>Local branch + foundation</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">FedEx Office</td>
+                  <td>Plano HQ</td>
+                  <td>In-kind printing + monetary</td>
+                  <td>Local + corporate community relations</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Keurig Dr Pepper</td>
+                  <td>Plano HQ</td>
+                  <td>Beverages for events + monetary</td>
+                  <td>Corporate giving</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Frito-Lay / PepsiCo</td>
+                  <td>Plano HQ</td>
+                  <td>Snacks for events, team meals, monetary</td>
+                  <td>PepsiCo Foundation + local rep</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Raytheon / RTX</td>
+                  <td>McKinney plant</td>
+                  <td>Veteran-owned connection</td>
+                  <td>Veterans employee resource group</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Fidelity Investments</td>
+                  <td>Westlake (close)</td>
+                  <td>Strong community match</td>
+                  <td>Local community affairs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 3 -->
+    <section class="panel" id="tier3Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 3 -- Frisco Local <em>Small Business</em> (Volume Play)
+        </h2>
+        <div class="prose">
+          <p>
+            Hit 30+ of these. Small asks ($250-$1,000), high close rate, local
+            visibility for the business.
+          </p>
+
+          <h3>Automotive Dealerships (ALWAYS sponsor youth sports)</h3>
+          <ul>
+            <li>
+              <strong>Huffines Auto Dealerships</strong> (Plano, Lewisville,
+              McKinney) -- multi-brand, strong community presence
+            </li>
+            <li>
+              <strong>Sewell Automotive</strong> (Lexus, Cadillac, etc., DFW) --
+              known luxury community giver
+            </li>
+            <li><strong>Frisco Ford</strong></li>
+            <li>
+              <strong>Toyota of Lewisville / Huffines Hyundai McKinney</strong>
+            </li>
+            <li>
+              <strong>Park Place Dealerships</strong> (Mercedes, Lexus, etc.)
+            </li>
+            <li><strong>Bob Tomes Ford</strong> (McKinney)</li>
+          </ul>
+
+          <h3>Restaurants (often sponsor for in-kind team meals + cash)</h3>
+          <ul>
+            <li>
+              <strong>Raising Cane's</strong> (Frisco locations) -- youth sports
+              regular
+            </li>
+            <li>
+              <strong>Chick-fil-A</strong> (multiple Frisco locations) -- faith
+              + family fit
+            </li>
+            <li><strong>Torchy's Tacos</strong> (Frisco) -- local brand</li>
+            <li><strong>Dickey's Barbecue Pit</strong> (HQ Dallas)</li>
+            <li>
+              <strong>Babe's Chicken Dinner House</strong> -- Texas brand,
+              family focus
+            </li>
+            <li><strong>Rudy's BBQ</strong> -- team meal partner</li>
+            <li>
+              <strong>Jersey Mike's</strong> (local franchise owner) -- youth
+              sports partner nationally
+            </li>
+            <li><strong>Whataburger</strong> (regional CSR)</li>
+            <li><strong>Velvet Taco</strong></li>
+            <li><strong>Hat Creek Burger Company</strong></li>
+          </ul>
+
+          <h3>Banks / Credit Unions (community reinvestment dollars)</h3>
+          <ul>
+            <li><strong>Frost Bank</strong> (Frisco branch)</li>
+            <li><strong>Texas Capital Bank</strong></li>
+            <li><strong>Inwood National Bank</strong></li>
+            <li><strong>Independent Financial</strong> (McKinney)</li>
+            <li><strong>Credit Union of Texas</strong></li>
+            <li><strong>Comerica Bank</strong> (Dallas HQ)</li>
+            <li><strong>Prosperity Bank</strong></li>
+          </ul>
+
+          <h3>Real Estate (agents love community visibility)</h3>
+          <ul>
+            <li><strong>Ebby Halliday Realtors</strong> (Frisco office)</li>
+            <li><strong>Keller Williams Frisco</strong></li>
+            <li><strong>Coldwell Banker Realty Frisco</strong></li>
+            <li><strong>Dave Perry-Miller</strong> (luxury DFW)</li>
+            <li>
+              Individual top-producing agents in Frisco/Plano -- they often
+              sponsor independently for lead generation
+            </li>
+          </ul>
+
+          <h3>Insurance</h3>
+          <ul>
+            <li>
+              <strong>State Farm agents</strong> (multiple Frisco offices)
+            </li>
+            <li><strong>Allstate agents</strong> (Frisco)</li>
+            <li><strong>Farmers Insurance</strong> (Frisco)</li>
+            <li><strong>Goosehead Insurance</strong> (Westlake HQ, close)</li>
+            <li>
+              <strong>USAA</strong> -- veteran angle, use Rob's Navy background
+            </li>
+          </ul>
+
+          <h3>
+            Medical / Dental / Orthodontic (family businesses targeting parents)
+          </h3>
+          <ul>
+            <li><strong>Frisco Kids Dentistry</strong></li>
+            <li><strong>Smile Magic Dental</strong></li>
+            <li><strong>North Texas Orthodontics</strong></li>
+            <li>
+              <strong>Children's Health Pediatric Group -- Frisco</strong>
+            </li>
+            <li><strong>Frisco Family Chiropractic</strong></li>
+            <li>
+              <strong>Texas Health Presbyterian Frisco</strong> (community
+              benefit dollars)
+            </li>
+            <li>
+              <strong>Baylor Scott &amp; White -- Frisco</strong> (community
+              benefit)
+            </li>
+          </ul>
+
+          <h3>Fitness / Sports Training</h3>
+          <ul>
+            <li>
+              <strong>D1 Training Frisco</strong> -- direct youth athlete
+              audience
+            </li>
+            <li>
+              <strong>APEC (Athletic Performance Enhancement Center)</strong>
+            </li>
+            <li><strong>Parisi Speed School</strong> (if present)</li>
+            <li><strong>Orangetheory Fitness</strong> (Frisco)</li>
+            <li><strong>F45 Frisco</strong></li>
+          </ul>
+
+          <h3>Home Services (high-ticket, love youth sports visibility)</h3>
+          <ul>
+            <li>
+              <strong>Lawn / landscaping companies</strong> (local owners)
+            </li>
+            <li>
+              <strong>Roofing companies</strong> -- Texas storm-repair category,
+              big sponsors
+            </li>
+            <li><strong>HVAC / plumbing</strong> -- local owner-operated</li>
+            <li><strong>Pool companies</strong></li>
+            <li><strong>Pest control</strong> (local franchises)</li>
+          </ul>
+
+          <h3>Retail / Youth-Focused</h3>
+          <ul>
+            <li><strong>Academy Sports + Outdoors</strong> (Frisco)</li>
+            <li>
+              <strong>Dick's Sporting Goods Foundation</strong> (corporate +
+              local store)
+            </li>
+            <li>
+              <strong>Play It Again Sports</strong> (used gear sponsor, in-kind)
+            </li>
+            <li>
+              <strong>Target / Walmart</strong> (local store giving,
+              small-ticket)
+            </li>
+          </ul>
+
+          <h3>Churches &amp; Faith Organizations</h3>
+          <ul>
+            <li><strong>Prestonwood Baptist Church</strong> (Plano)</li>
+            <li><strong>Stonebriar Community Church</strong> (Frisco)</li>
+            <li><strong>Frisco Bible Church</strong></li>
+            <li>
+              Any church Rob or Kellie attends -- fatherhood mission is a
+              natural tithe fit
+            </li>
+          </ul>
+
+          <h3>Professional Services (law, accounting, financial advisors)</h3>
+          <ul>
+            <li>
+              <strong>Local CPAs</strong> -- often sponsor youth sports for
+              community visibility
+            </li>
+            <li><strong>Family law firms</strong></li>
+            <li>
+              <strong>Financial advisors</strong> (Edward Jones, Merrill, RBC --
+              individual advisors sponsor)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIER 4 -->
+    <section class="panel" id="tier4Panel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Tier 4 -- National / Corporate <em>Foundations</em> (longer lead time,
+          bigger checks)
+        </h2>
+        <div class="prose">
+          <div class="table-wrap">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>Organization</th>
+                  <th>Program</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600">
+                    Gene and Jerry Jones Family Foundation
+                  </td>
+                  <td>Dallas Cowboys-owned, youth programs</td>
+                  <td>Requires application, ~60-day cycle</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">PGA REACH</td>
+                  <td>PGA of America's charitable arm</td>
+                  <td>Youth programs in home community</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">
+                    Dick's Sporting Goods Foundation
+                  </td>
+                  <td>Sports Matter grants</td>
+                  <td>Annual cycle, apply early</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Nike Community Impact Fund</td>
+                  <td>Youth sports</td>
+                  <td>Employee-nominated primarily</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">USAA Foundation</td>
+                  <td>Military/veteran + community</td>
+                  <td>Rob's veteran status = strong fit</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Microsoft Philanthropies</td>
+                  <td>Community impact grants</td>
+                  <td>Rob's employer -- strongest play</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Toyota USA Foundation</td>
+                  <td>Youth + education</td>
+                  <td>Active DFW donor</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">NFL FLAG / NFL Foundation</td>
+                  <td>Youth football grants</td>
+                  <td>Apply through NFL FLAG league</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600">Dallas Mavericks Foundation</td>
+                  <td>Local youth causes</td>
+                  <td>Community application</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTREACH TRACKER -->
+    <section class="panel" id="trackerPanel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Outreach <em>Tracker</em> (Copy Into Spreadsheet)
+        </h2>
+        <div class="prose">
+          <div class="table-wrap">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Business</th>
+                  <th>Contact Name</th>
+                  <th>Role</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Tier</th>
+                  <th>Status</th>
+                  <th>Last Touch</th>
+                  <th>Next Action</th>
+                  <th>Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    Cold / Emailed / Called / Meeting Set / Committed / Paid /
+                    Declined
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEEKLY CADENCE -->
+    <section class="panel" id="cadencePanel">
+      <div class="panel-card">
+        <h2 class="section-header">Weekly <em>Cadence</em></h2>
+        <div class="prose">
+          <ul>
+            <li>
+              <strong>Monday:</strong> Rob and Justin sync for 15 minutes --
+              review pipeline, pick the week's 10 targets
+            </li>
+            <li>
+              <strong>Tuesday-Wednesday:</strong> Send 10 personalized emails
+              from the target list
+            </li>
+            <li>
+              <strong>Thursday:</strong> Follow-up calls on emails from 3 days
+              prior
+            </li>
+            <li>
+              <strong>Friday:</strong> Log results, thank anyone who said yes,
+              decide next week's list
+            </li>
+          </ul>
+          <p>
+            <strong>Target close rate:</strong> 10% on cold, 40% on warm. If you
+            hit 50 outreaches in 30 days with a good mix of warm/cold, you
+            should land $5K-$15K in committed sponsorships.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMAIL TEMPLATE -->
+    <section class="panel" id="emailPanel">
+      <div class="panel-card">
+        <h2 class="section-header">
+          Email <em>Template</em> (Use the FAF-STRATEGY.md version, personalize
+          per target)
+        </h2>
+        <div class="prose">
+          <p>
+            The core pitch is in <code>FAF-STRATEGY.md</code> section 4.3. For
+            Frisco specifically, add one of these hooks:
+          </p>
+          <ul>
+            <li>
+              <strong>Cowboys/Frisco sports angle:</strong> "Frisco is the youth
+              sports capital of America, and FAF is building the fatherhood
+              program this community needs."
+            </li>
+            <li>
+              <strong>Championship credibility:</strong> "Our Frisco Elite team
+              took home the 2025 Dallas Cowboys Regional Championship, and we're
+              building on that foundation."
+            </li>
+            <li>
+              <strong
+                >Veteran/MMA angle (for veteran-owned or law enforcement
+                businesses):</strong
+              >
+              Lead with Rob's Navy + MMA background.
+            </li>
+            <li>
+              <strong>Microsoft angle (for corporate prospects):</strong>
+              Mention Rob's Microsoft role to establish credibility.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DO NOT APPROACH YET -->
+    <section class="panel" id="doNotPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Do NOT <em>Approach Yet</em></h2>
+        <div class="prose">
+          <ul>
+            <li>
+              Any business until the
+              <strong
+                >bank account is open OR a fiscal sponsor is confirmed</strong
+              >
+              (see MONEY-HANDLING.md). You can collect pledges without an
+              account, but not cash.
+            </li>
+            <li>
+              Businesses where Rob or Kellie has an active conflict (existing
+              customer relationship where a sponsorship ask would strain the
+              business relationship).
+            </li>
+            <li>
+              Any sponsor who wants 501(c)(3) tax deduction
+              <em>right now</em> -- we can't guarantee that until the IRS
+              determination letter is issued. Pitch them after that.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-copy">
+        &copy; 2026 Fathers and Football. All rights reserved.
+      </p>
+    </footer>
+
+    <script>
+      var adminPasscode = "";
+
+      function showAuthStatus(msg, type) {
+        var el = document.getElementById("authStatus");
+        el.textContent = msg;
+        el.className = "status-msg " + (type || "");
+      }
+
+      function authenticate() {
+        var pc = document.getElementById("adminPasscode").value.trim();
+        if (!pc) {
+          showAuthStatus("Enter the admin passcode.", "error");
+          return;
+        }
+
+        document.getElementById("authBtn").disabled = true;
+        document.getElementById("authBtn").textContent = "CHECKING...";
+
+        fetch(
+          "/api/media-review?action=list&status=pending&passcode=" +
+            encodeURIComponent(pc),
+        )
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.status === 200) {
+              adminPasscode = pc;
+              document.getElementById("authGate").style.display = "none";
+              showAdminPanels();
+            } else {
+              showAuthStatus(
+                result.data.error || "Authentication failed.",
+                "error",
+              );
+              document.getElementById("authBtn").disabled = false;
+              document.getElementById("authBtn").textContent = "SIGN IN";
+            }
+          })
+          .catch(function () {
+            showAuthStatus("Connection error. Try again.", "error");
+            document.getElementById("authBtn").disabled = false;
+            document.getElementById("authBtn").textContent = "SIGN IN";
+          });
+      }
+
+      function showAdminPanels() {
+        var panels = document.querySelectorAll(".panel");
+        for (var i = 0; i < panels.length; i++) {
+          panels[i].classList.add("visible");
+        }
+      }
+
+      document
+        .getElementById("adminPasscode")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") authenticate();
+        });
+    </script>
+    <script src="chat-widget.js" defer></script>
+  </body>
+</html>
