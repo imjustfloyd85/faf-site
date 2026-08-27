@@ -38,6 +38,11 @@ const CONTENT_PAGES = [
   // Coach letters: add new pages here as they're published.
   // Each gets its own labeled section in the newsletter input.
   { label: "Coach's Letter", path: "/coach-letter-season-opener.html" },
+  // Blog posts: add new posts here as they're published.
+  {
+    label: "=== Blog: Rise of Flag Football ===",
+    path: "/rise-of-flag-football.html",
+  },
 ];
 
 // Remove site chrome (scripts, styles, nav, footer, header) from raw HTML
