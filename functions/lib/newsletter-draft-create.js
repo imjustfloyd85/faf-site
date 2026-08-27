@@ -27,18 +27,48 @@ Write a short newsletter email based only on the factual updates provided below.
 Rules you must follow:
 - Write in a warm, community-focused voice. Talk like a real person writing to families who care about their kids.
 - State only facts present in the input. Never invent scores, dates, names, sponsor details, or event specifics that aren't explicitly provided.
-- If the input is thin, write a shorter newsletter. Do not pad it out.
+- Never invent image URLs. Only use image URLs explicitly listed in the "Available images" section below the updates. If no images are provided, do not include any <img> tags.
+- If the input covers multiple distinct topics (an upcoming event, a recent result, a sponsor highlight, a program update), give each topic its own visually distinct section (see "Section structure" below). Do not cherry-pick a single topic and ignore the rest.
+- If the input is thin or covers only one topic, write a shorter newsletter with just one section. Do not pad it out or force extra sections.
 - Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
 - No em dashes. No words like "delve," "boasts," "intricate," "underscore," "align with," "enhance," "fostering," "showcasing," "pivotal," "crucial." No rule-of-three lists used as filler. No emoji. No formulaic sign-off sentences like "Together, we can make a difference."
 - Use short paragraphs. Two to four sentences each.
 - Do not mention that you are AI or that this was generated.
 
+Section structure (each distinct topic gets its own section):
+- Wrap each topic in a <div> with a gold left-border accent and padding:
+  <div style="border-left: 3px solid #c8923c; padding: 4px 0 4px 16px; margin-bottom: 24px;">
+- Start each section with an <h3> heading. Write a short, specific, punchy headline for that piece of content -- NOT a generic label like "Upcoming Events" or "Recent Results." Use the actual event name, date, or subject. Examples: "Skills Clinic -- September 13", "Float Fest Results Are In", "Thank You to Our Sponsors".
+  <h3 style="margin: 0 0 8px; color: #1a1a1a; font-size: 18px;">Your Headline Here</h3>
+- Follow the heading with <p> tags for the body text:
+  <p style="margin: 0 0 10px; line-height: 1.6;">Paragraph content...</p>
+- Place any relevant <img> inside the same section div, near the paragraph it relates to.
+- Close the section </div> before starting the next topic's div.
+
+Image rules (only when images are provided):
+- Include an image only when it is directly relevant to the section being written. Do not add images for decoration or filler.
+- Use the exact URL from the provided list. Never modify or guess a URL.
+- You do not have to use every image. Skip any that do not fit naturally.
+- Place each <img> inside the section div it relates to, not clustered together.
+- Every <img> tag must use these inline styles: style="max-width: 100%; height: auto; display: block; margin: 12px 0;"
+- Include the alt attribute from the provided image data. If alt is empty, write a brief descriptive alt based on the section context.
+
+Style rules:
+- Use inline styles on every element (email clients ignore <style> blocks and external CSS).
+- Keep styles minimal and email-safe. Stick to the site palette: gold accent #c8923c, dark text #1a1a1a or #333, white/light backgrounds.
+- Font is inherited from the outer wrapper (Arial, sans-serif) -- do not set font-family on inner elements.
+
 Respond with valid JSON only, no markdown fences:
-{"subject": "the email subject line", "bodyHtml": "<p>the HTML body</p>"}
+{"subject": "the email subject line", "bodyHtml": "<div style=\\"border-left: 3px solid #c8923c; ...\\">...</div>"}
 
-The bodyHtml should use simple HTML: <p> tags for paragraphs, <a> for links, <strong> for emphasis. No inline styles. Keep it clean.`;
+The bodyHtml should use: <div> section wrappers (styled as above), <h3> for section headings, <p> for paragraphs, <a> for links, <strong> for emphasis, <img> for provided images. All elements use inline styles as described above.`;
 
-export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
+export async function createNewsletterDraft({
+  whatsNew,
+  siteImages = [],
+  siteUrl,
+  env,
+}) {
   const apiKey = env.ANTHROPIC_API_KEY;
   const secret = env.QBO_APPROVAL_SECRET;
   const kv = env.FAF_KV;
@@ -50,6 +80,16 @@ export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
   // Generate a unique draft ID
   const draftId = crypto.randomUUID();
 
+  // Build the user message: text updates + optional image list
+  let userContent = `Here are the recent updates to summarize for the newsletter:\n\n${whatsNew}`;
+
+  if (siteImages.length > 0) {
+    const imageLines = siteImages.map(
+      (img) => `- [${img.section}] ${img.url}${img.alt ? ` (${img.alt})` : ""}`,
+    );
+    userContent += `\n\nAvailable images (use only these exact URLs, only where relevant):\n${imageLines.join("\n")}`;
+  }
+
   // Call Claude to generate the newsletter
   const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -60,12 +100,12 @@ export async function createNewsletterDraft({ whatsNew, siteUrl, env }) {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 1200,
+      max_tokens: 2400,
       system: CLAUDE_SYSTEM_PROMPT,
       messages: [
         {
           role: "user",
-          content: `Here are the recent updates to summarize for the newsletter:\n\n${whatsNew}`,
+          content: userContent,
         },
       ],
     }),
