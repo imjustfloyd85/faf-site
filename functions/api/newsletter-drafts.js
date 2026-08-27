@@ -112,6 +112,98 @@ function extractImages(html, siteOrigin, sectionLabel, maxPerPage = 3) {
   return images;
 }
 
+// Extract the #schedule section from frisco-elite.html specifically.
+// Returns the text content of just that section, not the whole page.
+async function fetchWeeklySchedule(siteOrigin) {
+  try {
+    const res = await fetch(`${siteOrigin}/frisco-elite.html`, {
+      headers: { Accept: "text/html" },
+    });
+    if (!res.ok) return null;
+    const html = await res.text();
+
+    // Pull just the <section id="schedule"> ... </section> block.
+    const startMatch = html.match(/<section[^>]*id=["']schedule["'][^>]*>/i);
+    if (!startMatch) return null;
+
+    const startIdx = startMatch.index;
+    // Find the matching </section> after the opening tag.
+    // Walk through nested <section>...</section> to find the right close.
+    let depth = 1;
+    let cursor = startIdx + startMatch[0].length;
+    const openRe = /<section[\s>]/gi;
+    const closeRe = /<\/section>/gi;
+
+    while (depth > 0 && cursor < html.length) {
+      openRe.lastIndex = cursor;
+      closeRe.lastIndex = cursor;
+      const nextOpen = openRe.exec(html);
+      const nextClose = closeRe.exec(html);
+
+      if (!nextClose) break; // malformed HTML, bail
+
+      if (nextOpen && nextOpen.index < nextClose.index) {
+        depth++;
+        cursor = nextOpen.index + nextOpen[0].length;
+      } else {
+        depth--;
+        if (depth === 0) {
+          cursor = nextClose.index + nextClose[0].length;
+        } else {
+          cursor = nextClose.index + nextClose[0].length;
+        }
+      }
+    }
+
+    const scheduleHtml = html.slice(startIdx, cursor);
+
+    // Strip tags and collapse whitespace -- same as extractText but no word cap
+    // since the schedule section is already scoped and short.
+    const text = scheduleHtml
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&#?\w+;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (text.length < 30) return null;
+    return text;
+  } catch {
+    return null;
+  }
+}
+
+// Fetch /api/approved-sponsors and filter to sponsors approved in the last 60 days.
+// The sponsor list is loaded client-side via JS on sponsors.html, so fetching the
+// raw HTML would miss them entirely. Going straight to the API is the only way.
+async function fetchNewPartnerships(siteOrigin) {
+  try {
+    const res = await fetch(`${siteOrigin}/api/approved-sponsors`, {
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const sponsors = data.sponsors || [];
+
+    const sixtyDaysAgo = Date.now() - 60 * 24 * 60 * 60 * 1000;
+    const recent = sponsors.filter((s) => {
+      if (!s.approvedAt) return false;
+      return new Date(s.approvedAt).getTime() >= sixtyDaysAgo;
+    });
+
+    if (recent.length === 0) {
+      return "No new partnerships in the last 60 days.";
+    }
+
+    return recent.map((s) => `- ${s.name} (${s.tier || "Sponsor"})`).join("\n");
+  } catch {
+    return null;
+  }
+}
+
 // Fetch key pages from the live site and assemble a structured whatsNew blob.
 // Each page gets its own labeled section so Claude sees multiple distinct topics.
 // Returns { text, images } where images is an array of { url, alt, section }.
@@ -119,7 +211,8 @@ async function gatherLiveSiteContent(siteOrigin) {
   const sections = [];
   const allImages = [];
 
-  const fetches = CONTENT_PAGES.map(async ({ label, path }) => {
+  // Kick off all fetches in parallel: page scrapes + targeted extractions.
+  const pageFetches = CONTENT_PAGES.map(async ({ label, path }) => {
     try {
       const res = await fetch(`${siteOrigin}${path}`, {
         headers: { Accept: "text/html" },
@@ -137,12 +230,32 @@ async function gatherLiveSiteContent(siteOrigin) {
     }
   });
 
-  const results = await Promise.all(fetches);
-  for (const r of results) {
+  const [pageResults, scheduleText, partnershipsText] = await Promise.all([
+    Promise.all(pageFetches),
+    fetchWeeklySchedule(siteOrigin),
+    fetchNewPartnerships(siteOrigin),
+  ]);
+
+  for (const r of pageResults) {
     if (r) {
       sections.push(r);
       allImages.push(...r.images);
     }
+  }
+
+  // Append dedicated Weekly Schedule section (extracted from #schedule only,
+  // not diluted into the generic Frisco Elite page text).
+  if (scheduleText) {
+    sections.push({ label: "Weekly Schedule", text: scheduleText, images: [] });
+  }
+
+  // Append dedicated New Partnerships section from the approved-sponsors API.
+  if (partnershipsText) {
+    sections.push({
+      label: "New Partnerships",
+      text: partnershipsText,
+      images: [],
+    });
   }
 
   if (sections.length === 0) {
