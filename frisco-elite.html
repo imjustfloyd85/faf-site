@@ -1703,6 +1703,9 @@
       .cal-legend-dot.lg-milestone {
         background: #03aef2;
       }
+      .cal-legend-dot.lg-mandatory {
+        background: #e74c3c;
+      }
       .cal-month {
         display: none;
         margin-top: 8px;
@@ -1778,6 +1781,14 @@
       }
       .cal-cell.evt-prep .cal-ev {
         color: var(--gold-lt);
+      }
+      .cal-cell.evt-mandatory {
+        border-left: 3px solid #e74c3c;
+        background: rgba(231, 76, 60, 0.08);
+      }
+      .cal-cell.evt-mandatory .cal-ev {
+        color: #e74c3c;
+        font-weight: 800;
       }
       .cal-cell.evt-final {
         border-left: 3px solid var(--gold);
@@ -1865,6 +1876,10 @@
       .event-modal-badge.evt-prep {
         background: rgba(224, 176, 106, 0.15);
         color: var(--gold-lt);
+      }
+      .event-modal-badge.evt-mandatory {
+        background: rgba(231, 76, 60, 0.15);
+        color: #e74c3c;
       }
       .event-modal-badge.evt-final {
         background: rgba(200, 146, 60, 0.15);
@@ -2051,6 +2066,21 @@
           </p>
         </div>
 
+        <!-- Mandatory Group Training -->
+        <div
+          class="schedule-rule"
+          style="border-left: 4px solid #e74c3c; margin-top: 16px"
+        >
+          <p>
+            <strong style="color: #e74c3c"
+              >MANDATORY GROUP TRAINING -- Sunday, August 31</strong
+            ><br />
+            All Frisco Elite players are required to attend. This is not
+            optional.<br />
+            6:30 PM - 8:00 PM at Athlete Training and Health (ATH), Allen, TX.
+          </p>
+        </div>
+
         <!-- Road to Nationals Timeline -->
         <div style="text-align: center; margin-top: 56px">
           <p class="section-label">Road to Nationals</p>
@@ -2115,6 +2145,10 @@
           <span class="cal-legend-item"
             ><span class="cal-legend-dot lg-milestone"></span> Qualifier /
             Milestone</span
+          >
+          <span class="cal-legend-item"
+            ><span class="cal-legend-dot lg-mandatory"></span> Mandatory
+            Training</span
           >
         </div>
         <div class="cal-tabs">
@@ -2196,7 +2230,10 @@
             <div class="cal-cell"><div class="cal-day">29</div></div>
             <!-- Row 6 -->
             <div class="cal-cell"><div class="cal-day">30</div></div>
-            <div class="cal-cell"><div class="cal-day">31</div></div>
+            <div class="cal-cell evt-mandatory">
+              <div class="cal-day">31</div>
+              <div class="cal-ev">Group Training</div>
+            </div>
             <div class="cal-cell empty"></div>
             <div class="cal-cell empty"></div>
             <div class="cal-cell empty"></div>
@@ -2471,6 +2508,7 @@
         "FFX Day 1": "AT&T Stadium, Arlington, TX",
         "FFX Day 2": "AT&T Stadium, Arlington, TX",
         "NFL Flag Regional": "The Star, Frisco, TX",
+        "Group Training": "Athlete Training and Health (ATH), Allen, TX",
       };
 
       var CAL_MONTH_NAMES = {
@@ -2486,11 +2524,12 @@
         "evt-milestone": "Qualifier / Milestone",
         "evt-prep": "Tournament Prep",
         "evt-final": "Practice",
+        "evt-mandatory": "Mandatory Training",
       };
 
       function initEventModals() {
         var cells = document.querySelectorAll(
-          ".cal-cell.evt-practice, .cal-cell.evt-tournament, .cal-cell.evt-milestone, .cal-cell.evt-prep, .cal-cell.evt-final",
+          ".cal-cell.evt-practice, .cal-cell.evt-tournament, .cal-cell.evt-milestone, .cal-cell.evt-prep, .cal-cell.evt-final, .cal-cell.evt-mandatory",
         );
         for (var i = 0; i < cells.length; i++) {
           var cell = cells[i];
