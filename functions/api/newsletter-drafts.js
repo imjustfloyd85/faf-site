@@ -35,6 +35,9 @@ const CONTENT_PAGES = [
   { label: "Skills Clinic", path: "/skills-clinic.html" },
   { label: "Sponsors", path: "/sponsors.html" },
   { label: "Frisco Elite", path: "/frisco-elite.html" },
+  // Coach letters: add new pages here as they're published.
+  // Each gets its own labeled section in the newsletter input.
+  { label: "Coach's Letter", path: "/coach-letter-season-opener.html" },
 ];
 
 // Remove site chrome (scripts, styles, nav, footer, header) from raw HTML
@@ -131,7 +134,14 @@ function tryParseEventDate(dateStr, now) {
   return new Date(year, monthIdx, day);
 }
 
-// Filter lines from extracted text, dropping events more than 14 days in the past.
+// Words/phrases that indicate recap or result content. When a past event's
+// text contains any of these, the event is worth keeping because it has real
+// outcome data, not just an expired date.
+const RECAP_INDICATORS =
+  /\b(recap|result|championship|semifinal|finals?|won|lost|defeated|record|W-L|\d+W[- ]?\d+L|overtime|quarter.?final|bracket|eliminated|advanced|placed|runner.?up|undefeated|champion)\b/i;
+
+// Filter lines from extracted text, dropping events more than 14 days in the past
+// UNLESS the line contains recap/result content worth referencing.
 // Lines that don't contain a parseable date are kept (safe default).
 function filterOldEvents(text, now) {
   const cutoff = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
@@ -141,6 +151,10 @@ function filterOldEvents(text, now) {
   for (const line of lines) {
     const parsed = tryParseEventDate(line.trim(), now);
     if (parsed && parsed < cutoff) {
+      // Keep the line anyway if it has real recap/result content
+      if (RECAP_INDICATORS.test(line)) {
+        kept.push(line);
+      }
       continue;
     }
     kept.push(line);

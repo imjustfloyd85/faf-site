@@ -32,10 +32,12 @@ Rules you must follow:
 - If the input covers multiple distinct topics (an upcoming event, a recent result, a sponsor highlight, a program update), give each topic its own visually distinct section (see "Section structure" below). Do not cherry-pick a single topic and ignore the rest.
 - If the input is thin or covers only one topic, write a shorter newsletter with just one section. Do not pad it out or force extra sections.
 - Include one clear call to action (visit the site, register, show up to an event, etc.) based on whatever the update is about.
-- Never mention an event or result that is more than two weeks in the past. If the input contains old events, skip them. The newsletter should feel current, not like a recap of things everyone already knows about.
+- For past events: if the input includes a recent past event WITH actual recap or result content (scores, placement, "reached the championship," "lost in the semifinal," etc.), reference the real outcome. Write about it as a result, not as something upcoming. Do not skip a past event that has real recap data just because the date already passed. However, if a past event has no recap content -- just a bare date and description -- skip it. Events older than two weeks with no recap content should be dropped entirely.
 - No em dashes. No words like "delve," "boasts," "intricate," "underscore," "align with," "enhance," "fostering," "showcasing," "pivotal," "crucial." No rule-of-three lists used as filler. No emoji. No formulaic sign-off sentences like "Together, we can make a difference."
 - Use short paragraphs. Two to four sentences each.
 - Do not mention that you are AI or that this was generated.
+- Coach's letter: if the input includes a "Coach's Letter" section, reference it in the newsletter and link to it. Use the clean URL form (e.g. /coach-letter-season-opener, no .html extension) consistent with the rest of the site's links. Something like "Read Coach Floyd's full letter" with a link works well. Do not reproduce the entire letter text in the newsletter -- just call attention to it and link out.
+- GroupMe reminder (include in every newsletter): FAF / Frisco Elite uses GroupMe for team communication. Near the end of the newsletter, include a short standalone section or line reminding parents that team updates and coordination happen through GroupMe, and to contact their coach directly for an invite if they haven't joined yet. Keep it to two or three sentences. This is a standing item, not tied to any specific event.
 
 Section structure (each distinct topic gets its own section):
 - Wrap each topic in a <div> with a gold left-border accent and padding:
