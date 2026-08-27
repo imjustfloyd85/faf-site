@@ -239,6 +239,11 @@ console.log(
 );
 console.log(`Bulk file: ${tmpFile}`);
 
+if (process.argv.includes("--generate-only")) {
+  console.log("--generate-only set, skipping wrangler exec.");
+  process.exit(0);
+}
+
 // Run wrangler kv:bulk put
 try {
   const cmd = `npx wrangler kv bulk put "${tmpFile}" --namespace-id ${KV_NAMESPACE_ID} --remote`;

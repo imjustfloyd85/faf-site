@@ -1,0 +1,31 @@
+# ONE-OFF MAINTENANCE WORKFLOW — seeds the sponsor-leads KV namespace with
+# 25 verified sponsor leads researched 2026-08-27. Uses the same CF_API_TOKEN /
+# CF_ACCOUNT_ID repo secrets as deploy.yml -- no new credentials needed.
+# Safe to delete after running once; re-running just overwrites the same
+# deterministic set of leads (same businessName/category/etc, new random ids
+# each run, so re-running duplicates entries -- only run once).
+
+name: Seed sponsor leads (one-off)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate seed bulk file
+        run: node scripts/seed-sponsor-leads.js --generate-only
+
+      - name: Write leads to KV
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: kv bulk put scripts/.seed-bulk.json --namespace-id f2ced3e931084f4f80a99fe53a1f744f --remote
