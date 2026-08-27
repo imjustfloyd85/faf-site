@@ -457,6 +457,90 @@
         color: var(--green);
       }
 
+      /* SUBSCRIBER TABLE */
+      .subscriber-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-size: 13px;
+      }
+      .subscriber-table th {
+        text-align: left;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .subscriber-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(200, 146, 60, 0.08);
+        vertical-align: middle;
+      }
+      .subscriber-table tr:hover td {
+        background: rgba(200, 146, 60, 0.04);
+      }
+      .status-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+      }
+      .status-badge.active {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--green);
+      }
+      .status-badge.unsubscribed,
+      .status-badge.removed {
+        background: rgba(192, 57, 43, 0.15);
+        color: var(--red);
+      }
+      .btn-sm {
+        padding: 6px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          opacity 0.2s;
+      }
+      .btn-sm:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-sm.btn-gold {
+        background: var(--gold);
+        color: var(--dark);
+      }
+      .btn-sm.btn-gold:hover:not(:disabled) {
+        background: var(--gold-lt);
+      }
+      .btn-sm.btn-red {
+        background: var(--red);
+        color: #fff;
+      }
+      .btn-sm.btn-red:hover:not(:disabled) {
+        background: #e74c3c;
+      }
+      .subscriber-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .subscriber-summary {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+
       /* DIVIDER */
       .section-divider {
         max-width: 800px;
@@ -743,6 +827,35 @@
       </div>
     </section>
 
+    <!-- Subscriber Management -->
+    <section class="pipeline-panel" id="subscriberPanel">
+      <div class="pipeline-card">
+        <h2 class="section-header">Subscriber <em>Management</em></h2>
+        <div id="subscriberListContent">
+          <p class="no-draft-msg" id="subscriberLoadingMsg">
+            Loading subscribers...
+          </p>
+        </div>
+        <div id="subscriberListReady" style="display: none">
+          <div class="subscriber-summary" id="subscriberSummary"></div>
+          <div style="overflow-x: auto">
+            <table class="subscriber-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Signed up</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subscriberTableBody"></tbody>
+            </table>
+          </div>
+          <div class="action-result" id="subscriberActionResult"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Divider between pipeline and manual compose -->
     <div class="section-divider" id="sectionDivider">
       <hr />
@@ -854,6 +967,7 @@
       function showPipelineControls() {
         document.getElementById("schedulePanel").classList.add("visible");
         document.getElementById("draftPanel").classList.add("visible");
+        document.getElementById("subscriberPanel").classList.add("visible");
         document.getElementById("sectionDivider").classList.add("visible");
         document.getElementById("composePanel").classList.add("visible");
 
@@ -875,6 +989,7 @@
         loadSubscriberCount();
         loadScheduleInfo();
         loadPendingDraft();
+        loadSubscriberList();
       }
 
       // ---- Subscriber Count ----
@@ -1459,6 +1574,267 @@
             resultEl.className = "send-result error";
             btn.disabled = false;
             btn.textContent = "SEND NOW";
+          });
+      }
+
+      // ---- Subscriber Management ----
+
+      var subscriberList = [];
+
+      function showSubscriberResult(msg, type) {
+        var el = document.getElementById("subscriberActionResult");
+        el.textContent = msg;
+        el.className = "action-result " + (type || "");
+      }
+
+      function statusBadgeClass(status) {
+        if (status === "active") return "status-badge active";
+        return "status-badge removed";
+      }
+
+      function statusLabel(status) {
+        if (status === "active") return "Active";
+        if (status === "unsubscribed") return "Unsubscribed";
+        if (status === "removed-by-admin") return "Removed";
+        return status;
+      }
+
+      function formatShortDate(iso) {
+        if (!iso) return "Unknown";
+        var d = new Date(iso);
+        return d.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function renderSubscriberTable() {
+        var tbody = document.getElementById("subscriberTableBody");
+        tbody.innerHTML = "";
+
+        if (subscriberList.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px 0;">No subscribers found.</td></tr>';
+          return;
+        }
+
+        var active = 0;
+        var inactive = 0;
+
+        for (var i = 0; i < subscriberList.length; i++) {
+          var sub = subscriberList[i];
+          if (sub.status === "active") {
+            active++;
+          } else {
+            inactive++;
+          }
+
+          var tr = document.createElement("tr");
+
+          var tdEmail = document.createElement("td");
+          tdEmail.textContent = sub.email;
+          tdEmail.style.fontFamily = "monospace";
+          tdEmail.style.fontSize = "12px";
+          tr.appendChild(tdEmail);
+
+          var tdStatus = document.createElement("td");
+          var badge = document.createElement("span");
+          badge.className = statusBadgeClass(sub.status);
+          badge.textContent = statusLabel(sub.status);
+          tdStatus.appendChild(badge);
+          tr.appendChild(tdStatus);
+
+          var tdDate = document.createElement("td");
+          tdDate.textContent = formatShortDate(sub.signupDate);
+          tdDate.style.fontSize = "12px";
+          tdDate.style.color = "var(--muted)";
+          tr.appendChild(tdDate);
+
+          var tdActions = document.createElement("td");
+          var actionsDiv = document.createElement("div");
+          actionsDiv.className = "subscriber-actions";
+
+          // Send button (only for active subscribers, only if a draft exists)
+          if (sub.status === "active") {
+            var sendBtn = document.createElement("button");
+            sendBtn.className = "btn-sm btn-gold";
+            sendBtn.textContent = "SEND";
+            sendBtn.title = "Send the pending draft to this subscriber only";
+            sendBtn.setAttribute("data-hash", sub.hash);
+            sendBtn.onclick = (function (hash, email) {
+              return function () {
+                sendToSubscriber(hash, email);
+              };
+            })(sub.hash, sub.email);
+            if (!currentDraft) {
+              sendBtn.disabled = true;
+              sendBtn.title = "No pending draft to send";
+            }
+            actionsDiv.appendChild(sendBtn);
+          }
+
+          // Remove button
+          if (sub.status === "active") {
+            var removeBtn = document.createElement("button");
+            removeBtn.className = "btn-sm btn-red";
+            removeBtn.textContent = "REMOVE";
+            removeBtn.title = "Remove this subscriber (soft-delete)";
+            removeBtn.setAttribute("data-hash", sub.hash);
+            removeBtn.onclick = (function (hash, email) {
+              return function () {
+                removeSubscriber(hash, email);
+              };
+            })(sub.hash, sub.email);
+            actionsDiv.appendChild(removeBtn);
+          }
+
+          tdActions.appendChild(actionsDiv);
+          tr.appendChild(tdActions);
+          tbody.appendChild(tr);
+        }
+
+        document.getElementById("subscriberSummary").textContent =
+          active +
+          " active, " +
+          inactive +
+          " inactive (" +
+          subscriberList.length +
+          " total)";
+      }
+
+      function loadSubscriberList() {
+        fetch(
+          "/api/newsletter-subscribers?action=list&passcode=" +
+            encodeURIComponent(adminPasscode),
+        )
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            if (data.subscribers) {
+              subscriberList = data.subscribers;
+              document.getElementById("subscriberLoadingMsg").style.display =
+                "none";
+              document.getElementById("subscriberListReady").style.display =
+                "block";
+              renderSubscriberTable();
+            } else {
+              document.getElementById("subscriberLoadingMsg").textContent =
+                "Could not load subscribers.";
+            }
+          })
+          .catch(function () {
+            document.getElementById("subscriberLoadingMsg").textContent =
+              "Error loading subscriber list.";
+          });
+      }
+
+      function sendToSubscriber(hash, email) {
+        if (!currentDraft) {
+          showSubscriberResult(
+            "No pending draft to send. Generate one first.",
+            "error",
+          );
+          return;
+        }
+
+        if (
+          !confirm(
+            'Send the current pending draft ("' +
+              currentDraft.subject +
+              '") to ' +
+              email +
+              "?",
+          )
+        ) {
+          return;
+        }
+
+        showSubscriberResult("Sending to " + email + "...", "");
+
+        fetch("/api/newsletter-subscribers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "send-to-subscriber",
+            passcode: adminPasscode,
+            subscriberHash: hash,
+            draftId: currentDraft.id,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showSubscriberResult(
+                "Sent to " + result.data.email + ".",
+                "success",
+              );
+            } else {
+              showSubscriberResult(
+                result.data.error || "Send failed.",
+                "error",
+              );
+            }
+          })
+          .catch(function () {
+            showSubscriberResult("Connection error.", "error");
+          });
+      }
+
+      function removeSubscriber(hash, email) {
+        if (
+          !confirm(
+            "Remove " +
+              email +
+              " from the subscriber list? This marks them as removed (soft-delete). They will stop receiving newsletters.",
+          )
+        ) {
+          return;
+        }
+
+        showSubscriberResult("Removing " + email + "...", "");
+
+        fetch("/api/newsletter-subscribers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "remove-subscriber",
+            passcode: adminPasscode,
+            subscriberHash: hash,
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { status: res.status, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.data.success) {
+              showSubscriberResult(result.data.email + " removed.", "success");
+              // Update the local list and re-render
+              for (var i = 0; i < subscriberList.length; i++) {
+                if (subscriberList[i].hash === hash) {
+                  subscriberList[i].status = "removed-by-admin";
+                  break;
+                }
+              }
+              renderSubscriberTable();
+              // Refresh the subscriber count in the schedule panel
+              loadSubscriberCount();
+            } else {
+              showSubscriberResult(
+                result.data.error || "Remove failed.",
+                "error",
+              );
+            }
+          })
+          .catch(function () {
+            showSubscriberResult("Connection error.", "error");
           });
       }
 
