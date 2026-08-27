@@ -43,6 +43,8 @@ const CONTENT_PAGES = [
     label: "=== Blog: Rise of Flag Football ===",
     path: "/rise-of-flag-football.html",
   },
+  // Community / rec league content (Neighborhood Sports NFL Flag, etc.)
+  { label: "Community / Neighborhood Sports", path: "/community.html" },
 ];
 
 // Remove site chrome (scripts, styles, nav, footer, header) from raw HTML
