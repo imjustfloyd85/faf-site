@@ -58,7 +58,8 @@ Image rules (only when images are provided):
 - Use the exact URL from the provided list. Never modify or guess a URL.
 - You do not have to use every image. Skip any that do not fit naturally.
 - Place each <img> near the paragraph it relates to, not clustered together.
-- Every <img> tag must use these inline styles: style="max-width: 100%; height: auto; display: block; margin: 12px 0;"
+- Every <img> tag must include width="320" and use these inline styles: style="max-width: 320px; width: 100%; height: auto; display: block; margin: 12px 0;"
+  The width attribute is a fallback for email clients that ignore max-width. The CSS width: 100% keeps the image from exceeding its container on small screens.
 - Include the alt attribute from the provided image data. If alt is empty, write a brief descriptive alt based on the section context.
 
 Style rules:
