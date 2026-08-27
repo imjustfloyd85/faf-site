@@ -23,6 +23,13 @@ jobs:
       - name: Generate seed bulk file
         run: node scripts/seed-sponsor-leads.js --generate-only
 
+      - name: Diagnose - list KV namespaces visible to this token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        run: npx --yes wrangler@4.120.1 kv namespace list
+        continue-on-error: true
+
       - name: Write leads to KV
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
