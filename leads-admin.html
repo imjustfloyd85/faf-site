@@ -994,6 +994,90 @@
       </div>
     </section>
 
+    <!-- RESEARCH DOCUMENTS -->
+    <section class="panel" id="researchPanel">
+      <div class="panel-card">
+        <h2 class="section-header">Research <em>Documents</em></h2>
+        <p
+          style="
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--warm);
+            margin-bottom: 16px;
+          "
+        >
+          Internal sponsorship research -- tiered target lists and verified
+          contact details for Frisco/DFW outreach.
+        </p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap">
+          <a
+            href="sponsor-targets.html"
+            style="
+              flex: 1;
+              min-width: 220px;
+              display: block;
+              background: var(--dark-3);
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              padding: 20px;
+              text-decoration: none;
+              color: var(--warm);
+              transition: border-color 0.2s;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 8px;
+              "
+            >
+              Target List
+            </div>
+            <div style="font-size: 13px; color: var(--muted); line-height: 1.5">
+              Tiered outreach playbook: warm network, Frisco corporate HQs,
+              local small business volume play, national foundations.
+            </div>
+          </a>
+          <a
+            href="sponsor-contacts.html"
+            style="
+              flex: 1;
+              min-width: 220px;
+              display: block;
+              background: var(--dark-3);
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              padding: 20px;
+              text-decoration: none;
+              color: var(--warm);
+              transition: border-color 0.2s;
+            "
+          >
+            <div
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 8px;
+              "
+            >
+              Verified Contacts
+            </div>
+            <div style="font-size: 13px; color: var(--muted); line-height: 1.5">
+              Named contacts, emails, phones, intake channels, fit assessment,
+              and sources for each target.
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- ADD NEW LEAD FORM -->
     <section class="panel" id="addLeadPanel">
       <div class="panel-card">
@@ -1152,6 +1236,7 @@
       function showAdminPanels() {
         document.getElementById("scriptPanel").classList.add("visible");
         document.getElementById("proposalPanel").classList.add("visible");
+        document.getElementById("researchPanel").classList.add("visible");
         document.getElementById("addLeadPanel").classList.add("visible");
         document.getElementById("leadsPanel").classList.add("visible");
         loadLeads();
