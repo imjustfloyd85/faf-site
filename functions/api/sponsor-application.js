@@ -7,10 +7,7 @@
 // DEPENDENCY (KV binding): FAF_KV
 // DEPENDENCY (CF Pages secret): ACS_CONNECTION_STRING
 
-import {
-  sendViaACS,
-  sendViaACSWithAttachment,
-} from "../lib/acs-email.js";
+import { sendViaACS, sendViaACSWithAttachment } from "../lib/acs-email.js";
 import { generatePdf } from "../lib/pdf-generate.js";
 import {
   getSponsorPacketPdfContent,
