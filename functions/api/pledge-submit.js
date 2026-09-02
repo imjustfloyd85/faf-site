@@ -1,5 +1,4 @@
-import { sendViaACS } from "../lib/acs-email.js";
-import { sendViaACSWithAttachment } from "../lib/acs-email.js";
+import { sendViaACS, sendViaACSWithAttachment } from "../lib/acs-email.js";
 import { generatePdf } from "../lib/pdf-generate.js";
 import {
   PLEDGE_AGREEMENT_VERSION,
