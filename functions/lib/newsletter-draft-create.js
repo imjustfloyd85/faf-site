@@ -47,7 +47,7 @@ The outer email wrapper is a newspaper-style template with a serif masthead, cre
 
 - Separate each section with a horizontal rule styled as a thin gold divider:
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0;"><tr><td style="border-top: 1px solid #c8923c; font-size: 0; line-height: 0; height: 1px;">&nbsp;</td></tr></table>
-- Start each section with an <h3> heading in bold serif, navy color. Write a short, specific, punchy headline for that piece of content -- NOT a generic label like "Upcoming Events" or "Recent Results." Use the actual event name, date, or subject. Examples: "Skills Clinic -- September 13", "Float Fest Results Are In", "Thank You to Our Sponsors".
+- Start each section with an <h3> heading in bold serif, navy color. Write a short, specific, punchy headline for that piece of content -- NOT a generic label like "Upcoming Events" or "Recent Results." Use the actual event name, date, or subject. Examples: "Skills Clinic -- October 25", "Float Fest Results Are In", "Thank You to Our Sponsors".
   <h3 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 18px; font-weight: 700; color: #1b2a4a; margin: 0 0 8px; padding: 0;">Your Headline Here</h3>
 - Follow the heading with <p> tags for the body text:
   <p style="margin: 0 0 12px; line-height: 1.65;">Paragraph content...</p>
