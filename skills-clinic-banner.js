@@ -1,4 +1,4 @@
-// Sitewide promo bar for the Sept 13 Skills Clinic & Combine.
+// Sitewide promo bar for the Oct 25 Skills Clinic & Combine.
 // Self-contained: injects its own styles and markup, fixed to the bottom of
 // the viewport so it never collides with each page's independently-tuned
 // fixed nav / hero spacing. Nudges the feedback/chat corner buttons up out
@@ -34,7 +34,7 @@
   var bar = document.createElement("div");
   bar.id = "faf-skills-clinic-banner";
   bar.innerHTML =
-    '<div class="fscb-text"><strong>Skills Clinic &amp; Combine</strong> — Sept 13, free, 10U/12U — register before Sept 9</div>' +
+    '<div class="fscb-text"><strong>Skills Clinic &amp; Combine</strong> — Oct 25, free, 10U/12U — register before Oct 21</div>' +
     '<a class="fscb-cta" href="skills-clinic.html">Register Now</a>' +
     '<button class="fscb-close" aria-label="Dismiss">&times;</button>';
   document.body.appendChild(bar);
