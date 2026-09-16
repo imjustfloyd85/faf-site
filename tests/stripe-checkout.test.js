@@ -380,10 +380,12 @@ test("T3.9: Sponsorship email does NOT claim full deductibility", function () {
     "utf8",
   );
   // The sponsorship email should say "only the portion" not "full amount"
-  var sponsorSection = src.substring(
-    src.indexOf("buildSponsorshipEmail"),
-    src.indexOf("--- Main Handler ---"),
-  );
+  // End boundary: next function section after buildSponsorshipEmail (QBO or Pledge)
+  var sponsorStart = src.indexOf("buildSponsorshipEmail");
+  var sponsorEnd = src.indexOf("--- QBO", sponsorStart);
+  if (sponsorEnd === -1) sponsorEnd = src.indexOf("--- Pledge", sponsorStart);
+  if (sponsorEnd === -1) sponsorEnd = src.indexOf("--- Main Handler ---");
+  var sponsorSection = src.substring(sponsorStart, sponsorEnd);
   assert.ok(
     !sponsorSection.includes("full amount of your donation is tax-deductible"),
     "Sponsorship email must NOT claim full deductibility",

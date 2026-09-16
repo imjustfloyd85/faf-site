@@ -1,84 +1,15 @@
-import { sendViaACS, sendViaACSWithAttachment } from "../lib/acs-email.js";
-import { generatePdf } from "../lib/pdf-generate.js";
-import {
-  PLEDGE_AGREEMENT_VERSION,
-  getPledgeAgreementPdfContent,
-} from "../lib/pledge-agreement.js";
+// Cloudflare Pages Function -- Pledge Submission + Stripe Checkout
+// Validates pledge form input, stores the pledge entry in KV, and creates
+// a Stripe Checkout session. PDF generation and confirmation emails are
+// deferred to the webhook handler (stripe-webhook.js) so they only fire
+// after payment actually confirms.
+
+import { PLEDGE_AGREEMENT_VERSION } from "../lib/pledge-agreement.js";
 
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_SECONDS = 600;
 const SUBMISSION_TTL_SECONDS = 365 * 24 * 60 * 60;
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function buildNotificationEmail(entry) {
-  const name = escapeHtml(entry.name);
-  const email = escapeHtml(entry.email);
-  const phone = escapeHtml(entry.phone || "(not provided)");
-  const amount = escapeHtml(entry.amount);
-  const frequency = escapeHtml(entry.frequency);
-  const subjectSafeName = String(entry.name).replace(/[\r\n]/g, " ");
-
-  return {
-    subject: `[FAF] New Pledge: $${entry.amount} from ${subjectSafeName}`,
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #c8923c;">Fathers and Football -- New Pledge</h2>
-        <p><strong>Donor:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
-        <p><strong>Pledge Amount:</strong> $${amount}</p>
-        <p><strong>Frequency:</strong> ${frequency}</p>
-        <p><strong>Agreement Version:</strong> ${PLEDGE_AGREEMENT_VERSION}</p>
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
-        <p style="color: #999; font-size: 12px;">Submitted: ${escapeHtml(entry.createdAt)}</p>
-      </div>
-    `,
-  };
-}
-
-function buildDonorConfirmationEmail(entry) {
-  const name = escapeHtml(entry.name);
-  const amount = escapeHtml(entry.amount);
-  const frequency = entry.frequency === "monthly" ? "monthly " : "";
-  const date = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return {
-    subject: "Your pledge confirmation -- Fathers and Football",
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #c8923c;">Fathers and Football</h2>
-        <p>Dear ${name},</p>
-        <p>Thank you for your ${frequency}pledge of $${amount} to Fathers and Football. Your commitment directly supports programs that connect fathers to their children through the game.</p>
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
-        <h3>Pledge Details</h3>
-        <p><strong>Organization:</strong> Fathers and Football<br/>
-        <strong>EIN:</strong> 42-1980182<br/>
-        <strong>Status:</strong> 501(c)(3) tax-exempt organization<br/>
-        <strong>Date:</strong> ${date}<br/>
-        <strong>Pledge Amount:</strong> $${amount}<br/>
-        <strong>Frequency:</strong> ${escapeHtml(entry.frequency)}</p>
-        <p>A copy of your pledge agreement is attached to this email as a PDF.</p>
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
-        <p>We will be in touch with next steps. Thank you for investing in families.</p>
-        <p>With gratitude,<br/>Fathers and Football<br/>
-        <a href="https://fathersandfootball.org">fathersandfootball.org</a></p>
-      </div>
-    `,
-  };
-}
+const STRIPE_API = "https://api.stripe.com/v1/checkout/sessions";
 
 export async function onRequestPost(context) {
   const headers = { "Content-Type": "application/json" };
@@ -180,12 +111,15 @@ export async function onRequestPost(context) {
     expirationTtl: RATE_LIMIT_WINDOW_SECONDS,
   });
 
+  const secretKey = context.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    return new Response(
+      JSON.stringify({ error: "Payment processing is not configured." }),
+      { status: 500, headers },
+    );
+  }
+
   const entryId = crypto.randomUUID();
-  const dateStr = new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
   const entry = {
     id: entryId,
@@ -197,6 +131,7 @@ export async function onRequestPost(context) {
     agreementVersion: PLEDGE_AGREEMENT_VERSION,
     agreementAcceptedAt: new Date().toISOString(),
     userAgent: context.request.headers.get("user-agent") || "",
+    status: "pending-payment",
     createdAt: new Date().toISOString(),
   };
 
@@ -204,69 +139,61 @@ export async function onRequestPost(context) {
     expirationTtl: SUBMISSION_TTL_SECONDS,
   });
 
-  // PDF generation and email sending are best-effort.
-  // The pledge is stored in KV regardless of email delivery.
-  let emailWarning = false;
+  // Create Stripe Checkout session.
+  // PDF and confirmation emails are sent by the webhook after payment confirms.
+  const isRecurring = frequency === "monthly";
+  const mode = isRecurring ? "subscription" : "payment";
+  const productName = isRecurring
+    ? "Monthly Pledge -- Fathers and Football"
+    : "Pledge -- Fathers and Football";
+  const unitAmount = Math.round(parsedAmount * 100);
 
-  try {
-    const pdfContent = getPledgeAgreementPdfContent(
-      entry.name,
-      entry.amount,
-      dateStr,
-      entry.email,
-    );
-    const pdfBytes = generatePdf(pdfContent);
-    // Chunked base64 to avoid spread-operator argument limit on large PDFs
-    let pdfBase64 = "";
-    const chunk = 8192;
-    for (let i = 0; i < pdfBytes.length; i += chunk) {
-      pdfBase64 += String.fromCharCode(...pdfBytes.subarray(i, i + chunk));
-    }
-    pdfBase64 = btoa(pdfBase64);
+  const siteUrl = new URL(context.request.url).origin;
+  const params = new URLSearchParams();
+  params.append("mode", mode);
+  params.append(
+    "success_url",
+    `${siteUrl}/pledge-success.html?session_id={CHECKOUT_SESSION_ID}`,
+  );
+  params.append("cancel_url", `${siteUrl}/pledge-cancel.html`);
+  params.append("customer_email", email);
+  params.append("line_items[0][quantity]", "1");
+  params.append("line_items[0][price_data][currency]", "usd");
+  params.append("line_items[0][price_data][product_data][name]", productName);
+  params.append("line_items[0][price_data][unit_amount]", String(unitAmount));
 
-    const notificationEmail = buildNotificationEmail(entry);
-    const notifResult = await sendViaACS(context.env, {
-      from: "DoNotReply@fathersandfootball.org",
-      to: ["justin@fathersandfootball.org"],
-      subject: notificationEmail.subject,
-      html: notificationEmail.html,
-    });
-
-    if (!notifResult.ok) {
-      console.error(
-        "Failed to send pledge notification email:",
-        notifResult.status,
-      );
-    }
-
-    const confirmationEmail = buildDonorConfirmationEmail(entry);
-    const confirmResult = await sendViaACSWithAttachment(context.env, {
-      from: "communications@fathersandfootball.org",
-      to: entry.email,
-      subject: confirmationEmail.subject,
-      html: confirmationEmail.html,
-      attachments: [
-        {
-          name: "FAF-Pledge-Agreement.pdf",
-          contentType: "application/pdf",
-          contentInBase64: pdfBase64,
-        },
-      ],
-    });
-
-    if (!confirmResult.ok) {
-      console.error(
-        "Failed to send pledge confirmation email:",
-        confirmResult.status,
-      );
-      emailWarning = true;
-    }
-  } catch (err) {
-    console.error("PDF generation or email send failed:", err);
-    emailWarning = true;
+  if (isRecurring) {
+    params.append("line_items[0][price_data][recurring][interval]", "month");
   }
 
-  return new Response(JSON.stringify({ ok: true, id: entryId, emailWarning }), {
+  params.append("metadata[type]", "pledge");
+  params.append("metadata[pledge_id]", entryId);
+  params.append("metadata[donor_name]", name.slice(0, 200));
+  params.append("metadata[frequency]", frequency);
+
+  const stripeRes = await fetch(STRIPE_API, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: params.toString(),
+  });
+
+  const session = await stripeRes.json();
+
+  if (!stripeRes.ok) {
+    console.error("Stripe error:", JSON.stringify(session));
+    return new Response(
+      JSON.stringify({
+        error: "Unable to create checkout session. Please try again.",
+      }),
+      { status: 502, headers },
+    );
+  }
+
+  // Only return the checkout URL -- never expose session secrets
+  return new Response(JSON.stringify({ url: session.url }), {
     status: 200,
     headers,
   });
