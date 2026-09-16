@@ -1,21 +1,23 @@
-# TEMPORARY STOPGAP — re-enabled 2026-07-28 with Floyd's explicit approval.
-# Long-term deployment is meant to move to Azure Pipelines
-# (azure-pipelines.yml), but that pipeline cannot be created yet --
-# it needs an ADO Pipelines variable group ("faf-cloudflare") and
-# pipeline resource that require ADO permissions beyond the current
-# automation token. Until that one-time setup happens, this manual
-# workflow_dispatch path is the only working deploy route. Re-disable
-# (set jobs.deploy.if back to false) once the Azure Pipeline is live.
+# DEPRECATED — deployment moved to Azure Pipelines (azure-pipelines.yml).
+# ADO is the single deploy source. This workflow is disabled.
+# See docs/deployment.md for the current deploy architecture.
 #
-# See docs/deployment.md for the intended long-term strategy.
+# History:
+#   - Originally the primary deploy path (Cloudflare Pages via GH Actions)
+#   - 2026-07-28: Re-enabled as manual stopgap while ADO pipeline setup was pending
+#   - 2026-09-16: Disabled permanently as part of ADO #1241 deployment alignment
+#
+# DO NOT re-enable. If ADO pipeline is down, use the manual wrangler
+# deploy documented in docs/deployment.md instead.
 
-name: Deploy to Cloudflare Pages (manual stopgap)
+name: "[DEPRECATED] Deploy to Cloudflare Pages"
 
 on:
   workflow_dispatch:
 
 jobs:
   deploy:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
