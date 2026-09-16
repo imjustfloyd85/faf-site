@@ -1,3 +1,8 @@
+# ADO Pipeline: Deploy faf-site to Cloudflare Pages
+# Triggers on every push to main. Requires variable group "faf-cloudflare"
+# with CF_API_TOKEN and CF_ACCOUNT_ID (both marked secret).
+# See docs/deployment.md for setup instructions and manual fallback.
+
 trigger:
   branches:
     include:
@@ -14,7 +19,7 @@ steps:
     fetchDepth: 1
 
   - task: NodeTool@0
-    displayName: "Install Node.js"
+    displayName: "Install Node.js 20.x"
     inputs:
       versionSpec: "20.x"
 
@@ -30,3 +35,10 @@ steps:
     env:
       CLOUDFLARE_API_TOKEN: $(CF_API_TOKEN)
       CLOUDFLARE_ACCOUNT_ID: $(CF_ACCOUNT_ID)
+
+  - script: |
+      echo "Deploy completed successfully."
+      echo "To sync the GitHub archive mirror, run locally:"
+      echo "  git push github-archive main"
+    displayName: "Post-deploy note"
+    condition: succeeded()
