@@ -14,6 +14,12 @@
 //   QBO_APPROVAL_SECRET — HMAC key for signing approval tokens
 
 import { createApprovalToken } from "../lib/approval-tokens.js";
+import { sendViaACSWithAttachment } from "../lib/acs-email.js";
+import { generatePdf } from "../lib/pdf-generate.js";
+import {
+  PLEDGE_AGREEMENT_VERSION,
+  getPledgeAgreementPdfContent,
+} from "../lib/pledge-agreement.js";
 
 // --- ACS Email (same pattern as faf-chat/worker.js) ---
 
@@ -574,6 +580,179 @@ async function updateSponsorEntryAndNotify(context, session) {
   );
 }
 
+// --- Pledge Payment Confirmation (Story 1239) ---
+
+function buildPledgeEmail(session, pledgeEntry) {
+  const amount = (session.amount_total / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const rawDonorName =
+    session.metadata?.donor_name ||
+    session.customer_details?.name ||
+    "Supporter";
+  const rawDonorEmail =
+    session.customer_details?.email ||
+    session.customer_email ||
+    pledgeEntry.email ||
+    "";
+  const donorName = escapeHtml(rawDonorName);
+  const donorEmail = escapeHtml(rawDonorEmail);
+  const subjectSafeName = String(rawDonorName).replace(/[\r\n]/g, " ");
+  const date = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const isRecurring =
+    (session.metadata?.frequency || pledgeEntry.frequency) === "monthly";
+  const phone = escapeHtml(pledgeEntry.phone || "(not provided)");
+
+  return {
+    toOrg: {
+      subject: `Pledge Payment Received: ${amount} from ${subjectSafeName}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #c8923c;">Fathers and Football -- Pledge Payment</h2>
+          <p><strong>Donor:</strong> ${donorName}</p>
+          <p><strong>Email:</strong> ${donorEmail}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
+          <p><strong>Pledge Amount:</strong> ${amount}${isRecurring ? " (monthly recurring)" : " (one-time)"}</p>
+          <p><strong>Agreement Version:</strong> ${PLEDGE_AGREEMENT_VERSION}</p>
+          <p><strong>Date:</strong> ${date}</p>
+          <p><strong>Stripe Session:</strong> ${session.id}</p>
+        </div>
+      `,
+    },
+    toDonor: {
+      subject: "Your pledge confirmation -- Fathers and Football",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #c8923c;">Fathers and Football</h2>
+          <p>Dear ${donorName},</p>
+          <p>Thank you for your ${isRecurring ? "monthly " : ""}pledge of ${amount} to Fathers and Football. Your commitment directly supports programs that connect fathers to their children through the game.</p>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
+          <h3>Pledge Details</h3>
+          <p><strong>Organization:</strong> Fathers and Football<br/>
+          <strong>EIN:</strong> 42-1980182<br/>
+          <strong>Status:</strong> 501(c)(3) tax-exempt organization<br/>
+          <strong>Date:</strong> ${date}<br/>
+          <strong>Amount:</strong> ${amount}<br/>
+          <strong>Frequency:</strong> ${isRecurring ? "Monthly" : "One-time"}</p>
+          <p><strong>No goods or services were provided in exchange for this contribution.</strong> The full amount of your donation is tax-deductible to the extent allowed by law.</p>
+          <p>A copy of your pledge agreement is attached to this email as a PDF.</p>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
+          <p>We will be in touch with next steps. Thank you for investing in families.</p>
+          <p>With gratitude,<br/>Fathers and Football<br/>
+          <a href="https://fathersandfootball.org">fathersandfootball.org</a></p>
+        </div>
+      `,
+    },
+  };
+}
+
+async function handlePledgePayment(context, session) {
+  const kv = context.env.FAF_KV;
+  const pledgeId = session.metadata?.pledge_id;
+
+  if (!kv || !pledgeId) {
+    console.error("Pledge payment handler: missing KV or pledge_id");
+    return;
+  }
+
+  const pledgeRaw = await kv.get(`pledge:${pledgeId}`);
+  if (!pledgeRaw) {
+    console.error(`Pledge entry not found: ${pledgeId}`);
+    return;
+  }
+
+  let pledgeEntry;
+  try {
+    pledgeEntry = JSON.parse(pledgeRaw);
+  } catch {
+    console.error(`Pledge entry parse error: ${pledgeId}`);
+    return;
+  }
+
+  // Mark pledge as paid
+  pledgeEntry.status = "paid";
+  pledgeEntry.stripeSessionId = session.id;
+  pledgeEntry.paidAt = new Date().toISOString();
+  await kv.put(`pledge:${pledgeId}`, JSON.stringify(pledgeEntry), {
+    expirationTtl: 365 * 24 * 60 * 60,
+  });
+
+  // Generate the pledge agreement PDF
+  const dateStr = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const pdfContent = getPledgeAgreementPdfContent(
+    pledgeEntry.name,
+    pledgeEntry.amount,
+    dateStr,
+    pledgeEntry.email,
+  );
+  const pdfBytes = generatePdf(pdfContent);
+
+  // Chunked base64 to avoid spread-operator argument limit on large PDFs
+  let pdfBase64 = "";
+  const chunk = 8192;
+  for (let i = 0; i < pdfBytes.length; i += chunk) {
+    pdfBase64 += String.fromCharCode(...pdfBytes.subarray(i, i + chunk));
+  }
+  pdfBase64 = btoa(pdfBase64);
+
+  // Build pledge emails
+  const emails = buildPledgeEmail(session, pledgeEntry);
+
+  // Send org notification
+  const orgResult = await sendViaACS(context.env, {
+    from: "communications@fathersandfootball.org",
+    to: [
+      "justin@fathersandfootball.org",
+      "communications@fathersandfootball.org",
+    ],
+    subject: emails.toOrg.subject,
+    html: emails.toOrg.html,
+  });
+
+  if (!orgResult.ok) {
+    console.error("Failed to send pledge org notification:", orgResult.status);
+  }
+
+  // Send donor confirmation with PDF attachment
+  const donorEmail =
+    session.customer_details?.email ||
+    session.customer_email ||
+    pledgeEntry.email;
+  if (donorEmail) {
+    const donorResult = await sendViaACSWithAttachment(context.env, {
+      from: "communications@fathersandfootball.org",
+      to: donorEmail,
+      subject: emails.toDonor.subject,
+      html: emails.toDonor.html,
+      attachments: [
+        {
+          name: "FAF-Pledge-Agreement.pdf",
+          contentType: "application/pdf",
+          contentInBase64: pdfBase64,
+        },
+      ],
+    });
+
+    if (!donorResult.ok) {
+      console.error("Failed to send pledge donor receipt:", donorResult.status);
+    }
+  }
+
+  console.log(
+    `Pledge payment confirmed: ${pledgeId} (${pledgeEntry.name}, $${pledgeEntry.amount})`,
+  );
+}
+
 // --- Main Handler ---
 
 export async function onRequestPost(context) {
@@ -611,56 +790,61 @@ export async function onRequestPost(context) {
       const session = event.data.object;
       const paymentType = session.metadata?.type;
 
-      let emails;
-      if (paymentType === "sponsorship") {
-        emails = buildSponsorshipEmail(session);
+      if (paymentType === "pledge") {
+        // Pledge payments: look up the stored pledge entry, generate PDF,
+        // send confirmation emails with the agreement attached.
+        await handlePledgePayment(context, session);
+        await createPendingQboEntry(context, session, paymentType);
       } else {
-        emails = buildDonationEmail(session);
-      }
+        let emails;
+        if (paymentType === "sponsorship") {
+          emails = buildSponsorshipEmail(session);
+        } else {
+          emails = buildDonationEmail(session);
+        }
 
-      // Send notification to FAF org
-      const orgResult = await sendViaACS(context.env, {
-        from: "communications@fathersandfootball.org",
-        to: [
-          "justin@fathersandfootball.org",
-          "communications@fathersandfootball.org",
-        ],
-        replyTo: emails.toOrg.replyTo,
-        subject: emails.toOrg.subject,
-        html: emails.toOrg.html,
-      });
-
-      if (!orgResult.ok) {
-        console.error("Failed to send org notification:", orgResult.status);
-      }
-
-      // Send receipt/acknowledgment to donor/sponsor
-      const donorEmail =
-        session.customer_details?.email || session.customer_email;
-      if (donorEmail) {
-        const donorResult = await sendViaACS(context.env, {
+        // Send notification to FAF org
+        const orgResult = await sendViaACS(context.env, {
           from: "communications@fathersandfootball.org",
-          to: donorEmail,
-          subject: emails.toDonor.subject,
-          html: emails.toDonor.html,
+          to: [
+            "justin@fathersandfootball.org",
+            "communications@fathersandfootball.org",
+          ],
+          replyTo: emails.toOrg.replyTo,
+          subject: emails.toOrg.subject,
+          html: emails.toOrg.html,
         });
 
-        if (!donorResult.ok) {
-          console.error("Failed to send donor receipt:", donorResult.status);
+        if (!orgResult.ok) {
+          console.error("Failed to send org notification:", orgResult.status);
         }
-      }
 
-      // --- QBO Pending Entry Queue (Story 1248) ---
-      // Write a pending entry to KV and send an approval email.
-      // The entry is NOT posted to QuickBooks until a human clicks Approve.
-      await createPendingQboEntry(context, session, paymentType);
+        // Send receipt/acknowledgment to donor/sponsor
+        const donorEmail =
+          session.customer_details?.email || session.customer_email;
+        if (donorEmail) {
+          const donorResult = await sendViaACS(context.env, {
+            from: "communications@fathersandfootball.org",
+            to: donorEmail,
+            subject: emails.toDonor.subject,
+            html: emails.toDonor.html,
+          });
 
-      // --- Sponsor Logo Approval Queue ---
-      // If this sponsorship has a linked sponsor entry (logo upload + agreement),
-      // update the entry status and send an admin approval email for the logo
-      // placement. The logo stays hidden on the public site until approved.
-      if (paymentType === "sponsorship" && session.metadata?.sponsor_entry_id) {
-        await updateSponsorEntryAndNotify(context, session);
+          if (!donorResult.ok) {
+            console.error("Failed to send donor receipt:", donorResult.status);
+          }
+        }
+
+        // --- QBO Pending Entry Queue (Story 1248) ---
+        await createPendingQboEntry(context, session, paymentType);
+
+        // --- Sponsor Logo Approval Queue ---
+        if (
+          paymentType === "sponsorship" &&
+          session.metadata?.sponsor_entry_id
+        ) {
+          await updateSponsorEntryAndNotify(context, session);
+        }
       }
     }
 
