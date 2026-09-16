@@ -81,6 +81,8 @@ export async function sendViaACS(env, { from, to, replyTo, subject, html }) {
   return res;
 }
 
+// Same as sendViaACS but supports file attachments.
+// attachments: [{ name: "file.pdf", contentType: "application/pdf", contentInBase64: "..." }]
 export async function sendViaACSWithAttachment(
   env,
   { from, to, replyTo, subject, html, attachments },

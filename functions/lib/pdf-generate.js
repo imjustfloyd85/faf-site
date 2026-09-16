@@ -1,19 +1,22 @@
-const FONT = "Helvetica";
-const FONT_BOLD = "Helvetica-Bold";
+// Zero-dependency PDF generator for Cloudflare Workers runtime.
+// Produces valid PDF 1.4 using Helvetica (built into every PDF reader).
+// No font embedding, no npm packages -- raw PDF syntax only.
+
 const PAGE_WIDTH = 612;
 const PAGE_HEIGHT = 792;
 const MARGIN_LEFT = 72;
 const MARGIN_RIGHT = 72;
 const MARGIN_TOP = 72;
 const MARGIN_BOTTOM = 72;
-const LINE_HEIGHT = 16;
-const HEADING_SIZE = 16;
-const BODY_SIZE = 11;
-const FOOTER_SIZE = 9;
-const USABLE_WIDTH = PAGE_WIDTH - MARGIN_LEFT - MARGIN_RIGHT;
+const LINE_HEIGHT_BODY = 14;
+const LINE_HEIGHT_HEADING = 22;
+const FONT_SIZE_BODY = 10;
+const FONT_SIZE_HEADING = 14;
+const FONT_SIZE_TITLE = 20;
+const FONT_SIZE_FOOTER = 8;
 const CHARS_PER_LINE = 80;
 
-function escPdfString(str) {
+function escPdfStr(str) {
   return str.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
 }
 
@@ -40,113 +43,130 @@ function wrapText(text, maxChars) {
   return lines;
 }
 
-export function generatePdf({ title, sections, footer }) {
-  const contentLines = [];
+function buildPageStreams(title, sections, footer) {
+  const pages = [];
+  let currentLines = [];
+  let y = PAGE_HEIGHT - MARGIN_TOP;
 
-  if (title) {
-    contentLines.push({
-      text: title,
-      bold: true,
-      size: HEADING_SIZE,
-      spacing: 24,
-    });
-    contentLines.push({ text: "", size: BODY_SIZE, spacing: 8 });
+  function flushPage() {
+    pages.push(currentLines.slice());
+    currentLines = [];
+    y = PAGE_HEIGHT - MARGIN_TOP;
   }
+
+  function addLine(text, fontSize, fontKey, extraSpaceBefore) {
+    const lineHeight =
+      fontSize >= FONT_SIZE_HEADING ? LINE_HEIGHT_HEADING : LINE_HEIGHT_BODY;
+    const spaceBefore = extraSpaceBefore || 0;
+    if (y - lineHeight - spaceBefore < MARGIN_BOTTOM + 20) {
+      flushPage();
+    }
+    y -= spaceBefore;
+    y -= lineHeight;
+    currentLines.push({ text, fontSize, fontKey, x: MARGIN_LEFT, y });
+  }
+
+  addLine(title, FONT_SIZE_TITLE, "/F1", 0);
+  y -= 10;
 
   for (const section of sections) {
     if (section.heading) {
-      contentLines.push({
-        text: section.heading,
-        bold: true,
-        size: 13,
-        spacing: 20,
-      });
+      addLine(section.heading, FONT_SIZE_HEADING, "/F1", 16);
+      y -= 4;
     }
     if (section.text) {
-      const wrapped = wrapText(section.text, CHARS_PER_LINE);
-      for (const line of wrapped) {
-        contentLines.push({
-          text: line,
-          bold: false,
-          size: BODY_SIZE,
-          spacing: LINE_HEIGHT,
-        });
+      const lines = wrapText(section.text, CHARS_PER_LINE);
+      for (const line of lines) {
+        if (line === "") {
+          y -= LINE_HEIGHT_BODY * 0.6;
+          if (y < MARGIN_BOTTOM + 20) flushPage();
+        } else {
+          addLine(line, FONT_SIZE_BODY, "/F2", 0);
+        }
       }
-      contentLines.push({ text: "", size: BODY_SIZE, spacing: 8 });
     }
   }
 
-  const pages = [];
-  let currentPage = [];
-  let y = PAGE_HEIGHT - MARGIN_TOP;
-
-  for (const line of contentLines) {
-    if (y - line.spacing < MARGIN_BOTTOM + 20) {
-      pages.push(currentPage);
-      currentPage = [];
-      y = PAGE_HEIGHT - MARGIN_TOP;
-    }
-    y -= line.spacing;
-    currentPage.push({ ...line, y });
+  if (currentLines.length > 0) {
+    flushPage();
   }
-  if (currentPage.length > 0) pages.push(currentPage);
-  if (pages.length === 0) pages.push([]);
+
+  if (footer) {
+    const lastPage = pages[pages.length - 1];
+    lastPage.push({
+      text: footer,
+      fontSize: FONT_SIZE_FOOTER,
+      fontKey: "/F2",
+      x: MARGIN_LEFT,
+      y: MARGIN_BOTTOM - 10,
+    });
+  }
+
+  return pages;
+}
+
+function streamForPage(lines) {
+  let s = "";
+  for (const line of lines) {
+    s += `BT\n${line.fontKey} ${line.fontSize} Tf\n${line.x} ${line.y} Td\n(${escPdfStr(line.text)}) Tj\nET\n`;
+  }
+  return s;
+}
+
+export function generatePdf({ title, sections, footer }) {
+  const pageData = buildPageStreams(
+    title || "Document",
+    sections || [],
+    footer,
+  );
+  if (pageData.length === 0) {
+    pageData.push([
+      {
+        text: title || "Document",
+        fontSize: FONT_SIZE_TITLE,
+        fontKey: "/F1",
+        x: MARGIN_LEFT,
+        y: PAGE_HEIGHT - MARGIN_TOP,
+      },
+    ]);
+  }
 
   const objects = [];
-  let nextObjId = 1;
+  let nextObj = 1;
 
   function addObj(content) {
-    const id = nextObjId++;
+    const id = nextObj++;
     objects.push({ id, content });
     return id;
   }
 
   const catalogId = addObj(null);
-  const pagesObjId = addObj(null);
+  const pagesId = addObj(null);
 
-  const fontRegId = addObj(
-    `<< /Type /Font /Subtype /Type1 /BaseFont /${FONT} >>`,
-  );
+  // F1 = Helvetica-Bold, F2 = Helvetica
   const fontBoldId = addObj(
-    `<< /Type /Font /Subtype /Type1 /BaseFont /${FONT_BOLD} >>`,
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>",
   );
+  const fontId = addObj(
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+  );
+
+  const resourcesDict = `<< /Font << /F1 ${fontBoldId} 0 R /F2 ${fontId} 0 R >> >>`;
 
   const pageObjIds = [];
-  for (const page of pages) {
-    const streamLines = [];
-    streamLines.push("BT");
-
-    for (const line of page) {
-      const font = line.bold ? "F2" : "F1";
-      streamLines.push(`/${font} ${line.size} Tf`);
-      streamLines.push(`${MARGIN_LEFT} ${line.y} Td`);
-      streamLines.push(`(${escPdfString(line.text)}) Tj`);
-      streamLines.push("0 0 Td");
-    }
-
-    if (footer) {
-      streamLines.push(`/F1 ${FOOTER_SIZE} Tf`);
-      streamLines.push(`${MARGIN_LEFT} ${MARGIN_BOTTOM - 10} Td`);
-      streamLines.push(`(${escPdfString(footer)}) Tj`);
-      streamLines.push("0 0 Td");
-    }
-
-    streamLines.push("ET");
-    const stream = streamLines.join("\n");
-
+  for (const lines of pageData) {
+    const stream = streamForPage(lines);
+    const streamBytes = new TextEncoder().encode(stream);
     const streamId = addObj(
-      `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
+      `<< /Length ${streamBytes.length} >>\nstream\n${stream}endstream`,
     );
-
     const pageId = addObj(
-      `<< /Type /Page /Parent ${pagesObjId} 0 R /MediaBox [0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}] ` +
-        `/Contents ${streamId} 0 R ` +
-        `/Resources << /Font << /F1 ${fontRegId} 0 R /F2 ${fontBoldId} 0 R >> >> >>`,
+      `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}] /Contents ${streamId} 0 R /Resources ${resourcesDict} >>`,
     );
     pageObjIds.push(pageId);
   }
 
-  objects[0].content = `<< /Type /Catalog /Pages ${pagesObjId} 0 R >>`;
+  objects[0].content = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
   objects[1].content = `<< /Type /Pages /Kids [${pageObjIds.map((id) => `${id} 0 R`).join(" ")}] /Count ${pageObjIds.length} >>`;
 
   let pdf = "%PDF-1.4\n";

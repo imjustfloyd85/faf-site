@@ -204,53 +204,69 @@ export async function onRequestPost(context) {
     expirationTtl: SUBMISSION_TTL_SECONDS,
   });
 
-  const pdfContent = getPledgeAgreementPdfContent(
-    entry.name,
-    entry.amount,
-    dateStr,
-    entry.email,
-  );
-  const pdfBytes = generatePdf(pdfContent);
-  const pdfBase64 = btoa(String.fromCharCode(...pdfBytes));
+  // PDF generation and email sending are best-effort.
+  // The pledge is stored in KV regardless of email delivery.
+  let emailWarning = false;
 
-  const notificationEmail = buildNotificationEmail(entry);
-  const notifResult = await sendViaACS(context.env, {
-    from: "DoNotReply@fathersandfootball.org",
-    to: ["justin@fathersandfootball.org"],
-    subject: notificationEmail.subject,
-    html: notificationEmail.html,
-  });
-
-  if (!notifResult.ok) {
-    console.error(
-      "Failed to send pledge notification email:",
-      notifResult.status,
+  try {
+    const pdfContent = getPledgeAgreementPdfContent(
+      entry.name,
+      entry.amount,
+      dateStr,
+      entry.email,
     );
+    const pdfBytes = generatePdf(pdfContent);
+    // Chunked base64 to avoid spread-operator argument limit on large PDFs
+    let pdfBase64 = "";
+    const chunk = 8192;
+    for (let i = 0; i < pdfBytes.length; i += chunk) {
+      pdfBase64 += String.fromCharCode(...pdfBytes.subarray(i, i + chunk));
+    }
+    pdfBase64 = btoa(pdfBase64);
+
+    const notificationEmail = buildNotificationEmail(entry);
+    const notifResult = await sendViaACS(context.env, {
+      from: "DoNotReply@fathersandfootball.org",
+      to: ["justin@fathersandfootball.org"],
+      subject: notificationEmail.subject,
+      html: notificationEmail.html,
+    });
+
+    if (!notifResult.ok) {
+      console.error(
+        "Failed to send pledge notification email:",
+        notifResult.status,
+      );
+    }
+
+    const confirmationEmail = buildDonorConfirmationEmail(entry);
+    const confirmResult = await sendViaACSWithAttachment(context.env, {
+      from: "communications@fathersandfootball.org",
+      to: entry.email,
+      subject: confirmationEmail.subject,
+      html: confirmationEmail.html,
+      attachments: [
+        {
+          name: "FAF-Pledge-Agreement.pdf",
+          contentType: "application/pdf",
+          contentInBase64: pdfBase64,
+        },
+      ],
+    });
+
+    if (!confirmResult.ok) {
+      console.error(
+        "Failed to send pledge confirmation email:",
+        confirmResult.status,
+      );
+      emailWarning = true;
+    }
+  } catch (err) {
+    console.error("PDF generation or email send failed:", err);
+    emailWarning = true;
   }
 
-  const confirmationEmail = buildDonorConfirmationEmail(entry);
-  const confirmResult = await sendViaACSWithAttachment(context.env, {
-    from: "communications@fathersandfootball.org",
-    to: entry.email,
-    subject: confirmationEmail.subject,
-    html: confirmationEmail.html,
-    attachments: [
-      {
-        name: "FAF-Pledge-Agreement.pdf",
-        contentType: "application/pdf",
-        contentInBase64: pdfBase64,
-      },
-    ],
-  });
-
-  if (!confirmResult.ok) {
-    console.error(
-      "Failed to send pledge confirmation email:",
-      confirmResult.status,
-    );
-  }
-
-  return new Response(JSON.stringify({ ok: true, id: entryId }), {
+  return new Response(JSON.stringify({ ok: true, id: entryId, emailWarning }), {
     status: 200,
     headers,
   });
