@@ -2154,16 +2154,14 @@
           >
         </div>
         <div class="cal-tabs">
-          <button class="cal-tab active" onclick="showCalMonth('aug')">
-            Aug
-          </button>
+          <button class="cal-tab" onclick="showCalMonth('aug')">Aug</button>
           <button class="cal-tab" onclick="showCalMonth('sep')">Sep</button>
           <button class="cal-tab" onclick="showCalMonth('oct')">Oct</button>
           <button class="cal-tab" onclick="showCalMonth('nov')">Nov</button>
         </div>
 
         <!-- AUGUST 2026 — starts Saturday -->
-        <div class="cal-month active" id="cal-aug">
+        <div class="cal-month" id="cal-aug">
           <div class="cal-grid">
             <div class="cal-header">Sun</div>
             <div class="cal-header">Mon</div>
@@ -2501,6 +2499,20 @@
         var tabMap = { aug: 0, sep: 1, oct: 2, nov: 3 };
         tabs[tabMap[month]].classList.add("active");
       }
+
+      // Default the calendar to whichever tab matches today's real month,
+      // instead of a hardcoded month that goes stale as the season progresses.
+      (function initCalDefaultMonth() {
+        var monthIndexByJsMonth = { 7: "aug", 8: "sep", 9: "oct", 10: "nov" };
+        var now = new Date();
+        var key = monthIndexByJsMonth[now.getMonth()];
+        if (!key) {
+          // Outside the aug-nov calendar range: before season -> show aug,
+          // after season -> show nov.
+          key = now.getMonth() < 7 ? "aug" : "nov";
+        }
+        showCalMonth(key);
+      })();
 
       // Event -> venue lookup. No entry means "no venue" (not clickable).
       var EVENT_VENUES = {
